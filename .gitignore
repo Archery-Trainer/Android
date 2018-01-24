@@ -3,9 +3,6 @@ gradle
 homeScreen/build
 homeScreen/app/build
 homeScreen/local.properties
-homeScreen/gradle/wrapper/gradle-wrapper.properties
-homeScreen/app/src/main/res/drawable-v24/
-homeScreen/app/src/main/res/drawable/
 homeScreen/app/app.iml
 homeScreen/.idea/*
 homeScreen/.idea
