@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Archery Trainer</string>
+    <string name="MQTT_server_url">a20pmpdacgwj4.iot.us-east-1.amazonaws.com</string>
+    <string name="MQTT_topic">#</string>
+    <string name="back_end_url">http://ec2-54-208-42-165.compute-1.amazonaws.com:80</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Log in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="profile">Profile</string>
+    <string name="archives">Archives</string>
+    <string name="logout">Log out</string>
+    <string name="id">ID</string>
+    <string name="height">Height</string>
+    <string name="weight">Weight</string>
+    <string name="BowForce">Bow Force</string>
+    <string name="trainerId">Trainer Id</string>
+    <string name="BestResults">Best results</string>
+    <string name="recording">Recording</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+    completions." </string>
+</resources>

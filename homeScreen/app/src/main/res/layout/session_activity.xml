@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/recording"
+        tools:layout_editor_absoluteX="25dp"
+        tools:layout_editor_absoluteY="16dp"
+        tools:ignore="MissingConstraints"/>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/BestResults"
+        tools:layout_editor_absoluteX="247dp"
+        tools:layout_editor_absoluteY="393dp"
+        tools:ignore="MissingConstraints" />
+</android.support.constraint.ConstraintLayout>
