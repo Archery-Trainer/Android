@@ -63,10 +63,12 @@ public class SessionActivity extends AppCompatActivity implements OnMessageCallb
         graphView = (GraphView) findViewById(R.id.graph);
         mSeries2 = new LineGraphSeries<>();
         mSeries2.setDrawAsPath(true);
+        graphView.addSeries(mSeries1);
         graphView.addSeries(mSeries2);
         graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setMinX(0);
-        graphView.getViewport().setMaxX(200);
+        graphView.getViewport().setMaxX(100);
+
 
 
     }
@@ -109,14 +111,15 @@ public class SessionActivity extends AppCompatActivity implements OnMessageCallb
     public void call(final String message) {
 
         // a potentially  time consuming task
-//
+        //final Handler handler = new Handler();
+        //Runnable runnable = new Runnable() {
         new Thread(new Runnable() {
 
             public void run() {
                 System.out.println("added this msg: " + message);
 
                 final MeasuredDataSet measData = gson.fromJson(message, MeasuredDataSet.class);
-
+                measuredDataPoints.add(measData);
                 // sensor values
                 final int sensor1 = measData.getSensorData(0).getValue();
                 final int sensor2 = measData.getSensorData(1).getValue();
@@ -124,10 +127,14 @@ public class SessionActivity extends AppCompatActivity implements OnMessageCallb
                 final int sensor4 = measData.getSensorData(3).getValue();
                 final int sensor5 = measData.getSensorData(4).getValue();
                 final int sensor6 = measData.getSensorData(5).getValue();
+
+                // get start time for later use
+                if (startTimestmp==0){startTimestmp=measData.getTimestamp();}
 //                handler.post(new Runnable() {
 //                    public void run() {
-                if (startTimestmp==0){startTimestmp=measData.getTimestamp();}
                 txtv1.post(new Runnable() {
+
+
                     @Override
                     public void run() {
                         int currentTime=measData.getTimestamp()-startTimestmp;
@@ -136,7 +143,8 @@ public class SessionActivity extends AppCompatActivity implements OnMessageCallb
                             max1 = sensor1;
                         }
                         txtv1.setText(Integer.toString(sensor1));
-                        mSeries2.appendData(new DataPoint((double)currentTime,(double)sensor1),true,200);
+                        // append data to graph
+                        mSeries1.appendData(new DataPoint((double)currentTime,(double)sensor1),true,100);
                         if (sensor2 > max2) {
                             textvmax2.setText(Integer.toString(max2));
                             max2 = sensor2;
@@ -147,6 +155,7 @@ public class SessionActivity extends AppCompatActivity implements OnMessageCallb
                             max3 = sensor3;
                         }
                         txtv3.setText(Integer.toString(sensor3));
+                        mSeries2.appendData(new DataPoint((double)currentTime,(double)sensor1),true,100);
 
                         if(sensor4 > max4) {
                            textvmax4.setText(Integer.toString(max4));
@@ -169,6 +178,8 @@ public class SessionActivity extends AppCompatActivity implements OnMessageCallb
                 });
             }
         }).start();
+        //new Thread(runnable).start();
+
 
     }//end call
 
