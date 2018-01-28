@@ -61,7 +61,10 @@ public class SessionActivity extends AppCompatActivity implements OnMessageCallb
         setContentView(R.layout.session_activity);
         measuredDataPoints = new LinkedList<>();
         graphView = (GraphView) findViewById(R.id.graph);
+        mSeries1=new LineGraphSeries<>();
+        mSeries1.setDrawAsPath(true);
         mSeries2 = new LineGraphSeries<>();
+
         mSeries2.setDrawAsPath(true);
         graphView.addSeries(mSeries1);
         graphView.addSeries(mSeries2);
@@ -150,12 +153,13 @@ public class SessionActivity extends AppCompatActivity implements OnMessageCallb
                             max2 = sensor2;
                         }
                         txtv2.setText(Integer.toString(sensor2));
+                        mSeries2.appendData(new DataPoint((double)currentTime,(double)sensor2),true,100);
                         if(sensor3 > max3) {
                             textvmax3.setText(Integer.toString(max3));
                             max3 = sensor3;
                         }
                         txtv3.setText(Integer.toString(sensor3));
-                        mSeries2.appendData(new DataPoint((double)currentTime,(double)sensor1),true,100);
+
 
                         if(sensor4 > max4) {
                            textvmax4.setText(Integer.toString(max4));
