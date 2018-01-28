@@ -21,10 +21,11 @@ public class MqttMessageHandler {
 		MqttClient c = new MqttClient(cb, context);
 		//The client is not needed anymore
 	}
-
+	public void addMsg(String msg){messages.add(msg);}
 	public static String getNewestMessage() {
 
 		int sz = messages.size();
+		System.out.println("getNewestMsg: "+sz);
 
 		if(sz != 0) {
 
@@ -42,9 +43,10 @@ public class MqttMessageHandler {
 		}
 		else
 			return "";
+
 	}
 
-	public void cleanUp() {
+	public void cleanUp(){
 		messages.clear();
 	}
 }

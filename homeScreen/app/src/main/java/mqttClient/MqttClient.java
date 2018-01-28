@@ -126,6 +126,7 @@ public class MqttClient {
 		@Override
 		public void onMessage(AWSIotMessage message) {
 			onMsg.call(message.getStringPayload());
+
 			
 		}
 
