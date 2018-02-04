@@ -106,7 +106,7 @@ public class OurView extends SurfaceView implements Runnable {
             changeColor(tmp, "#52D132","#00FFFB");
 
 
-
+            //@TODO: canvas can be null
             canvas.drawBitmap(tmp,matrix,null);
             holder.unlockCanvasAndPost(canvas);
 

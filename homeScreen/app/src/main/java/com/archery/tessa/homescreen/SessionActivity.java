@@ -1,12 +1,18 @@
 package com.archery.tessa.homescreen;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.archery.tessa.homescreen.models.MeasuredDataSet;
+import com.archery.tessa.homescreen.models.SensorData;
 import com.google.gson.Gson;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
@@ -14,9 +20,14 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
+import mqttClient.AddToCollectionCallback;
 import mqttClient.MqttClient;
+import mqttClient.MqttMessageHandler;
 import mqttClient.OnMessageCallback;
+
+import static mqttClient.MqttMessageHandler.getNewestMessage;
 
 
 public class SessionActivity extends AppCompatActivity implements OnMessageCallback {
@@ -55,6 +66,7 @@ public class SessionActivity extends AppCompatActivity implements OnMessageCallb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         /** Creating bitmap from archer picture**/
         BitmapFactory.Options options=new BitmapFactory.Options();
         options.inMutable=true;
@@ -62,8 +74,6 @@ public class SessionActivity extends AppCompatActivity implements OnMessageCallb
         setContentView(R.layout.session_activity);
         surfaceView = (OurView)findViewById(R.id.archerSurfaceView);
         surfaceView.setdPicsForDrawing(archerPic);
-
-
 
         measuredDataPoints = new LinkedList<>();
         graphView = (GraphView) findViewById(R.id.graph);

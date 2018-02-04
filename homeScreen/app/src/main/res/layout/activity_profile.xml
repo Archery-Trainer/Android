@@ -6,6 +6,21 @@
     android:layout_height="match_parent"
     tools:context="com.archery.tessa.homescreen.ProfileActivity">
 
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,19 +37,19 @@
         android:layout_height="0dp"
         android:background="#ffa500"
         android:inputType="text"
-        tools:layout_editor_absoluteX="115dp"
-        tools:layout_editor_absoluteY="38dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="95dp"
+        tools:layout_editor_absoluteY="88dp" />
 
     <EditText
         android:id="@+id/plain_text_input1"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:inputType="text"
         android:background="#ffa500"
+        android:inputType="text"
+        tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="115dp"
-        tools:layout_editor_absoluteY="124dp"
-        tools:ignore="MissingConstraints" />
+        tools:layout_editor_absoluteY="159dp" />
 
     <EditText
         android:id="@+id/plain_text_input2"
@@ -67,25 +82,25 @@
         tools:ignore="MissingConstraints" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/height"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/height"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="140dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="659dp"
+        tools:layout_editor_absoluteY="882dp" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/Id"
         android:layout_width="wrap_content"
         android:layout_height="16dp"
         android:text="@string/id"
+        tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="47dp"
-        tools:ignore="MissingConstraints" />
+        tools:layout_editor_absoluteY="88dp" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/Weight"
         android:layout_width="wrap_content"
         android:layout_height="16dp"
         android:text="@string/weight"
@@ -103,13 +118,27 @@
         android:fontFamily="sans-serif-dark"
         tools:ignore="MissingConstraints" />
 
+
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="16dp"
-        android:text="@string/BowForce"
+        android:text="@string/DebugMode"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="413dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        />
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Graph settings"
+        tools:layout_editor_absoluteX="143dp"
+        tools:layout_editor_absoluteY="447dp"
+        tools:ignore="MissingConstraints"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />/>
 
 </android.support.constraint.ConstraintLayout>
