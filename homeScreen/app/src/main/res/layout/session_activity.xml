@@ -1,30 +1,276 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:id="@+id/sessionView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.528"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Switch
         android:id="@+id/switch1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/recording"
-        tools:layout_editor_absoluteX="25dp"
-        tools:layout_editor_absoluteY="16dp"
-        tools:ignore="MissingConstraints"/>
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:text="Recording"
+        app:layout_constraintStart_toEndOf="@+id/relativeLayout"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/sensorlabel1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sensor1:" />
+
+        <TextView
+            android:id="@+id/sensorval1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/sensorlabel1" />
+
+        <TextView
+            android:id="@+id/sensormaxlabel1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_toRightOf="@+id/sensorlabel1"
+            android:text="Max:" />
+
+        <TextView
+            android:id="@+id/sensormaxval1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/sensormaxlabel1" />
+
+
+        <TextView
+            android:id="@+id/sensorlabel2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sensorlabel1"
+            android:text="Sensor2:" />
+
+        <TextView
+            android:id="@+id/sensorval2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sensorval1"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/sensorlabel2" />
+
+        <TextView
+            android:id="@+id/sensormaxlabel2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sensormaxlabel1"
+            android:layout_marginLeft="40dp"
+            android:layout_toRightOf="@+id/sensorlabel2"
+            android:text="Max:" />
+
+        <TextView
+            android:id="@+id/sensormaxval2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sensormaxval1"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/sensormaxlabel2" />
+
+
+        <TextView
+            android:id="@+id/sensorlabel3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sensorlabel2"
+            android:text="Sensor3:" />
+
+        <TextView
+            android:id="@+id/sensorval3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sensorval2"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/sensorlabel3" />
+
+        <TextView
+            android:id="@+id/sensormaxlabel3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sensormaxlabel2"
+            android:layout_marginLeft="40dp"
+            android:layout_toRightOf="@+id/sensorlabel3"
+            android:text="Max:" />
+
+        <TextView
+            android:id="@+id/sensormaxval3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sensormaxval2"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/sensormaxlabel3" />
+
+        <TextView
+            android:id="@+id/sensorlabel4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sensorlabel3"
+            android:text="Sensor4:" />
+
+        <TextView
+            android:id="@+id/sensorval4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sensorval3"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/sensorlabel4" />
+
+        <TextView
+            android:id="@+id/sensormaxlabel4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_below="@+id/sensormaxlabel3"
+            android:layout_toRightOf="@+id/sensorlabel4"
+            android:text="Max:"/>
+
+        <TextView
+            android:id="@+id/sensormaxval4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sensormaxval3"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/sensormaxlabel4" />
+
+
+        <TextView
+            android:id="@+id/sensorlabel5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sensorlabel4"
+            android:text="Sensor5:" />
+
+        <TextView
+            android:id="@+id/sensorval5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sensorval4"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/sensorlabel5" />
+
+        <TextView
+            android:id="@+id/sensormaxlabel5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sensormaxlabel4"
+            android:layout_marginLeft="40dp"
+            android:layout_toRightOf="@+id/sensorlabel5"
+            android:text="Max:" />
+
+        <TextView
+            android:id="@+id/sensormaxval5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sensormaxval4"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/sensormaxlabel5" />
+
+
+        <TextView
+            android:id="@+id/sensorlabel6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sensorlabel5"
+            android:text="Sensor6:" />
+
+        <TextView
+            android:id="@+id/sensorval6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sensorval5"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/sensorlabel6" />
+
+        <TextView
+            android:id="@+id/sensormaxlabel6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sensormaxlabel5"
+            android:layout_marginLeft="40dp"
+            android:layout_toRightOf="@+id/sensorlabel6"
+            android:text="Max:" />
+
+        <TextView
+            android:id="@+id/sensormaxval6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sensormaxval5"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/sensormaxlabel6" />
+    </RelativeLayout>
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graph"
+        android:layout_width="350dip"
+        android:layout_height="200dip"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/BestResults"
-        tools:layout_editor_absoluteX="247dp"
-        tools:layout_editor_absoluteY="393dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="BEST RESULTS"
+        app:layout_constraintBaseline_toBaselineOf="@+id/switch1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/switch1"
         tools:ignore="MissingConstraints" />
+
+    <com.archery.tessa.homescreen.OurView
+        android:id="@+id/archerSurfaceView"
+        android:layout_width="525dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/graph"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>
