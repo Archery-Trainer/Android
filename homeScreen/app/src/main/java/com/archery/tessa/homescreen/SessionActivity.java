@@ -1,13 +1,12 @@
 package com.archery.tessa.homescreen;
 
-import android.os.Handler;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.archery.tessa.homescreen.models.MeasuredDataSet;
-import com.archery.tessa.homescreen.models.SensorData;
 import com.google.gson.Gson;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
@@ -15,14 +14,9 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
-import mqttClient.AddToCollectionCallback;
 import mqttClient.MqttClient;
-import mqttClient.MqttMessageHandler;
 import mqttClient.OnMessageCallback;
-
-import static mqttClient.MqttMessageHandler.getNewestMessage;
 
 
 public class SessionActivity extends AppCompatActivity implements OnMessageCallback {
@@ -45,6 +39,8 @@ public class SessionActivity extends AppCompatActivity implements OnMessageCallb
     private LineGraphSeries mSeries2;
     private List<MeasuredDataSet> measuredDataPoints;
     private Gson gson;
+    private OurView surfaceView;
+    private Bitmap archerPic;
 
     private static final String TAG = "SessionActivity";
     public static int max1, max2, max3, max4, max5, max6 = 0;
@@ -58,7 +54,17 @@ public class SessionActivity extends AppCompatActivity implements OnMessageCallb
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /** Creating bitmap from archer picture**/
+        BitmapFactory.Options options=new BitmapFactory.Options();
+        options.inMutable=true;
+        archerPic = BitmapFactory.decodeResource(getResources(),R.drawable.archer_ind_right_2_2_18v3,options);
         setContentView(R.layout.session_activity);
+        surfaceView = (OurView)findViewById(R.id.archerSurfaceView);
+        surfaceView.setdPicsForDrawing(archerPic);
+
+
+
         measuredDataPoints = new LinkedList<>();
         graphView = (GraphView) findViewById(R.id.graph);
         mSeries1=new LineGraphSeries<>();
@@ -71,8 +77,6 @@ public class SessionActivity extends AppCompatActivity implements OnMessageCallb
         graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setMinX(0);
         graphView.getViewport().setMaxX(100);
-
-
 
     }
 
