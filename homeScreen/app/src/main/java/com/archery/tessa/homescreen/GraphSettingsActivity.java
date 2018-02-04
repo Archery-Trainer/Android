@@ -1,0 +1,14 @@
+package com.archery.tessa.homescreen;
+
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+
+public class GraphSettingsActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.graph_settings_activity);
+
+
+    }}

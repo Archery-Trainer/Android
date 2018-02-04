@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <Switch
+        android:id="@+id/recording"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/recording"
+        tools:layout_editor_absoluteX="41dp"
+        tools:layout_editor_absoluteY="28dp"
+        tools:ignore="MissingConstraints"/>
+
+    <ImageView
+        android:id="@+id/BodyMuscles"
+        android:layout_width="218dp"
+        android:layout_height="227dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/recording"
+        android:layout_marginTop="63dp"
+        android:maxHeight="50dp"
+        android:maxWidth="50dp"
+        app:srcCompat="@drawable/body_muscleplaces"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="159dp"
+        tools:layout_editor_absoluteY="82dp" />
+</RelativeLayout>
