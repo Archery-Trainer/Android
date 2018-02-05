@@ -3,14 +3,7 @@ gradle
 homeScreen/build
 homeScreen/app/build
 homeScreen/local.properties
+homeScreen/app/app.iml
 homeScreen/.idea/*
 homeScreen/.idea
-homeScreen/app/src/main/gen/
-.idea
-.idea/*
-.gradle
-homeScreen/.gradle
-homeScreen/.gradle/*
-homeScreen/app/src/androidTest/
-homeScreen/app/src/test/
-homeScreen/local.properties.txt
+homeScreen/app/src/main/res/mipmap*

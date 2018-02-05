@@ -31,4 +31,5 @@ dependencies {
     compile 'com.amazonaws:aws-iot-device-sdk-java:1.1.1'
     compile 'com.google.code.gson:gson:2.8.2'
     compile 'com.jjoe64:graphview:4.2.1'
+
 }

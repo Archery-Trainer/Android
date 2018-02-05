@@ -1,10 +1,6 @@
 package com.archery.tessa.homescreen;
 
-
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.speech.RecognitionListener;
 import android.support.v7.app.AppCompatActivity;
@@ -12,8 +8,6 @@ import android.os.Bundle;;
 import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.Switch;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.archery.tessa.homescreen.models.MeasuredDataSet;
@@ -64,8 +58,6 @@ public class SessionActivity extends AppCompatActivity implements OnMessageCallb
     private LineGraphSeries mSeries2;
     private List<MeasuredDataSet> measuredDataPoints;
     private Gson gson;
-    private OurView surfaceView;
-    private Bitmap archerPic;
 
     private static final String TAG = "SessionActivity";
     public static int max1, max2, max3, max4, max5, max6 = 0;
@@ -80,21 +72,11 @@ public class SessionActivity extends AppCompatActivity implements OnMessageCallb
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-        /** Creating bitmap from archer picture**/
-        BitmapFactory.Options options=new BitmapFactory.Options();
-        options.inMutable=true;
-        archerPic = BitmapFactory.decodeResource(getResources(),R.drawable.archer_ind_right_2_2_18v3,options);
         setContentView(R.layout.session_activity);
 
         context = this;
-      
-        //Initialize the 'recording' switch
+
         setRecordingSwitch();
-      
-        surfaceView = (OurView)findViewById(R.id.archerSurfaceView);
-        surfaceView.setdPicsForDrawing(archerPic);
 
         measuredDataPoints = new LinkedList<>();
         graphView = (GraphView) findViewById(R.id.graph);
@@ -108,6 +90,8 @@ public class SessionActivity extends AppCompatActivity implements OnMessageCallb
         graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setMinX(0);
         graphView.getViewport().setMaxX(100);
+
+
 
     }
 
@@ -188,35 +172,30 @@ public class SessionActivity extends AppCompatActivity implements OnMessageCallb
                             max2 = sensor2;
                         }
                         txtv2.setText(Integer.toString(sensor2));
-                        mSeries2.appendData(new DataPoint((double)currentTime,(double)sensor2),true,100);
                         if(sensor3 > max3) {
                             textvmax3.setText(Integer.toString(max3));
                             max3 = sensor3;
                         }
                         txtv3.setText(Integer.toString(sensor3));
-                        mSeries1.appendData(new DataPoint((double)currentTime,(double)sensor3),true,100);
-
+                        mSeries2.appendData(new DataPoint((double)currentTime,(double)sensor1),true,100);
 
                         if(sensor4 > max4) {
                            textvmax4.setText(Integer.toString(max4));
                            max4 = sensor4;
                         }
                         txtv4.setText(Integer.toString(sensor4));
-                        mSeries1.appendData(new DataPoint((double)currentTime,(double)sensor4),true,100);
 
                         if(sensor5> max5) {
                            textvmax5.setText(Integer.toString(max5));
                             max5 = sensor5;
                         }
                         txtv5.setText(Integer.toString(sensor5));
-                        mSeries1.appendData(new DataPoint((double)currentTime,(double)sensor5),true,100);
 
                         if(sensor6 > max6) {
                             textvmax6.setText(Integer.toString(max6));
                             max6 = sensor6;
                         }
                         txtv6.setText(Integer.toString(sensor6));
-                        mSeries1.appendData(new DataPoint((double)currentTime,(double)sensor6),true,100);
                     }
                 });
             }

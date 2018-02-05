@@ -19,17 +19,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".SessionActivity" android:label="Start">
-
         </activity>
-        <activity android:name=".OptionsActivity" android:label="Options">
+        <activity android:name=".OptionsActivity" android:label="Archives">
         </activity>
         <activity android:name=".ResultsActivity" android:label="Results">
         </activity>
         <activity android:name=".ProfileActivity" android:label="Profile">
-        </activity>
-        <activity android:name=".HelpActivity" android:label="Help">
-        </activity>
-        <activity android:name=".RecordingActivity" android:label="Recording">
         </activity>
     </application>
 
