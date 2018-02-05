@@ -173,6 +173,7 @@ public class SessionActivity extends AppCompatActivity implements OnMessageCallb
                             max3 = sensor3;
                         }
                         txtv3.setText(Integer.toString(sensor3));
+                        mSeries1.appendData(new DataPoint((double)currentTime,(double)sensor3),true,100);
 
 
                         if(sensor4 > max4) {
@@ -180,18 +181,21 @@ public class SessionActivity extends AppCompatActivity implements OnMessageCallb
                            max4 = sensor4;
                         }
                         txtv4.setText(Integer.toString(sensor4));
+                        mSeries1.appendData(new DataPoint((double)currentTime,(double)sensor4),true,100);
 
                         if(sensor5> max5) {
                            textvmax5.setText(Integer.toString(max5));
                             max5 = sensor5;
                         }
                         txtv5.setText(Integer.toString(sensor5));
+                        mSeries1.appendData(new DataPoint((double)currentTime,(double)sensor5),true,100);
 
                         if(sensor6 > max6) {
                             textvmax6.setText(Integer.toString(max6));
                             max6 = sensor6;
                         }
                         txtv6.setText(Integer.toString(sensor6));
+                        mSeries1.appendData(new DataPoint((double)currentTime,(double)sensor6),true,100);
                     }
                 });
             }

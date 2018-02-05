@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".SessionActivity" android:label="Start">
-            android:screenOrientation="landscape">
+
         </activity>
         <activity android:name=".OptionsActivity" android:label="Options">
         </activity>
