@@ -9,12 +9,16 @@ import java.util.List;
 
 public class MeasuredDataSet {
     private int timestamp;
+    private int counter;
     private List<SensorData> sensors;
 
 
     public List<SensorData> getSensors(){return this.sensors;}
     public int getTimestamp(){return this.timestamp;}
 
+    public int getCounter() {
+        return counter;
+    }
 
     public void setTimestamp(int timestamp){this.timestamp=timestamp;}
     public void setSensors(List<SensorData> sensors){this.sensors=sensors;}
