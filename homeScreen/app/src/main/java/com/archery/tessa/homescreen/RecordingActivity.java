@@ -1,6 +1,7 @@
 package com.archery.tessa.homescreen;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,16 +10,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.archery.tessa.homescreen.models.MeasuredDataSet;
+import com.archery.tessa.homescreen.models.RecordingRequest;
+import com.archery.tessa.homescreen.tasks.StartRecordingTask;
+import com.archery.tessa.homescreen.tasks.StopRecordingTask;
 import com.google.gson.Gson;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import org.springframework.http.HttpStatus;
+
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import mqttClient.MqttClient;
 import mqttClient.OnMessageCallback;
@@ -53,6 +63,8 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
     private OurView surfaceView;
     private Bitmap archerPic;
 
+    private Context context;
+
     private static final String TAG = "SessionActivity";
     public static int max1, max2, max3, max4, max5, max6 = 0;
     //MqttMessageHandler msgHandler;
@@ -64,6 +76,11 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        context = this;
+
+        //Initialize the 'recording' switch
+        setRecordingSwitch();
 
         /** Creating bitmap from archer picture**/
         BitmapFactory.Options options=new BitmapFactory.Options();
@@ -266,5 +283,65 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
 
 
     }//end call
+
+    /**
+     * Create a click listener for the recording switch
+     *
+     * @TODO: Seems that clicking the switch blocks the thread and freezes the app when server is offline
+     */
+    private void setRecordingSwitch() {
+        Switch recordingSwitch = (Switch) findViewById(R.id.switch1);
+
+        recordingSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if(checked) {
+
+                    //@TODO: get current archer's email
+                    RecordingRequest req = new RecordingRequest("test@test.com", new Date().getTime());
+
+                    StartRecordingTask task = new StartRecordingTask(req);
+
+                    HttpStatus response = HttpStatus.BAD_REQUEST;
+                    try {
+                        response = task.execute(context).get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+
+                    if(response == HttpStatus.OK)
+                        System.out.println("Successfully started recording");
+                        //@TODO: Show error message
+                    else
+                        System.out.println("Got status " + response.toString() + " when starting recoding");
+
+                }
+
+                else {
+                    StopRecordingTask task = new StopRecordingTask();
+
+                    HttpStatus response = HttpStatus.BAD_REQUEST;
+
+                    try {
+                        response = task.execute(context).get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+
+                    if(response == HttpStatus.OK)
+                        System.out.println("Successfully stopped recording");
+                    else
+                        //@TODO: show error message
+                        System.out.println("Got status " + response.toString() + " when stopping recoding");
+                }
+
+
+            }
+        });
+    }
 
 }// end sessionactivity
