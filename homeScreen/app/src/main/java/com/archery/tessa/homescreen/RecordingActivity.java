@@ -20,6 +20,7 @@ import com.archery.tessa.homescreen.tasks.StartRecordingTask;
 import com.archery.tessa.homescreen.tasks.StopRecordingTask;
 import com.google.gson.Gson;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -76,6 +77,8 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.recording_activity);
+
 
         context = this;
 
@@ -86,20 +89,19 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
         BitmapFactory.Options options=new BitmapFactory.Options();
         options.inMutable=true;
         archerPic = BitmapFactory.decodeResource(getResources(),R.drawable.archer_ind_right_2_2_18v3,options);
-        setContentView(R.layout.recording_activity);
         surfaceView = (OurView)findViewById(R.id.archerSurfaceView);
         surfaceView.setdPicsForDrawing(archerPic);
 
         measuredDataPoints = new LinkedList<>();
         graphView = (GraphView) findViewById(R.id.graph);
         mSeries1=new LineGraphSeries<>();
-        mSeries1.setColor(Color.GREEN);
+        mSeries1.setColor(Color.DKGRAY);
         mSeries1.setDrawAsPath(true);
         mSeries1.setThickness(3);
 
 
         mSeries2 = new LineGraphSeries<>();
-        mSeries2.setColor(Color.YELLOW);
+        mSeries2.setColor(Color.MAGENTA);
         mSeries2.setDrawAsPath(true);
         mSeries2.setThickness(3);
 
@@ -134,9 +136,13 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
         graphView.addSeries(mSeries4);
         graphView.addSeries(mSeries5);
         graphView.addSeries(mSeries6);
-        graphView.getViewport().setXAxisBoundsManual(true);
-        graphView.getViewport().setMinX(0);
-        graphView.getViewport().setMaxX(100);
+        Viewport viewport = graphView.getViewport();
+        viewport.setXAxisBoundsManual(true);
+        viewport.setMinX(0);
+        viewport.setMaxX(100);
+        viewport.setYAxisBoundsManual(true);
+        viewport.setMinY(0);
+        viewport.setMaxY(800);
 
 
         messages = new LinkedList<>();
@@ -291,6 +297,11 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
      */
     private void setRecordingSwitch() {
         Switch recordingSwitch = (Switch) findViewById(R.id.switch1);
+
+        if (recordingSwitch == null) {
+            System.out.println("Couldn't find recording switch!");
+            return;
+        }
 
         recordingSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
