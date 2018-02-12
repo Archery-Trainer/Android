@@ -91,6 +91,10 @@ public class OurView extends SurfaceView implements Runnable {
                 continue;
             }
             Canvas canvas=holder.lockCanvas();
+
+            if(canvas == null)
+                return;
+
             Matrix matrix = new Matrix();
             matrix.setRotate(0,pics.get(0).getWidth()/2,pics.get(0).getHeight()/2);
             //canvas.drawBitmap(pics.get(0),matrix,null);
@@ -105,8 +109,6 @@ public class OurView extends SurfaceView implements Runnable {
             changeColor(tmp, "#FFC90E","#00FFFB");
             changeColor(tmp, "#52D132","#00FFFB");
 
-
-            //@TODO: canvas can be null
             canvas.drawBitmap(tmp,matrix,null);
             holder.unlockCanvasAndPost(canvas);
 
