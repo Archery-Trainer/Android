@@ -312,6 +312,8 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
                     RecordingRequest req = new RecordingRequest("test@test.com", new Date().getTime());
 
                     StartRecordingTask task = new StartRecordingTask(req);
+                    task.execute(context);
+ /*//Don't care if recording works
 
                     HttpStatus response = HttpStatus.BAD_REQUEST;
                     try {
@@ -327,11 +329,13 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
                         //@TODO: Show error message
                     else
                         System.out.println("Got status " + response.toString() + " when starting recoding");
-
+*/
                 }
 
                 else {
                     StopRecordingTask task = new StopRecordingTask();
+                    task.execute(context);
+ /*//Don't care if recording works
 
                     HttpStatus response = HttpStatus.BAD_REQUEST;
 
@@ -348,6 +352,7 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
                     else
                         //@TODO: show error message
                         System.out.println("Got status " + response.toString() + " when stopping recoding");
+                */
                 }
 
 
