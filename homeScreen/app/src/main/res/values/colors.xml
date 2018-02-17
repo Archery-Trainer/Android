@@ -4,4 +4,19 @@
     <color name="colorPrimaryDark">#ffa500</color>
     <color name="colorAccent">#ffa500</color>
     <color name="colorBackground">#ffdb99</color>
+
+    <color name="colorLeftTrap">#ff0000</color>
+    <color name="colorRightTrap">#c900ff</color>
+    <color name="colorLeftDelt">#0011ff</color>
+    <color name="colorRightDelt">#00c5ff</color>
+    <color name="colorLeftTri">#2b9800</color>
+    <color name="colorRightTri">#ffe700</color>
+
+    <color name="colorSensor1">#ff0000</color>
+    <color name="colorSensor2">#c900ff</color>
+    <color name="colorSensor3">#0011ff</color>
+    <color name="colorSensor4">#00c5ff</color>
+    <color name="colorSensor5">#2b9800</color>
+    <color name="colorSensor6">#ffe700</color>
+
 </resources>
