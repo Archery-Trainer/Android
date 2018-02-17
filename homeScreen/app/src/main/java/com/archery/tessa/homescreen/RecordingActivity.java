@@ -13,9 +13,11 @@ import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.archery.tessa.homescreen.models.MeasuredDataSet;
 import com.archery.tessa.homescreen.models.RecordingRequest;
@@ -71,6 +73,12 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
     private Bitmap archerPic;
     private Bitmap muscle1;
 
+    private CheckBox ckBox1;
+    private CheckBox ckBox2;
+    private CheckBox ckBox3;
+    private CheckBox ckBox4;
+    private CheckBox ckBox5;
+    private CheckBox ckBox6;
 
     private static final String TAG = "RecordingActivity";
 
@@ -153,12 +161,14 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
 
 
 
-        graphView.addSeries(mSeries1);
-        graphView.addSeries(mSeries2);
-        graphView.addSeries(mSeries3);
-        graphView.addSeries(mSeries4);
-        graphView.addSeries(mSeries5);
-        graphView.addSeries(mSeries6);
+//        graphView.addSeries(mSeries1);
+//
+//        graphView.addSeries(mSeries2);
+//        graphView.addSeries(mSeries3);
+//        graphView.addSeries(mSeries4);
+//        graphView.addSeries(mSeries5);
+//        graphView.addSeries(mSeries6);
+
 
         graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setMinX(0);
@@ -205,6 +215,30 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
         textvmax6 = findViewById(R.id.sensormaxval6);
 
         //super.onResume();
+        /** Checkboxes for graphs**/
+        ckBox1=(CheckBox)findViewById(R.id.chkBox1);
+        ckBox2=(CheckBox)findViewById(R.id.chkBox2);
+        ckBox3=(CheckBox)findViewById(R.id.chkBox3);
+        ckBox4=(CheckBox)findViewById(R.id.chkBox4);
+        ckBox5=(CheckBox)findViewById(R.id.chkBox5);
+        ckBox6=(CheckBox)findViewById(R.id.chkBox6);
+
+        ckBox1.setChecked(true);
+        ckBox2.setChecked(true);
+        ckBox3.setChecked(true);
+        ckBox4.setChecked(true);
+        ckBox5.setChecked(true);
+        ckBox6.setChecked(true);
+
+        graphView.addSeries(mSeries1);
+
+        graphView.addSeries(mSeries2);
+        graphView.addSeries(mSeries3);
+        graphView.addSeries(mSeries4);
+        graphView.addSeries(mSeries5);
+        graphView.addSeries(mSeries6);
+
+
 
     }
 
@@ -369,6 +403,37 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
 
             }
         });
+    }
+
+    public void onChkClicked(View view){
+        boolean checked=((CheckBox)view).isChecked();
+        switch(view.getId()){
+            case R.id.chkBox1:
+                if(ckBox1.isChecked()){graphView.addSeries(mSeries1);}
+                else{graphView.removeSeries(mSeries1);}
+                Toast.makeText(context,"Checkbox1 checked"+ckBox1.isChecked(),Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.chkBox2:
+                if(checked){graphView.addSeries(mSeries2);}
+                else{graphView.removeSeries(mSeries2);}
+                break;
+            case R.id.chkBox3:
+                if(checked){graphView.addSeries(mSeries3);}
+                else{graphView.removeSeries(mSeries3);}
+                break;
+            case R.id.chkBox4:
+                if(checked){graphView.addSeries(mSeries4);}
+                else{graphView.removeSeries(mSeries4);}
+                    break;
+            case R.id.chkBox5:
+                if(checked){graphView.addSeries(mSeries5);}
+                else{graphView.removeSeries(mSeries5);}
+                    break;
+            case R.id.chkBox6:
+                if(checked){graphView.addSeries(mSeries6);}
+                else{graphView.removeSeries(mSeries6);}
+                    break;
+        }
     }
 
 }// end sessionactivity

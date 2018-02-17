@@ -256,7 +256,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/chkBox1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -266,17 +266,18 @@
         app:layout_constraintTop_toBottomOf="@+id/graph" />
 
     <CheckBox
-        android:id="@+id/checkBox2"
+        android:id="@+id/chkBox2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="Left Deltoid"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+        app:layout_constraintTop_toBottomOf="@+id/chkBox1"
+        android:onClick="onChkClicked"/>
 
     <CheckBox
-        android:id="@+id/checkBox3"
+        android:id="@+id/chkBox3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -285,31 +286,35 @@
         android:text="Left Trapezius"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox2" />
+        app:layout_constraintTop_toBottomOf="@+id/chkBox2"
+        android:onClick="onChkClicked"/>
 
     <CheckBox
-        android:id="@+id/checkBox4"
+        android:id="@+id/chkBox4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Right Triceps"
-        app:layout_constraintBaseline_toBaselineOf="@+id/checkBox"
-        app:layout_constraintStart_toStartOf="@+id/checkBox5" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/chkBox1"
+        app:layout_constraintStart_toStartOf="@+id/chkBox5"
+        android:onClick="onChkClicked"/>
 
     <CheckBox
-        android:id="@+id/checkBox5"
+        android:id="@+id/chkBox5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Right Deltoid"
-        app:layout_constraintBaseline_toBaselineOf="@+id/checkBox2"
-        app:layout_constraintStart_toStartOf="@+id/checkBox6" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/chkBox2"
+        app:layout_constraintStart_toStartOf="@+id/chkBox6"
+        android:onClick="onChkClicked"/>
 
     <CheckBox
-        android:id="@+id/checkBox6"
+        android:id="@+id/chkBox6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
         android:text="Right Trapezius"
-        app:layout_constraintBaseline_toBaselineOf="@+id/checkBox3"
-        app:layout_constraintStart_toEndOf="@+id/checkBox3" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/chkBox3"
+        app:layout_constraintStart_toEndOf="@+id/chkBox3"
+        android:onClick="onChkClicked"/>
 
 </android.support.constraint.ConstraintLayout>
