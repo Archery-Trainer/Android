@@ -22,7 +22,8 @@ public class MeasuredDataSet {
 
     public void setTimestamp(int timestamp){this.timestamp=timestamp;}
     public void setSensors(List<SensorData> sensors){this.sensors=sensors;}
-    public SensorData getSensorData(int indx){return this.sensors.get(indx);}
+    public SensorData getSensorData(int indx){
+        return this.sensors.get(indx);}
     public String toString(){
         String result=new String("");
         for(SensorData data: sensors){

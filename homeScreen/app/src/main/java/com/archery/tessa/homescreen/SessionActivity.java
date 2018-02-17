@@ -65,13 +65,13 @@ public class SessionActivity extends AppCompatActivity implements OnMessageCallb
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.session_activity);
 
         /** Creating bitmap from archer picture**/
         BitmapFactory.Options options=new BitmapFactory.Options();
         options.inMutable=true;
         archerPic = BitmapFactory.decodeResource(getResources(),R.drawable.archer_ind_right_2_2_18v3,options);
-        setContentView(R.layout.session_activity);
+
         surfaceView = (OurView)findViewById(R.id.archerSurfaceView);
         surfaceView.setdPicsForDrawing(archerPic);
 
