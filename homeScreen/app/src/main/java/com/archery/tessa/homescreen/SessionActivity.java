@@ -86,9 +86,7 @@ public class SessionActivity extends AppCompatActivity implements OnMessageCallb
         BitmapFactory.Options options=new BitmapFactory.Options();
         options.inMutable=true;
         archerPic = BitmapFactory.decodeResource(getResources(),R.drawable.archer_ind_right_2_2_18v3,options);
-<<<<<<< HEAD
 
-=======
         setContentView(R.layout.session_activity);
 
         context = this;
@@ -96,7 +94,7 @@ public class SessionActivity extends AppCompatActivity implements OnMessageCallb
         //Initialize the 'recording' switch
         setRecordingSwitch();
       
->>>>>>> cc8b04dd08db2f8c8d37dbd8acb903fcc0f4988c
+
         surfaceView = (OurView)findViewById(R.id.archerSurfaceView);
         surfaceView.setdPicsForDrawing(archerPic);
 
