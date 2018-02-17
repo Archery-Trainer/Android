@@ -13,19 +13,31 @@ import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.archery.tessa.homescreen.models.MeasuredDataSet;
+import com.archery.tessa.homescreen.models.RecordingRequest;
+import com.archery.tessa.homescreen.tasks.StartRecordingTask;
+import com.archery.tessa.homescreen.tasks.StopRecordingTask;
 import com.google.gson.Gson;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+import org.springframework.http.HttpStatus;
+
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import mqttClient.MqttClient;
 import mqttClient.OnMessageCallback;
+
+import static org.springframework.http.HttpMethod.HEAD;
 
 
 public class RecordingActivity extends AppCompatActivity implements OnMessageCallback {
@@ -59,7 +71,12 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
     private Bitmap archerPic;
     private Bitmap muscle1;
 
+
     private static final String TAG = "RecordingActivity";
+
+    private Context context;
+
+
     public static int max1, max2, max3, max4, max5, max6 = 0;
     //MqttMessageHandler msgHandler;
     //private static Random rand = new Random();
@@ -72,9 +89,10 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recording_activity);
 
-        System.out.println("1. checking");
-        //this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        context = this;
 
+        //Initialize the 'recording' switch
+        setRecordingSwitch();
 
         BitmapFactory.Options options=new BitmapFactory.Options();
         options.inMutable=true;
@@ -141,6 +159,7 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
         graphView.addSeries(mSeries4);
         graphView.addSeries(mSeries5);
         graphView.addSeries(mSeries6);
+
         graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setMinX(0);
         graphView.getViewport().setMaxX(50);
@@ -152,10 +171,13 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
 
 
 
-
-        System.out.println("testing: ");
-       // System.out.println("number of pics: "+ surfaceView.getNumberOfPics());
-
+        Viewport viewport = graphView.getViewport();
+        viewport.setXAxisBoundsManual(true);
+        viewport.setMinX(0);
+        viewport.setMaxX(100);
+        viewport.setYAxisBoundsManual(true);
+        viewport.setMinY(0);
+        //viewport.setMaxY(800);
         messages = new LinkedList<>();
 
 
@@ -229,21 +251,21 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
                         }
                         txtv1.setText(Integer.toString(sensor1));
                         // append data to graph
-                        mSeries1.appendData(new DataPoint(count,(double)sensor1),true,50);
+                        mSeries1.appendData(new DataPoint(count,sensor1),true,50);
                         System.out.println("appending data");
                         if (sensor2 > max2) {
                             textvmax2.setText(Integer.toString(max2));
                             max2 = sensor2;
                         }
                         txtv2.setText(Integer.toString(sensor2));
-                        mSeries2.appendData(new DataPoint(count,(double)sensor2),true,50);
+                        mSeries2.appendData(new DataPoint(count,sensor2),true,50);
 
                         if(sensor3 > max3) {
                             textvmax3.setText(Integer.toString(max3));
                             max3 = sensor3;
                         }
                         txtv3.setText(Integer.toString(sensor3));
-                        mSeries3.appendData(new DataPoint(count,(double)sensor3),true,50);
+                        mSeries3.appendData(new DataPoint(count,sensor3),true,50);
 
 
                         if(sensor4 > max4) {
@@ -251,21 +273,21 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
                             max4 = sensor4;
                         }
                         txtv4.setText(Integer.toString(sensor4));
-                        mSeries4.appendData(new DataPoint(count,(double)sensor4),true,50);
+                        mSeries4.appendData(new DataPoint(count,sensor4),true,50);
 
                         if(sensor5> max5) {
                             textvmax5.setText(Integer.toString(max5));
                             max5 = sensor5;
                         }
                         txtv5.setText(Integer.toString(sensor5));
-                        mSeries5.appendData(new DataPoint(count,(double)sensor5),true,50);
+                        mSeries5.appendData(new DataPoint(count,sensor5),true,50);
 
                         if(sensor6 > max6) {
                             textvmax6.setText(Integer.toString(max6));
                             max6 = sensor6;
                         }
                         txtv6.setText(Integer.toString(sensor6));
-                        mSeries6.appendData(new DataPoint(count,(double)sensor6),true,50);
+                        mSeries6.appendData(new DataPoint(count,sensor6),true,50);
 
                         //update colors on muscle tension surfaceview
                         surfaceView.updateSurface(measData);
@@ -278,5 +300,75 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
 
 
     }//end call
+
+    /**
+     * Create a click listener for the recording switch
+     *
+     * @TODO: Seems that clicking the switch blocks the thread and freezes the app when server is offline
+     */
+    private void setRecordingSwitch() {
+        Switch recordingSwitch = (Switch) findViewById(R.id.switch1);
+
+        if (recordingSwitch == null) {
+            System.out.println("Couldn't find recording switch!");
+            return;
+        }
+
+        recordingSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if(checked) {
+
+                    //@TODO: get current archer's email
+                    RecordingRequest req = new RecordingRequest("test@test.com", new Date().getTime());
+
+                    StartRecordingTask task = new StartRecordingTask(req);
+                    task.execute(context);
+ /*//Don't care if recording works
+
+                    HttpStatus response = HttpStatus.BAD_REQUEST;
+                    try {
+                        response = task.execute(context).get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+
+                    if(response == HttpStatus.OK)
+                        System.out.println("Successfully started recording");
+                        //@TODO: Show error message
+                    else
+                        System.out.println("Got status " + response.toString() + " when starting recoding");
+*/
+                }
+
+                else {
+                    StopRecordingTask task = new StopRecordingTask();
+                    task.execute(context);
+ /*//Don't care if recording works
+
+                    HttpStatus response = HttpStatus.BAD_REQUEST;
+
+                    try {
+                        response = task.execute(context).get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+
+                    if(response == HttpStatus.OK)
+                        System.out.println("Successfully stopped recording");
+                    else
+                        //@TODO: show error message
+                        System.out.println("Got status " + response.toString() + " when stopping recoding");
+                */
+                }
+
+
+            }
+        });
+    }
 
 }// end sessionactivity

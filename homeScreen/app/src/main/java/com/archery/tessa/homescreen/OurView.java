@@ -66,8 +66,6 @@ public class OurView extends SurfaceView{ // implements Runnable{
         return "#FF0000";
     }
 
-
-
     public void init(){
 
         //myThread=new Thread(this);
@@ -84,10 +82,6 @@ public class OurView extends SurfaceView{ // implements Runnable{
                 System.out.println("surfaceCreated");
                 //myThread.start();
                 drawSurface();
-
-
-
-
             }
             @Override
             public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
@@ -97,17 +91,7 @@ public class OurView extends SurfaceView{ // implements Runnable{
 
             @Override
             public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-//                boolean retry=true;
-//                isOK=false;
-//                //myThread.setRunning(false);
-//                while (retry){
-//                    try {
-//                        myThread.join();
-//                        retry=false;
-//                    }catch (InterruptedException e){
-//
-//                    }
-//                }
+
             }
         });
     }
@@ -117,24 +101,6 @@ public class OurView extends SurfaceView{ // implements Runnable{
     }
     public int getNumberOfPics(){return pics.size();}
 
-
-//    @Override
-//    public void run() {
-//        //while(isOK==true){
-//
-////            if(!holder.getSurface().isValid()){
-////                continue;
-////            }
-//
-//            drawSurface();
-////            try {
-////                Thread.sleep(10);
-////            } catch (InterruptedException e) {
-////                e.printStackTrace();
-////            }
-//        //}
-//
-//    }
 
 
     public void drawSurface(){
@@ -154,7 +120,6 @@ public class OurView extends SurfaceView{ // implements Runnable{
         canvas.drawBitmap(pics.get(0), matrix, null);  // base image of archer
         canvas.drawBitmap(pics.get(1),new Rect(0,0,(82*2),(19*2)),new Rect((177*2),(166*2),(177*2)+(82*2),(166*2)+(18*2)), null);  //
         canvas.drawBitmap(pics.get(2),new Rect(0,0,(71*2),(43*2)),new Rect((231*2),(131*2),(231*2)+(71*2),(131*2)+(43*2)), null);
-
         canvas.drawBitmap(pics.get(3), new Rect(0,0,(50*2), (141*2)),new Rect((292*2),(105*2),(292*2)+(50*2),(105*2)+(141*2)), null);
         canvas.drawBitmap(pics.get(4),new Rect(0,0,(95*2), (39*2)),new Rect((414*2),(142*2),(414*2)+(95*2),(142*2)+(39*2)), null);
         canvas.drawBitmap(pics.get(5), new Rect(0,0,(69*2), (49*2)),new Rect((372*2),(127*2),(372*2)+(69*2),(127*2)+(49*2)), null);
@@ -163,6 +128,36 @@ public class OurView extends SurfaceView{ // implements Runnable{
         holder.unlockCanvasAndPost(canvas);
 
     }
+//=======
+//    @Override
+//    public void run() {
+//        while(isOK==true){
+//
+//            if(!holder.getSurface().isValid()){
+//                continue;
+//            }
+//            Canvas canvas=holder.lockCanvas();
+//
+//            if(canvas == null)
+//                return;
+//
+//            Matrix matrix = new Matrix();
+//            matrix.setRotate(0,pics.get(0).getWidth()/2,pics.get(0).getHeight()/2);
+//            //canvas.drawBitmap(pics.get(0),matrix,null);
+//            //matrix.setRotate(0,pics.get(1).getWidth()/2,pics.get(1).getHeight()/2);
+//            //Paint paint = new Paint();
+//            //paint.setColor(Color.RED);
+//
+//            System.out.println("ismutable "+ pics.get(0).isMutable());
+//            Bitmap tmp =pics.get(0);
+//            // changing muscle colors to base values
+//            changeColor(tmp, "#FFAEC9","#00FFFB");
+//            changeColor(tmp, "#FFC90E","#00FFFB");
+//            changeColor(tmp, "#52D132","#00FFFB");
+//
+//            canvas.drawBitmap(tmp,matrix,null);
+//            holder.unlockCanvasAndPost(canvas);
+//>>>>>>> cc8b04dd08db2f8c8d37dbd8acb903fcc0f4988c
 
 
 
@@ -189,17 +184,7 @@ public class OurView extends SurfaceView{ // implements Runnable{
         System.out.println(count);
         return true;
 
-//        int[] array = buffer.array();
-//        int count=0;
-//        for(int i = 0; i < pixelCount; i++)
-//        {
-//            if(array[i] == originalColor)
-//                array[i] = newColor;
-//                count++;
-//        }
-//        bitmap.copyPixelsFromBuffer(buffer);
-//        System.out.println(count);
-//        return true;
+
     }
 
 }
