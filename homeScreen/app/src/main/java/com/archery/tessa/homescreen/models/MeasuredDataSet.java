@@ -29,8 +29,9 @@ public class MeasuredDataSet {
             return this.sensors.get(indx);
         else
             //@TODO Change sensordatas id to int
-            return new SensorData(Integer.toString(indx), 0);
+            return new SensorData(0, 0);
     }
+
 
     public String toString(){
         String result=new String("");

@@ -309,7 +309,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
         android:text="Right Trapezius"
-        app:layout_constraintStart_toEndOf="@+id/checkBox3"
-        tools:layout_editor_absoluteY="421dp" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/checkBox3"
+        app:layout_constraintStart_toEndOf="@+id/checkBox3" />
 
 </android.support.constraint.ConstraintLayout>

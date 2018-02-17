@@ -177,7 +177,7 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
         viewport.setMaxX(100);
         viewport.setYAxisBoundsManual(true);
         viewport.setMinY(0);
-        //viewport.setMaxY(800);
+        viewport.setMaxY(800);
         messages = new LinkedList<>();
 
 
