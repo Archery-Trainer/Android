@@ -4,6 +4,7 @@ package com.archery.tessa.homescreen;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.CheckBox;
@@ -92,14 +93,7 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
 
         measuredDataPoints = new LinkedList<>();
 
-        int muscleColors[] = {
-                R.color.colorSensor1,
-                R.color.colorSensor2,
-                R.color.colorSensor3,
-                R.color.colorSensor4,
-                R.color.colorSensor5,
-                R.color.colorSensor6
-        };
+        int muscleColors[] = GraphColors.colors;
 
         /** Add point series to graph **/
         mSeries = new LineGraphSeries[NUM_SENSORS];
@@ -157,6 +151,7 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
         viewport.setYAxisBoundsManual(true);
         viewport.setMinY(0);
         viewport.setMaxY(800);
+        viewport.setBackgroundColor(Color.LTGRAY);
 
 
         System.out.println("Creating MQTT-client");
@@ -209,10 +204,8 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
                                 maxVals[i] = val;
                             }
 
-                            //Update graph for this sensor, if the checkbox is checked
-                            if(ckBoxes[i].isChecked())
-                                mSeries[i].appendData(
-                                        new DataPoint(count, val), true, MAX_DATA_POINTS);
+                            //Update graph for this sensor
+                            mSeries[i].appendData(new DataPoint(count, val), true, MAX_DATA_POINTS);
                         }
 
                         //update colors on muscle tension surfaceview
