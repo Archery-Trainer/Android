@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Archery Trainer</string>
     <string name="action_settings">Settings</string>
-    <string name="MQTT_server_url">a20pmpdacgwj4.iot.us-east-1.amazonaws.com</string>
+    <string name="MQTT_server_url">a20pmpdacgwj4.iot.eu-central-1.amazonaws.com</string>
     <string name="MQTT_topic">#</string>
     <string name="back_end_url">http://ec2-54-208-42-165.compute-1.amazonaws.com:80</string>
 
