@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="Recording"
         app:layout_constraintStart_toEndOf="@+id/relativeLayout"
         app:layout_constraintTop_toTopOf="parent"
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -125,7 +125,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/sensorlabel3"
-            android:text="Sensor4:" />
+            android:text="Sensor4:"
+            tools:layout_editor_absoluteX="400dp"
+            tools:layout_editor_absoluteY="71dp" />
 
         <TextView
             android:id="@+id/sensorval4"
@@ -217,16 +219,8 @@
             android:layout_below="@id/sensormaxval5"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/sensormaxlabel6" />
-    </RelativeLayout>
 
-    <com.jjoe64.graphview.GraphView
-        android:id="@+id/graph"
-        android:layout_width="400dip"
-        android:layout_height="220dip"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+    </RelativeLayout>
 
     <Button
         android:id="@+id/button"
@@ -255,66 +249,86 @@
         app:layout_constraintStart_toEndOf="@+id/graph"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graph"
+        android:layout_width="400dip"
+        android:layout_height="191dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/chkBox1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="@string/Sensor1Muscle"
         android:buttonTint="@color/colorSensor1"
+        android:text="@string/Sensor1Muscle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/graph" />
 
     <CheckBox
-        android:id="@+id/checkBox2"
+        android:id="@+id/chkBox2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="@string/Sensor2Muscle"
         android:buttonTint="@color/colorSensor2"
+        android:onClick="onChkClicked"
+        android:text="@string/Sensor2Muscle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+        app:layout_constraintTop_toBottomOf="@+id/chkBox1" />
 
     <CheckBox
-        android:id="@+id/checkBox3"
+        android:id="@+id/chkBox3"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_height="31dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="@string/Sensor3Muscle"
         android:buttonTint="@color/colorSensor3"
+        android:onClick="onChkClicked"
+        android:text="@string/Sensor3Muscle"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox2" />
+        app:layout_constraintTop_toBottomOf="@+id/chkBox2" />
 
     <CheckBox
-        android:id="@+id/checkBox4"
+        android:id="@+id/chkBox4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Sensor4Muscle"
         android:buttonTint="@color/colorSensor4"
-        app:layout_constraintBaseline_toBaselineOf="@+id/checkBox"
-        app:layout_constraintStart_toStartOf="@+id/checkBox5" />
+        android:onClick="onChkClicked"
+        android:text="@string/Sensor4Muscle"
+        app:layout_constraintBaseline_toBaselineOf="@+id/chkBox1"
+        app:layout_constraintStart_toStartOf="@+id/chkBox5" />
+
 
     <CheckBox
-        android:id="@+id/checkBox5"
+        android:id="@+id/chkBox5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Sensor5Muscle"
+        android:layout_alignParentTop="true"
         android:buttonTint="@color/colorSensor5"
-        app:layout_constraintBaseline_toBaselineOf="@+id/checkBox2"
-        app:layout_constraintStart_toStartOf="@+id/checkBox6" />
+        android:onClick="onChkClicked"
+        android:text="@string/Sensor5Muscle"
+        app:layout_constraintBaseline_toBaselineOf="@+id/chkBox2"
+        app:layout_constraintStart_toStartOf="@+id/chkBox6" />
 
     <CheckBox
-        android:id="@+id/checkBox6"
+        android:id="@+id/chkBox6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:text="@string/Sensor6Muscle"
+        android:layout_marginStart="32dp"
         android:buttonTint="@color/colorSensor6"
-        app:layout_constraintBaseline_toBaselineOf="@+id/checkBox3"
-        app:layout_constraintStart_toEndOf="@+id/checkBox3" />
+        android:onClick="onChkClicked"
+        android:text="@string/Sensor6Muscle"
+        app:layout_constraintBaseline_toBaselineOf="@+id/chkBox3"
+        app:layout_constraintStart_toEndOf="@+id/chkBox3" />
 
 </android.support.constraint.ConstraintLayout>

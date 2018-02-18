@@ -30,12 +30,12 @@
         <string name="LeftTriceps">Left Triceps</string>
         <string name="RightTriceps">Right Triceps</string>
 
-        <string name="Sensor1Muscle">Left Trapezoid</string>
-        <string name="Sensor2Muscle">Right Trapezoid</string>
-        <string name="Sensor3Muscle">Left Deltoid</string>
-        <string name="Sensor4Muscle">Right Deltoid</string>
-        <string name="Sensor5Muscle">Left Triceps</string>
-        <string name="Sensor6Muscle">Right Triceps</string>
+        <string name="Sensor1Muscle">Left Triceps</string>
+        <string name="Sensor2Muscle">Left Deltoid</string>
+        <string name="Sensor3Muscle">Left Trapezius</string>
+        <string name="Sensor4Muscle">Right Triceps</string>
+        <string name="Sensor5Muscle">Rigth Deltoid</string>
+        <string name="Sensor6Muscle">Right Trapezius</string>
 
         <string name="ShowMuscleData">Show muscle data</string>
         <string name="Help">Help</string>
