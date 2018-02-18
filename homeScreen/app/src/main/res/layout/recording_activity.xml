@@ -294,7 +294,6 @@
         android:buttonTint="@color/colorSensor3"
         android:onClick="onChkClicked"
         android:text="@string/Sensor3Muscle"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chkBox2" />
 
