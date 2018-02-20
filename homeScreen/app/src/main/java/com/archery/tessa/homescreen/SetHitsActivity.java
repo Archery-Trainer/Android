@@ -5,9 +5,10 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.archery.tessa.homescreen.UI.TargetView;
 
 /**
  * Created by mkkvj on 17.2.2018.
@@ -15,26 +16,28 @@ import android.view.View;
 
 public class SetHitsActivity extends AppCompatActivity implements View.OnTouchListener {
     private static final String TAG = "SetHitsActivity";
-    private TargetView targetView;
+    private TargetView tView;
     private Bitmap arrow;
     private Bitmap target;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.selecthit_activity);
         System.out.println("new activity started");
 
-        targetView=(TargetView)findViewById(R.id.targetview);
-        BitmapFactory.Options options=new BitmapFactory.Options();
-        options.inMutable=true;
+        tView=findViewById(R.id.targetView);
+        tView.setOnTouchListener(this);
+        //BitmapFactory.Options options=new BitmapFactory.Options();
+        //options.inMutable=true;
 
-        target = BitmapFactory.decodeResource(getResources(),R.drawable.own_512px_80_cm_archery_target,options);
-        arrow=BitmapFactory.decodeResource(getResources(),R.drawable.archer_right_triceps_15_2_18v3,options);
+        target = BitmapFactory.decodeResource(getResources(),R.drawable.own_512px_80_cm_archery_target);
+        arrow = BitmapFactory.decodeResource(getResources(),R.drawable.arrow);
 
-        if(targetView==null){System.out.println("targetview is null");}
+        if(tView==null){System.out.println("targetview is null");}
         if(arrow==null){System.out.println("arrow is null");}
-        targetView.setTargetImage(target);
-        targetView.setHitImage(arrow);
+
+        tView.setTargetImage(target);
+        tView.setHitImage(arrow);
 
 
     }
@@ -45,13 +48,16 @@ public class SetHitsActivity extends AppCompatActivity implements View.OnTouchLi
         float touchLocX;
         float touchLocY;
         if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
-            touchLocX = motionEvent.getX();
-            touchLocY = motionEvent.getY();
-            Log.d("touched X & Y",(touchLocX+" & "+touchLocY));
-            //int id = getResources().getIdentifier("bullethole.png", "drawable",this.getPackageName());
-            targetView.setHitlocation(touchLocX,touchLocY);
+
+            tView.setX(motionEvent.getX());
+            tView.setY(motionEvent.getY());
             //Log.d(TAG, "onCreate: "+id);
             //imageView.setImageResource(id);
+        }
+        if ((motionEvent.getAction()==MotionEvent.ACTION_UP)){
+
+            tView.setX(motionEvent.getX());
+            tView.setY(motionEvent.getY());
         }
 
         return false;
