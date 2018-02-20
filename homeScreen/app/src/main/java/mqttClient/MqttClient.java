@@ -11,6 +11,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
+import com.amazonaws.services.iot.client.AWSIotException;
 import com.amazonaws.services.iot.client.AWSIotMqttClient;
 import com.amazonaws.services.iot.client.AWSIotQos;
 import com.amazonaws.services.iot.client.AWSIotTopic;
@@ -35,6 +36,7 @@ public class MqttClient {
 	//CLIENT_ID needs to be unique for every client and during testing the connection gets messed up if I 
 	//make multiple subsequent connections with the same id. So here's a hacky one-liner to generate a random string
 	private static final String CLIENT_ID = Long.toHexString(Double.doubleToLongBits(Math.random()));
+	private static final String TOPIC_NAME = "#";
 	private static final AWSIotQos TestTopicQos = AWSIotQos.QOS0; 	//Don't know what this is
 
 	private static Context context;
@@ -131,7 +133,14 @@ public class MqttClient {
 		}
 
 	}
-		
+
+	public void disconnect() throws AWSIotException {
+
+		System.out.println("Disconnecting AWS IOT client");
+		awsIotClient.unsubscribe(TOPIC_NAME);
+		awsIotClient.disconnect();
+		awsIotClient = null;
+	}
 	
 	/**
 	 * Construct client and subscribe to topic #. 
@@ -145,12 +154,10 @@ public class MqttClient {
 
 		    awsIotClient.connect();
 
-		    String topicName = context.getString(R.string.MQTT_topic);
-
-		    AWSIotTopic topic = new TopicListener(topicName, TestTopicQos, onMsgCallback);
+		    AWSIotTopic topic = new TopicListener(TOPIC_NAME, TestTopicQos, onMsgCallback);
 		    awsIotClient.subscribe(topic, true);
 
-    		System.out.println("Subscribed to topic " + topicName);
+    		System.out.println("Subscribed to topic " + TOPIC_NAME);
 
 		} catch (IOException e) {
 			System.out.println("Exception: " + e.getMessage());

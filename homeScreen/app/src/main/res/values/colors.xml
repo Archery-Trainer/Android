@@ -4,4 +4,22 @@
     <color name="colorPrimaryDark">#ffa500</color>
     <color name="colorAccent">#ffa500</color>
     <color name="colorBackground">#ffdb99</color>
+
+
+    <!-- Also check file GraphColors.java -->
+    <!-- Don't know if this first block is needed -->
+    <color name="colorLeftTrap">#ffff0000</color>
+    <color name="colorRightTrap">#ffff00ff</color>
+    <color name="colorLeftDelt">#ff0000ff</color>
+    <color name="colorRightDelt">#ff00ffff</color>
+    <color name="colorLeftTri">#ff00ff00</color>
+    <color name="colorRightTri">#ffffff00</color>
+
+    <color name="colorSensor1">#ffff0000</color>
+    <color name="colorSensor2">#ffff00ff</color>
+    <color name="colorSensor3">#ff0000ff</color>
+    <color name="colorSensor4">#ff00ffff</color>
+    <color name="colorSensor5">#ff00ff00</color>
+    <color name="colorSensor6">#ffffff00</color>
+
 </resources>

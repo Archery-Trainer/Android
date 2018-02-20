@@ -7,18 +7,19 @@ import android.view.ViewDebug;
  */
 
 public class SensorData {
-    private String sensorId;
+    private int sensorId;
     private int value;
 
-    public SensorData(String sensorId, int value){
+    public SensorData(int sensorId, int value){
         this.sensorId=sensorId;
         this.value=value;
     }
     public void setValue(int val){this.value=val;}
-    public String getSensorId(){return this.sensorId;}
+    public int getSensorId(){return this.sensorId;}
     public int getValue(){return this.value;}
 
     public String toString(){
         return this.sensorId + ":" + Integer.toString(this.value);
+
     }
 }
