@@ -14,6 +14,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.services.iot.client.AWSIotException;
 import com.archery.tessa.homescreen.models.MeasuredDataSet;
 import com.archery.tessa.homescreen.models.RecordingRequest;
 import com.archery.tessa.homescreen.tasks.StartRecordingTask;
@@ -33,6 +34,8 @@ import mqttClient.OnMessageCallback;
 
 
 public class RecordingActivity extends AppCompatActivity implements OnMessageCallback {
+
+    MqttClient mqttClient;
 
     private TextView[] textViews;
 
@@ -155,7 +158,7 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
 
 
         System.out.println("Creating MQTT-client");
-        MqttClient c = new MqttClient(this, getApplication());
+        mqttClient = new MqttClient(this, getApplication());
 
         gson = new Gson();
     }
@@ -216,6 +219,23 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
             }
         }).start();
     }//end call
+
+
+    /**
+     * This gets called when the activity is no longer visible.
+     * Disconnect from the MQTT-server
+     */
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        try {
+            mqttClient.disconnect();
+        } catch (AWSIotException e) {
+            System.out.println("Unable to disconnect from MQTT server");
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Create a click listener for the recording switch
