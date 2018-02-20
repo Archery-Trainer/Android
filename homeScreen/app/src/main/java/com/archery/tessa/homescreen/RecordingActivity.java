@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
@@ -103,7 +104,7 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
         setRecordingSwitch();
 
         BitmapFactory.Options options=new BitmapFactory.Options();
-        options.inMutable=true;
+        //options.inMutable=true;
         surfaceView = (OurView)findViewById(R.id.archerSurfaceView);
 
         //pics.add(BitmapFactory.decodeResource(getResources(),R.drawable.archer_ind_right_2_2_18v3,options));
@@ -342,7 +343,7 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
      */
     private void setRecordingSwitch() {
         Switch recordingSwitch = (Switch) findViewById(R.id.switch1);
-
+        Log.d("setRecordinSwitch","Here we are ");
         if (recordingSwitch == null) {
             System.out.println("Couldn't find recording switch!");
             return;
@@ -358,6 +359,7 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
 
                     StartRecordingTask task = new StartRecordingTask(req);
                     task.execute(context);
+
  /*//Don't care if recording works
 
                     HttpStatus response = HttpStatus.BAD_REQUEST;
@@ -380,6 +382,8 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
                 else {
                     StopRecordingTask task = new StopRecordingTask();
                     task.execute(context);
+                    Intent intent = new Intent(RecordingActivity.this,SetHitsActivity.class);
+                    startActivity(intent);
  /*//Don't care if recording works
 
                     HttpStatus response = HttpStatus.BAD_REQUEST;
