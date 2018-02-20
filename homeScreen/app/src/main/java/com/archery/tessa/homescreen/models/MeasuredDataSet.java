@@ -29,7 +29,7 @@ public class MeasuredDataSet {
             return this.sensors.get(indx);
         else
             //@TODO Change sensordatas id to int
-            return new SensorData(0, 0);
+            return new SensorData(indx, 0);
     }
 
 
