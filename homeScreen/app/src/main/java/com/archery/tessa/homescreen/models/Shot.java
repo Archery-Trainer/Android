@@ -11,9 +11,8 @@ public class Shot implements Serializable{
     private int score;
     private int athleteNo;
 
-    public Shot() {
-
-    }
+    //Empty constructor required by message converters
+    public Shot() {}
 
     public Shot(int _id, Date _date, Time _time, int _score, int _athleteNo) {
         id = _id;

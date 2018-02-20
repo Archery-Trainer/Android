@@ -26,7 +26,7 @@ public class MeasuredDataSet {
     public String toString(){
         String result=new String("");
         for(SensorData data: sensors){
-            result.concat(data.toString());
+            result += data.toString() + "\n";
         }
         return result;
     }

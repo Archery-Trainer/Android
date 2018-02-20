@@ -10,6 +10,9 @@ public class SensorData {
     private String sensorId;
     private int value;
 
+    //Empty constructor required by message converters
+    public SensorData() {}
+
     public SensorData(String sensorId, int value){
         this.sensorId=sensorId;
         this.value=value;

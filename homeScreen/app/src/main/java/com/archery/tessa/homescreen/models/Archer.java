@@ -37,6 +37,7 @@ public class Archer implements Serializable {
         rightHanded = true;
     }
 
+    //Empty constructor required by message converters
     public Archer() {}
 
     public String getEmail() { return email; }
