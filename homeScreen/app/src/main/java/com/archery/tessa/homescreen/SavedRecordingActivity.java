@@ -1,28 +1,24 @@
 package com.archery.tessa.homescreen;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.Switch;
+import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.amazonaws.services.iot.client.AWSIotException;
 import com.archery.tessa.homescreen.models.MeasuredDataSet;
-import com.archery.tessa.homescreen.models.RecordingRequest;
 import com.archery.tessa.homescreen.tasks.GetSensorReadingsOfShotTask;
-import com.archery.tessa.homescreen.tasks.StartRecordingTask;
-import com.archery.tessa.homescreen.tasks.StopRecordingTask;
-import com.google.gson.Gson;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
@@ -32,7 +28,6 @@ import com.jjoe64.graphview.series.OnDataPointTapListener;
 import com.jjoe64.graphview.series.PointsGraphSeries;
 import com.jjoe64.graphview.series.Series;
 
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,15 +35,14 @@ import java.util.List;
  * Created by Timo on 21.2.2018.
  */
 
+/**
+ * Activity for replaying saved shots
+ */
 public class SavedRecordingActivity extends AppCompatActivity
 {
     private int shotId; //Id of the shot to show
 
-    GetSensorReadingsOfShotTask getReadingstask;
-
-    private TextView[] textViews;
-
-    private TextView[] maxTextViews;
+    private GetSensorReadingsOfShotTask getReadingstask;
 
     private GraphView graphView;
 
@@ -56,6 +50,16 @@ public class SavedRecordingActivity extends AppCompatActivity
     private PointsGraphSeries<DataPoint> currentDisplayedPnt;
 
     private int count = 0;
+    private int currentPlaybackPoint = 0;
+
+
+    final int defaultPlaybackSpeed = 25;
+    //Changed from a seek bar, 0-100
+    private int playbackSpeed = defaultPlaybackSpeed;
+
+
+    //Hack to prevent multiple calls to showMeasurementPoint when clicking on graph
+    private long lastUpdateTime = 0;
 
     private List<MeasuredDataSet> measuredDataPoints;
     private OurView surfaceView;
@@ -63,13 +67,15 @@ public class SavedRecordingActivity extends AppCompatActivity
 
     private CheckBox[] ckBoxes;
 
-    private Context context;
+    private boolean playbackOn = false;
+    private PlaybackTask playbackTask;
 
-    private int maxVals[] = {0, 0, 0, 0, 0, 0};
-
+    private final int MAX_VAL_Y = 800;
+    private final int MAX_VAL_X = 100;
     private final int NUM_SENSORS = 6;
     private final int LINE_WIDTH = 4;
-    private final int MAX_DATA_POINTS = 500;
+    private final int MAX_DATA_POINTS = 5000;
+    private final int PNTS_IN_CURRENT_PNT_MARKER_LINE = 25;
 
 
     /***********************************************************************
@@ -81,15 +87,33 @@ public class SavedRecordingActivity extends AppCompatActivity
      startActivity(i);
      ************************************************************************/
 
+    /**
+     * Create a point series for the visualization line that represents the current playback point
+     *
+     * @param currentMeasurementNo  Where on x axis to place the points
+     * @return  Points that are evenly distributed on the y axis
+     */
+    private DataPoint[] createPntsforCurrentPntSeries(int currentMeasurementNo) {
+        DataPoint[] pnts = new DataPoint[PNTS_IN_CURRENT_PNT_MARKER_LINE];
+        for(int i = 0; i < PNTS_IN_CURRENT_PNT_MARKER_LINE; i++) {
+            pnts[i] = new DataPoint(
+                    currentMeasurementNo,
+                    ((MAX_VAL_Y + 200) / PNTS_IN_CURRENT_PNT_MARKER_LINE) * i); //Evenly divide on y axis
+        }
+
+        return pnts;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         shotId = getIntent().getExtras().getInt("SHOT_ID");
 
         //Need to create a new series to display one point
-        currentDisplayedPnt = new PointsGraphSeries<>(
-                new DataPoint[] {
-                        new DataPoint(0,0)});
+        //This is a hack to display a line on the graph. Different y values needed to be added
+        //Because the mark would disappear when the y value was not visible
+        currentDisplayedPnt = new PointsGraphSeries<>(createPntsforCurrentPntSeries(0));
 
+        /** Get the measured data from the server **/
         measuredDataPoints = new LinkedList<>();
         getReadingstask = new GetSensorReadingsOfShotTask(this, shotId, measuredDataPoints);
         getReadingstask.execute();
@@ -97,14 +121,7 @@ public class SavedRecordingActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.saved_recording_activity);
 
-        System.out.println("Started SavedRecordingActivity");
-
-
-        //Get the measured data from the server
-
-
-        context = this;
-
+        /** Create the muscle map **/
         BitmapFactory.Options options=new BitmapFactory.Options();
         options.inMutable=true;
         surfaceView = (OurView)findViewById(R.id.archerSurfaceView);
@@ -136,45 +153,26 @@ public class SavedRecordingActivity extends AppCompatActivity
             mSeries[i].setOnDataPointTapListener(new OnDataPointTapListener() {
                 @Override
                 public void onTap(Series series, DataPointInterface dataPoint) {
-                    currentDisplayedPnt.resetData(new DataPoint[] {
-                            new DataPoint(dataPoint.getX(), dataPoint.getY())
-                    });
-
-                    int measIx = (int) dataPoint.getX();
-                    Toast.makeText(graphView.getContext(), "Series: On Data Point clicked: " + dataPoint, Toast.LENGTH_SHORT).show();
-
-                    MeasuredDataSet dataPnt = measuredDataPoints.get(measIx);
-                    if (dataPnt != null)
-                        //@TODO: Overlapping lines cause problems, this gets called multiple times
-                        surfaceView.updateSurface(dataPnt);
-
+                    int newX = (int) Math.round(dataPoint.getX());
+                    showMeasurementPoint(newX);
                 }
             });
 
             graphView.addSeries(mSeries[i]);
         }
 
-        //Add the series that represents the current tapped point in graph
-        graphView.addSeries(currentDisplayedPnt);
+        currentDisplayedPnt.setCustomShape(new PointsGraphSeries.CustomShape() {
+            @Override
+            public void draw(Canvas canvas, Paint paint, float x, float y, DataPointInterface dataPoint) {
+                paint.setStrokeWidth(10);
+                paint.setColor(Color.BLACK);
+                paint.setAlpha(175);
+                canvas.drawLine(x, y - 3, x, y + 3, paint);
+            }
+        });
 
-        /** defining textboxes for sensor data **/
-        textViews = new TextView[]{
-                findViewById(R.id.sensorval1),
-                findViewById(R.id.sensorval2),
-                findViewById(R.id.sensorval3),
-                findViewById(R.id.sensorval4),
-                findViewById(R.id.sensorval5),
-                findViewById(R.id.sensorval6)
-        };
-        /** defining textboxes for sensor data max values**/
-        maxTextViews = new TextView[] {
-                findViewById(R.id.sensormaxval1),
-                findViewById(R.id.sensormaxval2),
-                findViewById(R.id.sensormaxval3),
-                findViewById(R.id.sensormaxval4),
-                findViewById(R.id.sensormaxval5),
-                findViewById(R.id.sensormaxval6)
-        };
+        /** Add the series that represents the current tapped point in graph **/
+        graphView.addSeries(currentDisplayedPnt);
 
 
         /** Checkboxes for graphs**/
@@ -195,28 +193,117 @@ public class SavedRecordingActivity extends AppCompatActivity
         Viewport viewport = graphView.getViewport();
         viewport.setXAxisBoundsManual(true);
         viewport.setMinX(0);
-        viewport.setMaxX(100);
+        viewport.setMaxX(MAX_VAL_X);
         viewport.setYAxisBoundsManual(true);
         viewport.setMinY(0);
-        viewport.setMaxY(800);
+        viewport.setMaxY(MAX_VAL_Y);
         viewport.setScrollable(true);
         viewport.setScrollableY(true);
         viewport.setScalable(true);
         viewport.setScalableY(true);
         viewport.setBackgroundColor(Color.LTGRAY);
 
+
+        /** Set up the play/pause button **/
+        final Button playButton = findViewById(R.id.buttonPlay);
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean playedToEnd = (currentPlaybackPoint == (measuredDataPoints.size() - 1));
+
+
+                if(playedToEnd)
+                    //Start playback from start
+                    currentPlaybackPoint = 0;
+
+                togglePlayback();
+
+                //Change text accordingly
+                if(playbackOn)
+                    playButton.setText(R.string.pauseRecordingLabel);
+                else
+                    playButton.setText(R.string.playRecordingLabel);
+            }
+        });
+
+        /** Set up the slider that controls playback speed **/
+        final SeekBar playbackSpeedBar = findViewById(R.id.playbackSpeedBar);
+        playbackSpeedBar.setProgress(defaultPlaybackSpeed); //Set to halfway
+        playbackSpeedBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                playbackSpeed = i;
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
     }
 
+
+    /**
+     * When the activity becomes visible, show the measurements in the graph
+     */
     @Override
     protected void onResume() {
         super.onResume();
+        sendMeasurementsToGraph();
+    }
 
-        System.out.println("STATUS: " + getReadingstask.getStatus().toString());
-        startUpdaterThread();
+
+
+    /**
+     * Toggle playback of the shot on and off. Start a task that updates the UI
+     */
+    private void togglePlayback() {
+        if(!playbackOn) {
+            playbackOn = true;
+
+            playbackTask = new PlaybackTask();
+            playbackTask.execute();
+
+        } else {
+            playbackTask.cancel(true);
+            playbackOn = false;
+            playbackTask = null;
+        }
+
 
     }
 
-    private void startUpdaterThread() {
+    /**
+     * Show a measured data set in the graph and the muscle map
+     *
+     * @param measNo    index of the measurement in member measuredDataPoints
+     */
+    private void showMeasurementPoint(int measNo) {
+
+        //Allow repaints only if they are >200 msec apart to avoid muscle map flickering
+        long now = System.currentTimeMillis();
+
+        if(now - lastUpdateTime < 200)
+            return;
+
+        lastUpdateTime = now;
+
+        currentPlaybackPoint = measNo;
+
+        //Move the mark that displays the current point in the graph
+        currentDisplayedPnt.resetData(createPntsforCurrentPntSeries(measNo));
+
+
+        MeasuredDataSet dataPnt = measuredDataPoints.get(measNo);
+        if (dataPnt != null)
+            surfaceView.updateSurface(dataPnt);
+
+    }
+
+    /**
+     * Show the measurements that were received from the server in the graph
+     */
+    private void sendMeasurementsToGraph() {
         final Handler handler = new Handler();
         Runnable runnable = new Runnable() {
             public void run() {
@@ -236,7 +323,7 @@ public class SavedRecordingActivity extends AppCompatActivity
                     public void run() {
                         System.out.println("run called, " + measuredDataPoints.size());
                         for(MeasuredDataSet set : measuredDataPoints) {
-                            showMeasurement(set);
+                            appendMeasurement(set);
                         }
                     }
                 });
@@ -247,7 +334,12 @@ public class SavedRecordingActivity extends AppCompatActivity
     }
 
 
-    private void showMeasurement(final MeasuredDataSet measData) {
+    /**
+     * Append one measurement to the point series that is displayed in the graph
+     *
+     * @param measData  the data set to append
+     */
+    private void appendMeasurement(final MeasuredDataSet measData) {
 
         new Thread(new Runnable() {
 
@@ -265,7 +357,6 @@ public class SavedRecordingActivity extends AppCompatActivity
 
                 graphView.post(new Runnable() {
 
-                    //Update ui elements when receiving message
                     @Override
                     public void run() {
                         count++;
@@ -273,24 +364,9 @@ public class SavedRecordingActivity extends AppCompatActivity
                         for(int i = 0; i < NUM_SENSORS; i++) {
                             int val = sensorVals[i];
 
-                            /*** Maybe don't show the texts in this view?
-
-                            //Update text views
-                            textViews[i].setText(Integer.toString(val));
-
-                            int maxVal = maxVals[i];
-                            if(val > maxVal) {
-                                maxTextViews[i].setText(Integer.toString(val));
-                                maxVals[i] = val;
-                            }
-
-                             */
                             //Update graph for this sensor
                             mSeries[i].appendData(new DataPoint(count, val), false, MAX_DATA_POINTS);
                         }
-
-                        //update colors on muscle tension surfaceview
-                        //surfaceView.updateSurface(measData);
 
                     }
                 });
@@ -299,8 +375,11 @@ public class SavedRecordingActivity extends AppCompatActivity
     }
 
 
-
-
+    /**
+     * Add or remove the point series from the graph when checkbox state changes
+     *
+     * @param view  The affected checkbox
+     */
     public void onChkClicked(View view){
         boolean checked=((CheckBox)view).isChecked();
         switch(view.getId()){
@@ -328,6 +407,62 @@ public class SavedRecordingActivity extends AppCompatActivity
                 if(checked){graphView.addSeries(mSeries[5]);}
                 else{graphView.removeSeries(mSeries[5]);}
                 break;
+        }
+    }
+
+
+    /**
+     * Updater task for the recording playback
+     */
+    private class PlaybackTask extends AsyncTask<Void, Void, Void> {
+
+        /**
+         * Sleep a duration based on the speed slider and then update UI
+         *
+         * @param voids dummy
+         * @return  dummy
+         */
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+
+            for(int i = currentPlaybackPoint; i < measuredDataPoints.size(); i++) {
+                //See if user tapped on point in graph
+                if(Math.abs(currentPlaybackPoint - i) > 5)
+                    i = currentPlaybackPoint;
+
+                showMeasurementPoint(i);
+
+                try {
+                    int millisToSleep = 10000;
+                    if(playbackSpeed != 0)
+                        millisToSleep /= playbackSpeed;
+
+                    Thread.sleep(millisToSleep); //sleep is 0.1-10 sec
+                } catch (InterruptedException e) {
+                    System.out.println("Playback interrupted");
+                    break;
+
+                }
+            }
+
+            return null;
+        }
+
+
+        /**
+         * After the playback has completed. Reset the 'Play' button and activity state
+         *
+         * @param dummy
+         */
+        @Override
+        protected void onPostExecute(Void dummy) {
+            //Reset the text in the play button
+            Button playButton = findViewById(R.id.buttonPlay);
+            playButton.setText(R.string.playRecordingLabel);
+
+            playbackOn = false;
+
         }
     }
 
