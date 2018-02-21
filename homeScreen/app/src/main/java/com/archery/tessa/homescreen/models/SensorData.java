@@ -10,6 +10,9 @@ public class SensorData {
     private int sensorId;
     private int value;
 
+
+    public SensorData() {}
+
     public SensorData(int sensorId, int value){
         this.sensorId=sensorId;
         this.value=value;
