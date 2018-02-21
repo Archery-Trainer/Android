@@ -12,6 +12,7 @@ public class Archer implements Serializable {
     private int     height = 0;
     private boolean rightHanded = true;
 
+
     public Archer(String _email, String _firstName, String _lastName, int _coachId, int _weight, int _height, boolean _rightHanded) {
         email = _email;
         firstName = _firstName;
@@ -36,6 +37,7 @@ public class Archer implements Serializable {
         rightHanded = true;
     }
 
+    //Empty constructor required by message converters
     public Archer() {}
 
     public String getEmail() { return email; }
@@ -92,7 +94,7 @@ public class Archer implements Serializable {
 
 
     public String toString() {
-        String res = "Archer: " + firstName + " " + lastName + ", handedness: ";
+        String res = "Archer: " + email + " " + firstName + " " + lastName + ", handedness: ";
         res += (rightHanded) ? "right" : "left";
         return res;
     }
