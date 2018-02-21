@@ -22,7 +22,7 @@ public class SetHitsActivity extends AppCompatActivity implements View.OnTouchLi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.selecthit_activity);
+        setContentView(R.layout.hitselection_activity);
         System.out.println("new activity started");
 
         tView=findViewById(R.id.targetView);
@@ -30,7 +30,7 @@ public class SetHitsActivity extends AppCompatActivity implements View.OnTouchLi
         //BitmapFactory.Options options=new BitmapFactory.Options();
         //options.inMutable=true;
 
-        target = BitmapFactory.decodeResource(getResources(),R.drawable.own_512px_80_cm_archery_target);
+        target = BitmapFactory.decodeResource(getResources(),R.drawable.own_442px_80_cm_archery_target);
         arrow = BitmapFactory.decodeResource(getResources(),R.drawable.arrow);
 
         if(tView==null){System.out.println("targetview is null");}

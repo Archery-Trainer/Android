@@ -1,4 +1,4 @@
-package com.archery.tessa.homescreen;
+package com.archery.tessa.homescreen.UI;
 
 import android.content.Context;
 import android.graphics.Bitmap;

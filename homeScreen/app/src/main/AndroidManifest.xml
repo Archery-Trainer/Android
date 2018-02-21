@@ -31,7 +31,7 @@
         </activity>
         <activity android:name=".RecordingActivity" android:label="Recording" android:screenOrientation="landscape">
         </activity>
-        <activity android:name=".SetHitsActivity" android:label="Marking Hits" >
+        <activity android:name=".SetHitsActivity" android:label="Marking Hits" android:screenOrientation="landscape" >
         </activity>
 
     </application>
