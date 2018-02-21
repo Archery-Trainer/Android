@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Archery Trainer</string>
     <string name="action_settings">Settings</string>
-    <string name="MQTT_server_url">a20pmpdacgwj4.iot.us-east-1.amazonaws.com</string>
+    <string name="MQTT_server_url">a20pmpdacgwj4.iot.eu-central-1.amazonaws.com</string>
     <string name="MQTT_topic">#</string>
     <string name="back_end_url">http://ec2-54-208-42-165.compute-1.amazonaws.com:80</string>
 
@@ -22,12 +22,21 @@
         <string name="BestResults">Best results</string>
         <string name="recording">Recording</string>
         <string name="DebugMode">Debug Mode</string>
+
         <string name="LeftTrapezoid">Left Trapezoid</string>
         <string name="RightTrapezoid">Right Trapezoid</string>
         <string name="LeftDeltoid">Left Deltoid</string>
         <string name="RightDeltoid">Right Deltoid</string>
         <string name="LeftTriceps">Left Triceps</string>
         <string name="RightTriceps">Right Triceps</string>
+
+        <string name="Sensor1Muscle">Left Trapezoid</string>
+        <string name="Sensor2Muscle">Right Trapezoid</string>
+        <string name="Sensor3Muscle">Left Deltoid</string>
+        <string name="Sensor4Muscle">Right Deltoid</string>
+        <string name="Sensor5Muscle">Left Triceps</string>
+        <string name="Sensor6Muscle">Right Triceps</string>
+
         <string name="ShowMuscleData">Show muscle data</string>
         <string name="Help">Help</string>
         <string name="permission_rationale">"Contacts permissions are needed for providing email

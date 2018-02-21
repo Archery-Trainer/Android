@@ -8,27 +8,28 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import android.widget.CheckBox;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.amazonaws.services.iot.client.AWSIotException;
 import com.archery.tessa.homescreen.models.MeasuredDataSet;
 import com.archery.tessa.homescreen.models.RecordingRequest;
 import com.archery.tessa.homescreen.tasks.StartRecordingTask;
 import com.archery.tessa.homescreen.tasks.StopRecordingTask;
 import com.google.gson.Gson;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
-
-import org.springframework.http.HttpStatus;
 
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import mqttClient.MqttClient;
 import mqttClient.OnMessageCallback;
@@ -36,179 +37,139 @@ import mqttClient.OnMessageCallback;
 
 public class RecordingActivity extends AppCompatActivity implements OnMessageCallback {
 
+    MqttClient mqttClient;
 
-    private TextView txtv1;
-    private TextView txtv2;
-    private TextView txtv3;
-    private TextView txtv4;
-    private TextView txtv5;
-    private TextView txtv6;
-    private TextView textvmax;
-    private TextView textvmax2;
-    private TextView textvmax3;
-    private TextView textvmax4;
-    private TextView textvmax5;
-    private TextView textvmax6;
-    private int startTimestmp=0;
+    private TextView[] textViews;
+
+    private TextView[] maxTextViews;
+
     private GraphView graphView;
-    private LineGraphSeries mSeries1;
-    private LineGraphSeries mSeries2;
-    private LineGraphSeries mSeries3;
-    private LineGraphSeries mSeries4;
-    private LineGraphSeries mSeries5;
-    private LineGraphSeries mSeries6;
+
+    private LineGraphSeries[] mSeries;
+
+    private int count=0;
 
     private List<MeasuredDataSet> measuredDataPoints;
     private Gson gson;
     private OurView surfaceView;
     private Bitmap archerPic;
 
+    private CheckBox[] ckBoxes;
+
+    private static final String TAG = "RecordingActivity";
+
     private Context context;
 
-    private static final String TAG = "SessionActivity";
-    public static int max1, max2, max3, max4, max5, max6 = 0;
-    //MqttMessageHandler msgHandler;
-    //private static Random rand = new Random();
-    private static List<String> messages;
-    //max value in views
-    //final int LIMIT = 700;
+    private int maxVals[] = {0, 0, 0, 0, 0, 0};
+
+    private final int NUM_SENSORS = 6;
+    private final int LINE_WIDTH = 4;
+    private final int MAX_DATA_POINTS = 50;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.recording_activity);
 
         context = this;
 
         //Initialize the 'recording' switch
         setRecordingSwitch();
 
-        /** Creating bitmap from archer picture**/
         BitmapFactory.Options options=new BitmapFactory.Options();
-        options.inMutable=true;
-        archerPic = BitmapFactory.decodeResource(getResources(),R.drawable.archer_ind_right_2_2_18v3,options);
-        setContentView(R.layout.recording_activity);
+        //options.inMutable=true;
         surfaceView = (OurView)findViewById(R.id.archerSurfaceView);
+
+        //pics.add(BitmapFactory.decodeResource(getResources(),R.drawable.archer_ind_right_2_2_18v3,options));
+        archerPic = BitmapFactory.decodeResource(getResources(),R.drawable.archer_ind_right_2_2_18v3,options);
+        //System.out.println("checking"+archerPic.isMutable());
+
         surfaceView.setdPicsForDrawing(archerPic);
+        graphView = (GraphView) findViewById(R.id.graph);
+        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.archer_left_triceps_crop_177_166,options));
+        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.archer_left_delt_crop_231_131,options));
+        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.archer_left_trapez_crop_292_105,options));
+
+        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.archer_right_triceps_crop_414_142,options));
+        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.archer_right_delt_crop_372_172,options));
+        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.archer_right_trapez_crop_338_107,options));
 
         measuredDataPoints = new LinkedList<>();
-        graphView = (GraphView) findViewById(R.id.graph);
-        mSeries1=new LineGraphSeries<>();
-        mSeries1.setColor(Color.GREEN);
-        mSeries1.setDrawAsPath(true);
-        mSeries1.setThickness(3);
+
+        int muscleColors[] = GraphColors.colors;
+
+        /** Add point series to graph **/
+        mSeries = new LineGraphSeries[NUM_SENSORS];
+        for(int i = 0; i < NUM_SENSORS; i++) {
+            mSeries[i] = new LineGraphSeries();
+            mSeries[i].setColor(muscleColors[i]);
+            mSeries[i].setDrawAsPath(true);
+            mSeries[i].setThickness(LINE_WIDTH);
+
+            graphView.addSeries(mSeries[i]);
+        }
+
+        /** defining textboxes for sensor data **/
+        textViews = new TextView[]{
+                findViewById(R.id.sensorval1),
+                findViewById(R.id.sensorval2),
+                findViewById(R.id.sensorval3),
+                findViewById(R.id.sensorval4),
+                findViewById(R.id.sensorval5),
+                findViewById(R.id.sensorval6)
+        };
+        /** defining textboxes for sensor data max values**/
+        maxTextViews = new TextView[] {
+                findViewById(R.id.sensormaxval1),
+                findViewById(R.id.sensormaxval2),
+                findViewById(R.id.sensormaxval3),
+                findViewById(R.id.sensormaxval4),
+                findViewById(R.id.sensormaxval5),
+                findViewById(R.id.sensormaxval6)
+        };
 
 
-        mSeries2 = new LineGraphSeries<>();
-        mSeries2.setColor(Color.YELLOW);
-        mSeries2.setDrawAsPath(true);
-        mSeries2.setThickness(3);
+        /** Checkboxes for graphs**/
+        ckBoxes = new CheckBox[] {
+                (CheckBox)findViewById(R.id.chkBox1),
+                (CheckBox)findViewById(R.id.chkBox2),
+                (CheckBox)findViewById(R.id.chkBox3),
+                (CheckBox)findViewById(R.id.chkBox4),
+                (CheckBox)findViewById(R.id.chkBox5),
+                (CheckBox)findViewById(R.id.chkBox6)
+        };
+
+        for(CheckBox b : ckBoxes)
+            b.setChecked(true);
 
 
-        mSeries3=new LineGraphSeries<>();
-        mSeries3.setColor(Color.BLUE);
-        mSeries3.setDrawAsPath(true);
-        mSeries3.setThickness(3);
-
-
-        mSeries4 = new LineGraphSeries<>();
-        mSeries4.setColor(Color.CYAN);
-        mSeries4.setDrawAsPath(true);
-        mSeries4.setThickness(3);
-
-
-        mSeries5=new LineGraphSeries<>();
-        mSeries5.setColor(Color.RED);
-        mSeries5.setDrawAsPath(true);
-        mSeries5.setThickness(3);
-
-
-        mSeries6 = new LineGraphSeries<>();
-        mSeries6.setColor(Color.BLACK);
-        mSeries6.setDrawAsPath(true);
-        mSeries6.setThickness(3);
-
-
-        graphView.addSeries(mSeries1);
-        graphView.addSeries(mSeries2);
-        graphView.addSeries(mSeries3);
-        graphView.addSeries(mSeries4);
-        graphView.addSeries(mSeries5);
-        graphView.addSeries(mSeries6);
+        /** Some graph view settings **/
         graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setMinX(0);
-        graphView.getViewport().setMaxX(100);
+        graphView.getViewport().setMaxX(50);
+        Viewport viewport = graphView.getViewport();
+        viewport.setXAxisBoundsManual(true);
+        viewport.setMinX(0);
+        viewport.setMaxX(100);
+        viewport.setYAxisBoundsManual(true);
+        viewport.setMinY(0);
+        viewport.setMaxY(800);
+        viewport.setBackgroundColor(Color.LTGRAY);
 
-
-        messages = new LinkedList<>();
-
-
-        //Callback that will be called when a message arrives
-        //OnMessageCallback cb = new AddToCollectionCallback(messages);
 
         System.out.println("Creating MQTT-client");
-        MqttClient c = new MqttClient(this, getApplication());
+        mqttClient = new MqttClient(this, getApplication());
+
         gson = new Gson();
-        /** defining textboxes for sensor data **/
-        txtv1 = findViewById(R.id.sensorval1);
-
-        txtv2 = findViewById(R.id.sensorval2);
-        txtv3 = findViewById(R.id.sensorval3);
-        txtv4 = findViewById(R.id.sensorval4);
-        txtv5 = findViewById(R.id.sensorval5);
-        txtv6 = findViewById(R.id.sensorval6);
-
-        /** defining textboxes for sensor data max values**/
-        textvmax = findViewById(R.id.sensormaxval1);
-        textvmax2 = findViewById(R.id.sensormaxval2);
-        textvmax3 = findViewById(R.id.sensormaxval3);
-        textvmax4 = findViewById(R.id.sensormaxval4);
-        textvmax5 = findViewById(R.id.sensormaxval5);
-        textvmax6 = findViewById(R.id.sensormaxval6);
-
-        super.onResume();
-
     }
 
-//    @Override
-//    protected void onResume() {
-//        //msgHandler = new MqttMessageHandler(getApplication());
-//        messages = new LinkedList<>();
-//
-//
-//        //Callback that will be called when a message arrives
-//        //OnMessageCallback cb = new AddToCollectionCallback(messages);
-//
-//        System.out.println("Creating MQTT-client");
-//        MqttClient c = new MqttClient(this, getApplication());
-//        gson = new Gson();
-//        /** defining textboxes for sensor data **/
-//        txtv1 = findViewById(R.id.sensorval1);
-//
-//        txtv2 = findViewById(R.id.sensorval2);
-//        txtv3 = findViewById(R.id.sensorval3);
-//        txtv4 = findViewById(R.id.sensorval4);
-//        txtv5 = findViewById(R.id.sensorval5);
-//        txtv6 = findViewById(R.id.sensorval6);
-//
-//        /** defining textboxes for sensor data max values**/
-//        textvmax = findViewById(R.id.sensormaxval1);
-//        textvmax2 = findViewById(R.id.sensormaxval2);
-//        textvmax3 = findViewById(R.id.sensormaxval3);
-//        textvmax4 = findViewById(R.id.sensormaxval4);
-//        textvmax5 = findViewById(R.id.sensormaxval5);
-//        textvmax6 = findViewById(R.id.sensormaxval6);
-//
-//        super.onResume();
-//
-//
-//    }
+
 
     @Override
     public void call(final String message) {
 
-        // a potentially  time consuming task
-        //final Handler handler = new Handler();
-        //Runnable runnable = new Runnable() {
         new Thread(new Runnable() {
 
             public void run() {
@@ -216,73 +177,67 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
 
                 final MeasuredDataSet measData = gson.fromJson(message, MeasuredDataSet.class);
                 measuredDataPoints.add(measData);
+                System.out.println(measData.getTimestamp());
                 // sensor values
-                final int sensor1 = measData.getSensorData(0).getValue();
-                final int sensor2 = measData.getSensorData(1).getValue();
-                final int sensor3 = measData.getSensorData(2).getValue();
-                final int sensor4 = measData.getSensorData(3).getValue();
-                final int sensor5 = measData.getSensorData(4).getValue();
-                final int sensor6 = measData.getSensorData(5).getValue();
 
-                // get start time for later use
-                if (startTimestmp==0){startTimestmp=measData.getTimestamp();}
-//                handler.post(new Runnable() {
-//                    public void run() {
-                txtv1.post(new Runnable() {
+                final int sensorVals[] = {
+                        measData.getSensorData(0).getValue(),
+                        measData.getSensorData(1).getValue(),
+                        measData.getSensorData(2).getValue(),
+                        measData.getSensorData(3).getValue(),
+                        measData.getSensorData(4).getValue(),
+                        measData.getSensorData(5).getValue()
+                };
 
 
+                textViews[0].post(new Runnable() {
+
+                    //Update ui elements when receiving message
                     @Override
                     public void run() {
-                        int currentTime=measData.getTimestamp()-startTimestmp;
-                        if (sensor1 > max1) {
-                            textvmax.setText(Integer.toString(max1));
-                            max1 = sensor1;
-                        }
-                        txtv1.setText(Integer.toString(sensor1));
-                        // append data to graph
-                        mSeries1.appendData(new DataPoint((double)currentTime,(double)sensor1),true,100);
-                        if (sensor2 > max2) {
-                            textvmax2.setText(Integer.toString(max2));
-                            max2 = sensor2;
-                        }
-                        txtv2.setText(Integer.toString(sensor2));
-                        mSeries2.appendData(new DataPoint((double)currentTime,(double)sensor2),true,100);
-                        if(sensor3 > max3) {
-                            textvmax3.setText(Integer.toString(max3));
-                            max3 = sensor3;
-                        }
-                        txtv3.setText(Integer.toString(sensor3));
-                        mSeries3.appendData(new DataPoint((double)currentTime,(double)sensor3),true,100);
+                        count++;
 
+                        for(int i = 0; i < NUM_SENSORS; i++) {
 
-                        if(sensor4 > max4) {
-                            textvmax4.setText(Integer.toString(max4));
-                            max4 = sensor4;
-                        }
-                        txtv4.setText(Integer.toString(sensor4));
-                        mSeries4.appendData(new DataPoint((double)currentTime,(double)sensor4),true,100);
+                            //Update text views
+                            int val = sensorVals[i];
+                            textViews[i].setText(Integer.toString(val));
 
-                        if(sensor5> max5) {
-                            textvmax5.setText(Integer.toString(max5));
-                            max5 = sensor5;
-                        }
-                        txtv5.setText(Integer.toString(sensor5));
-                        mSeries5.appendData(new DataPoint((double)currentTime,(double)sensor5),true,100);
+                            int maxVal = maxVals[i];
+                            if(val > maxVal) {
+                                maxTextViews[i].setText(Integer.toString(val));
+                                maxVals[i] = val;
+                            }
 
-                        if(sensor6 > max6) {
-                            textvmax6.setText(Integer.toString(max6));
-                            max6 = sensor6;
+                            //Update graph for this sensor
+                            mSeries[i].appendData(new DataPoint(count, val), true, MAX_DATA_POINTS);
                         }
-                        txtv6.setText(Integer.toString(sensor6));
-                        mSeries6.appendData(new DataPoint((double)currentTime,(double)sensor6),true,100);
+
+                        //update colors on muscle tension surfaceview
+                        surfaceView.updateSurface(measData);
+
                     }
                 });
             }
         }).start();
-        //new Thread(runnable).start();
-
-
     }//end call
+
+
+    /**
+     * This gets called when the activity is no longer visible.
+     * Disconnect from the MQTT-server
+     */
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        try {
+            mqttClient.disconnect();
+        } catch (AWSIotException e) {
+            System.out.println("Unable to disconnect from MQTT server");
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Create a click listener for the recording switch
@@ -291,6 +246,11 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
      */
     private void setRecordingSwitch() {
         Switch recordingSwitch = (Switch) findViewById(R.id.switch1);
+
+        if (recordingSwitch == null) {
+            System.out.println("Couldn't find recording switch!");
+            return;
+        }
 
         recordingSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -301,6 +261,9 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
                     RecordingRequest req = new RecordingRequest("test@test.com", new Date().getTime());
 
                     StartRecordingTask task = new StartRecordingTask(req);
+                    task.execute(context);
+
+ /*//Don't care if recording works
 
                     HttpStatus response = HttpStatus.BAD_REQUEST;
                     try {
@@ -316,11 +279,15 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
                         //@TODO: Show error message
                     else
                         System.out.println("Got status " + response.toString() + " when starting recoding");
-
+*/
                 }
 
                 else {
                     StopRecordingTask task = new StopRecordingTask();
+                    task.execute(context);
+                    Intent intent = new Intent(RecordingActivity.this,SetHitsActivity.class);
+                    startActivity(intent);
+ /*//Don't care if recording works
 
                     HttpStatus response = HttpStatus.BAD_REQUEST;
 
@@ -337,11 +304,43 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
                     else
                         //@TODO: show error message
                         System.out.println("Got status " + response.toString() + " when stopping recoding");
+                */
                 }
 
 
             }
         });
+    }
+
+    public void onChkClicked(View view){
+        boolean checked=((CheckBox)view).isChecked();
+        switch(view.getId()){
+            case R.id.chkBox1:
+                if(checked){graphView.addSeries(mSeries[0]);}
+                else{graphView.removeSeries(mSeries[0]);}
+                Toast.makeText(context,"Checkbox1 checked"+ckBoxes[0].isChecked(),Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.chkBox2:
+                if(checked){graphView.addSeries(mSeries[1]);}
+                else{graphView.removeSeries(mSeries[1]);}
+                break;
+            case R.id.chkBox3:
+                if(checked){graphView.addSeries(mSeries[2]);}
+                else{graphView.removeSeries(mSeries[2]);}
+                break;
+            case R.id.chkBox4:
+                if(checked){graphView.addSeries(mSeries[3]);}
+                else{graphView.removeSeries(mSeries[3]);}
+                    break;
+            case R.id.chkBox5:
+                if(checked){graphView.addSeries(mSeries[4]);}
+                else{graphView.removeSeries(mSeries[4]);}
+                    break;
+            case R.id.chkBox6:
+                if(checked){graphView.addSeries(mSeries[5]);}
+                else{graphView.removeSeries(mSeries[5]);}
+                    break;
+        }
     }
 
 }// end sessionactivity

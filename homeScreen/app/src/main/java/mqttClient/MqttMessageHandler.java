@@ -2,6 +2,8 @@ package mqttClient;
 
 import android.content.Context;
 
+import com.amazonaws.services.iot.client.AWSIotException;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,6 +12,7 @@ public class MqttMessageHandler {
 
 	private static List<String> messages;
 	private static final int MAX_NUM_MESSAGES = 2000;
+	private MqttClient client;
 
 	public MqttMessageHandler(Context context) {
 		messages = new LinkedList<>();
@@ -18,9 +21,20 @@ public class MqttMessageHandler {
 		OnMessageCallback cb = new AddToCollectionCallback(messages);
 
 		System.out.println("Creating MQTT-client");
-		MqttClient c = new MqttClient(cb, context);
-		//The client is not needed anymore
+		client = new MqttClient(cb, context);
 	}
+
+
+	public void disconnect() {
+		try {
+			client.disconnect();
+			client = null;
+		} catch (AWSIotException e) {
+			System.out.println("Unable to disconnect from AWS IOT");
+			e.printStackTrace();
+		}
+	}
+
 	public void addMsg(String msg){messages.add(msg);}
 	public static String getNewestMessage() {
 
