@@ -26,6 +26,25 @@ public class OurView extends SurfaceView{ // implements Runnable{
     private SurfaceHolder holder;
     boolean isOK=false;
     private LinkedList<Bitmap> pics;
+
+    //Rectangles around the small muscle pics
+    private final Rect srcRectLeftTrap = new Rect(0,0,(50*2), (141*2));
+    private final Rect srcRectRightTrap = new Rect(0,0,(95*2), (39*2));
+    private final Rect srcRectLeftDelt = new Rect(0,0,(71*2),(43*2));
+    private final Rect srcRectRightDelt = new Rect(0,0,(69*2), (49*2));
+    private final Rect srcRectLeftTricep = new Rect(0,0,(82*2),(19*2));
+    private final Rect srcRectRightTricep = new Rect(0,0,(46*2), (143*2));
+
+    //Rectangles where to place the muscle pics
+    private final Rect dstRectLeftTrap = new Rect((292*2),(105*2),(292*2)+(50*2),(105*2)+(141*2));
+    private final Rect dstRectRightTrap = new Rect((414*2),(142*2),(414*2)+(95*2),(142*2)+(39*2));
+    private final Rect dstRectRightDelt = new Rect((372*2),(127*2),(372*2)+(69*2),(127*2)+(49*2));
+    private final Rect dstRectLeftDelt = new Rect((231*2),(131*2),(231*2)+(71*2),(131*2)+(43*2));
+    private final Rect dstRectLeftTricep = new Rect((177*2),(166*2),(177*2)+(82*2),(166*2)+(18*2));
+    private final Rect dstRectRightTricep = new Rect((338*2),(107*2),(338*2)+(46*2),(107*2)+(143*2));
+
+
+
     public OurView(Context context) {
         super(context);
         init();
@@ -172,12 +191,12 @@ public class OurView extends SurfaceView{ // implements Runnable{
         System.out.println("update picture");
         //System.out.println("num of pics" + pics.size());
         canvas.drawBitmap(pics.get(0), matrix, null);  // base image of archer
-        canvas.drawBitmap(pics.get(1),new Rect(0,0,(82*2),(19*2)),new Rect((177*2),(166*2),(177*2)+(82*2),(166*2)+(18*2)), null);  //
-        canvas.drawBitmap(pics.get(2),new Rect(0,0,(71*2),(43*2)),new Rect((231*2),(131*2),(231*2)+(71*2),(131*2)+(43*2)), null);
-        canvas.drawBitmap(pics.get(3), new Rect(0,0,(50*2), (141*2)),new Rect((292*2),(105*2),(292*2)+(50*2),(105*2)+(141*2)), null);
-        canvas.drawBitmap(pics.get(4),new Rect(0,0,(95*2), (39*2)),new Rect((414*2),(142*2),(414*2)+(95*2),(142*2)+(39*2)), null);
-        canvas.drawBitmap(pics.get(5), new Rect(0,0,(69*2), (49*2)),new Rect((372*2),(127*2),(372*2)+(69*2),(127*2)+(49*2)), null);
-        canvas.drawBitmap(pics.get(6), new Rect(0,0,(46*2), (143*2)),new Rect((338*2),(107*2),(338*2)+(46*2),(107*2)+(143*2)), null);
+        canvas.drawBitmap(pics.get(1), srcRectLeftTricep, dstRectLeftTricep, null);  //
+        canvas.drawBitmap(pics.get(2), srcRectLeftDelt, dstRectLeftDelt, null);
+        canvas.drawBitmap(pics.get(3), srcRectLeftTrap, dstRectLeftTrap, null);
+        canvas.drawBitmap(pics.get(4), srcRectRightTrap, dstRectRightTrap, null);
+        canvas.drawBitmap(pics.get(5), srcRectRightDelt, dstRectRightDelt, null);
+        canvas.drawBitmap(pics.get(6), srcRectRightTricep, dstRectRightTricep, null);
 
         holder.unlockCanvasAndPost(canvas);
 
