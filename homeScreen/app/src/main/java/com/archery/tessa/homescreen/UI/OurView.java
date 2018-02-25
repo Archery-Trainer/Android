@@ -46,7 +46,7 @@ public class OurView extends SurfaceView{ // implements Runnable{
     public void updateSurface(MeasuredDataSet sensorvalues){
         //Bitmap tmp=pics.get(0);
 
-        changeColor(pics.get(1), pics.get(1).getPixel(20,7),getMuscleColor(sensorvalues.getSensorData(0).getValue()));  //getPixel((227 * 2), (175 * 2))
+        changeColor(pics.get(1), pics.get(1).getPixel(41,9),getMuscleColor(sensorvalues.getSensorData(0).getValue()));  //getPixel((227 * 2), (175 * 2))
         changeColor(pics.get(2), pics.get(2).getPixel(35,21),getMuscleColor(sensorvalues.getSensorData(1).getValue())); //getPixel((272 * 2), (150 * 2)
         changeColor(pics.get(3), pics.get(3).getPixel(25,70),getMuscleColor(sensorvalues.getSensorData(2).getValue())); //getPixel((320 * 2), (165 * 2))
         changeColor(pics.get(4), pics.get(4).getPixel(47,19), getMuscleColor(sensorvalues.getSensorData(3).getValue())); //getPixel((455 * 2), (158 * 2))

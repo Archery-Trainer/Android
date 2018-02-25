@@ -284,10 +284,11 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
                 }
 
                 else {
-                    StopRecordingTask task = new StopRecordingTask();
-                    task.execute(context);
                     Intent intent = new Intent(RecordingActivity.this,SetHitsActivity.class);
                     startActivity(intent);
+                    StopRecordingTask task = new StopRecordingTask();
+                    task.execute(context);
+
  /*//Don't care if recording works
 
                     HttpStatus response = HttpStatus.BAD_REQUEST;

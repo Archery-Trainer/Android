@@ -2,8 +2,9 @@ package com.archery.tessa.homescreen.models;
 
 /**
  * Created by mkkvj on 18.2.2018.
+ *
  */
-
+//@TODO delete as it's not needed?
 public class HitLocation {
     //coordinates of hit location
     private int x;
