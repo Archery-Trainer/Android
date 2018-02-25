@@ -46,7 +46,7 @@ public class OurView extends SurfaceView{ // implements Runnable{
     public void updateSurface(MeasuredDataSet sensorvalues){
         //Bitmap tmp=pics.get(0);
 
-        changeColor(pics.get(1), pics.get(1).getPixel(20,7),getMuscleColor(sensorvalues.getSensorData(0).getValue()));  //getPixel((227 * 2), (175 * 2))
+        changeColor(pics.get(1), pics.get(1).getPixel(40,25),getMuscleColor(sensorvalues.getSensorData(0).getValue()));  //getPixel((227 * 2), (175 * 2))
         changeColor(pics.get(2), pics.get(2).getPixel(35,21),getMuscleColor(sensorvalues.getSensorData(1).getValue())); //getPixel((272 * 2), (150 * 2)
         changeColor(pics.get(3), pics.get(3).getPixel(25,70),getMuscleColor(sensorvalues.getSensorData(2).getValue())); //getPixel((320 * 2), (165 * 2))
         changeColor(pics.get(4), pics.get(4).getPixel(47,19), getMuscleColor(sensorvalues.getSensorData(3).getValue())); //getPixel((455 * 2), (158 * 2))
@@ -57,13 +57,66 @@ public class OurView extends SurfaceView{ // implements Runnable{
     }
     /** Returns mucle tension color based on sensor value**/
     private String getMuscleColor(int sensor_value){
-        if(sensor_value<50){return "#00FFFB";}
-        if(sensor_value<100){return "#0066FF";}
-        if(sensor_value<225){return "#0008FF";}
-        if(sensor_value<350){return "#9900FF";}
-        if(sensor_value<475){return "#FF00FF";}
-        if(sensor_value<550){return "#FF0095";}
-        return "#FF0000";
+
+        /** Grayscale **/
+        /*
+        if(sensor_value<50){return "#FFFFFF";}
+        if(sensor_value<100){return "#EEEEEE";}
+        if(sensor_value<150){return "#DDDDDD";}
+        if(sensor_value<200){return "#CCCCCC";}
+        if(sensor_value<250){return "#BBBBBB";}
+        if(sensor_value<300){return "#AAAAAA";}
+        if(sensor_value<350){return "#999999";}
+        if(sensor_value<400){return "#888888";}
+        if(sensor_value<450){return "#777777";}
+        if(sensor_value<500){return "#666666";}
+        if(sensor_value<550){return "#555555";}
+        if(sensor_value<600){return "#444444";}
+        if(sensor_value<650){return "#333333";}
+        if(sensor_value<700){return "#222222";}
+        if(sensor_value<750){return "#111111";}
+        return "#000000";
+        */
+
+        /** Red **/
+
+        if(sensor_value<50){return "#FFFFFF";}
+        if(sensor_value<100){return "#F5EEEE";}
+        if(sensor_value<150){return "#EBDDDD";}
+        if(sensor_value<200){return "#E1CCCC";}
+        if(sensor_value<250){return "#D7BBBB";}
+        if(sensor_value<300){return "#CDAAAA";}
+        if(sensor_value<350){return "#C39999";}
+        if(sensor_value<400){return "#B98888";}
+        if(sensor_value<450){return "#AF7777";}
+        if(sensor_value<500){return "#A56666";}
+        if(sensor_value<550){return "#9B5555";}
+        if(sensor_value<600){return "#8C4444";}
+        if(sensor_value<650){return "#7D3333";}
+        if(sensor_value<700){return "#692222";}
+        if(sensor_value<750){return "#551111";}
+        return "#410000";
+
+
+        /** Blue **/
+        /*
+        if(sensor_value<50){return "#FFFFFF";}
+        if(sensor_value<100){return "#EEEEF5";}
+        if(sensor_value<150){return "#DDDDEB";}
+        if(sensor_value<200){return "#CCCCE1";}
+        if(sensor_value<250){return "#BBBBD7";}
+        if(sensor_value<300){return "#AAAACD";}
+        if(sensor_value<350){return "#9999C3";}
+        if(sensor_value<400){return "#8888B9";}
+        if(sensor_value<450){return "#7777AF";}
+        if(sensor_value<500){return "#6666A5";}
+        if(sensor_value<550){return "#55559B";}
+        if(sensor_value<600){return "#44448C";}
+        if(sensor_value<650){return "#33337D";}
+        if(sensor_value<700){return "#222269";}
+        if(sensor_value<750){return "#111155";}
+        return "#000041";
+        */
     }
 
     public void init(){
@@ -112,6 +165,7 @@ public class OurView extends SurfaceView{ // implements Runnable{
         //@TODO: canvas can be null
         if (canvas == null) {
             System.out.println("canvas null");
+            return;
         }
         //System.out.println("num of pics" + pics.size());
         //canvas.drawBitmap(pics.get(0), matrix, null);  // base image of archer
