@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
         Button button2 = (Button) findViewById(R.id.button2);
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,8 +47,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-}
+        Button quitButton = (Button) findViewById(R.id.button3);
+        quitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, SavedRecordingActivity.class);
+                //Pass shot id to SavedRecordingActivity
+                i.putExtra("SHOT_ID", 94);
+                startActivity(i);
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

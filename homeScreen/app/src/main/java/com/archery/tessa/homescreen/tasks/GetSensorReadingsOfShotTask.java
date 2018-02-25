@@ -23,11 +23,13 @@ public class GetSensorReadingsOfShotTask extends AsyncTask<Void, Void, List<Meas
 
     private Context context;
     private int shotId;
+    private List<MeasuredDataSet> targetSet; //Where to store
 
-    public GetSensorReadingsOfShotTask(Context context, int shotId) {
+    public GetSensorReadingsOfShotTask(Context context, int shotId, List<MeasuredDataSet> targetSet) {
         super();
         this.context = context;
         this.shotId = shotId;
+        this.targetSet = targetSet;
     }
 
     @Override
@@ -48,21 +50,18 @@ public class GetSensorReadingsOfShotTask extends AsyncTask<Void, Void, List<Meas
 
         ResponseEntity<MeasuredDataSet[]> res = restTemplate.postForEntity(url, entity, MeasuredDataSet[].class);
 
-
+        System.out.println("Request sent");
         if(res == null) {
             System.out.println("Unable to fetch shots");
             return readings;
         }
 
         for(MeasuredDataSet s : res.getBody()) {
-            readings.add(s);
+            targetSet.add(s);
         }
 
+        System.out.println("Ready");
         return readings;
-
-
-
-
     }
 
 
@@ -73,11 +72,7 @@ public class GetSensorReadingsOfShotTask extends AsyncTask<Void, Void, List<Meas
             return;
         }
 
-        //Show in UI...
-
-        for(MeasuredDataSet s : readings)
-            System.out.println(s.toString());
-
+        System.out.println("Received " + readings.size() + " measured data sets!");
     }
 
 }
