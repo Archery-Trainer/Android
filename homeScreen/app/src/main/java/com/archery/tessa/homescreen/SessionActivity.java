@@ -2,23 +2,17 @@ package com.archery.tessa.homescreen;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Handler;
-import android.speech.RecognitionListener;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;;
-import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.Switch;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
+import com.archery.tessa.homescreen.UI.OurView;
 import com.archery.tessa.homescreen.models.MeasuredDataSet;
 import com.archery.tessa.homescreen.models.RecordingRequest;
-import com.archery.tessa.homescreen.models.SensorData;
 import com.archery.tessa.homescreen.tasks.StartRecordingTask;
 import com.archery.tessa.homescreen.tasks.StopRecordingTask;
 import com.google.gson.Gson;
@@ -26,22 +20,15 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
-import mqttClient.AddToCollectionCallback;
 import mqttClient.MqttClient;
-import mqttClient.MqttMessageHandler;
 import mqttClient.OnMessageCallback;
-
-import static mqttClient.MqttMessageHandler.getNewestMessage;
 
 
 public class SessionActivity extends AppCompatActivity implements OnMessageCallback {

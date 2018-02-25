@@ -235,7 +235,7 @@
         app:layout_constraintStart_toEndOf="@+id/switch1"
         tools:ignore="MissingConstraints" />
 
-    <com.archery.tessa.homescreen.OurView
+    <com.archery.tessa.homescreen.UI.OurView
         android:id="@+id/archerSurfaceView"
         android:layout_width="525dp"
         android:layout_height="wrap_content"
@@ -268,6 +268,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:buttonTint="@color/colorSensor1"
+        android:onClick="onChkClicked"
         android:text="@string/Sensor1Muscle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/graph" />
