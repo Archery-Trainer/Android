@@ -79,23 +79,7 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
         //Initialize the 'recording' switch
         setRecordingSwitch();
 
-        BitmapFactory.Options options=new BitmapFactory.Options();
-        //options.inMutable=true;
-        surfaceView = (OurView)findViewById(R.id.archerSurfaceView);
-
-        //pics.add(BitmapFactory.decodeResource(getResources(),R.drawable.archer_ind_right_2_2_18v3,options));
-        archerPic = BitmapFactory.decodeResource(getResources(),R.drawable.archer_ind_right_2_2_18v3,options);
-        //System.out.println("checking"+archerPic.isMutable());
-
-        surfaceView.setdPicsForDrawing(archerPic);
-        graphView = (GraphView) findViewById(R.id.graph);
-        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.archer_left_triceps_crop_177_166,options));
-        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.archer_left_delt_crop_231_131,options));
-        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.archer_left_trapez_crop_292_105,options));
-
-        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.archer_right_triceps_crop_414_142,options));
-        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.archer_right_delt_crop_372_172,options));
-        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.archer_right_trapez_crop_338_107,options));
+        initArcherPic();
 
         measuredDataPoints = new LinkedList<>();
 
@@ -164,6 +148,34 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
         mqttClient = new MqttClient(this, getApplication());
 
         gson = new Gson();
+    }
+
+    /**
+     * Initialize the muscle map image
+     *
+     */
+    private void initArcherPic() {
+
+
+        BitmapFactory.Options options=new BitmapFactory.Options();
+        options.inMutable=true;
+        surfaceView = (OurView)findViewById(R.id.archerSurfaceView);
+
+        //pics.add(BitmapFactory.decodeResource(getResources(),R.drawable.archer_ind_right_2_2_18v3,options));
+        archerPic = BitmapFactory.decodeResource(getResources(),R.drawable.archer_ind_right_2_2_18v3,options);
+        //System.out.println("checking"+archerPic.isMutable());
+
+        surfaceView.setdPicsForDrawing(archerPic);
+        graphView = (GraphView) findViewById(R.id.graph);
+
+        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.archer_left_trapez_crop_292_105,options));
+        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.archer_right_trapez_crop_338_107,options));
+
+        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.archer_left_delt_crop_231_131,options));
+        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.archer_right_delt_crop_372_172,options));
+
+        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.archer_left_triceps_crop_178_166,options));
+        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.archer_right_triceps_crop_414_142,options));
     }
 
 

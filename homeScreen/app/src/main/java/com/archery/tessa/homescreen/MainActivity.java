@@ -11,6 +11,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+import com.archery.tessa.homescreen.models.Shot;
+
+import java.sql.Date;
+import java.sql.Time;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -37,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
         Button button2 = (Button) findViewById(R.id.button2);
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,8 +52,20 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+        /** Example usage of SavedRecordingActivity **/
+        Button quitButton = (Button) findViewById(R.id.button3);
+        quitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, SavedRecordingActivity.class);
 
-}
+                //Get shot from a list of shots gotten with GetShotsOfArcherTask and shown in the UI
+                Shot s = new Shot(94, new Date(0), new Time(0), 3, 4);
+                i.putExtra("SHOT", s);
+                startActivity(i);
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
