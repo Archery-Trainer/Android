@@ -1,6 +1,6 @@
 package com.archery.tessa.homescreen;
 
-import android.content.Context;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -9,15 +9,16 @@ import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.ContactsContract;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
-import android.widget.TextView;
 
 import com.archery.tessa.homescreen.models.MeasuredDataSet;
+import com.archery.tessa.homescreen.models.Shot;
 import com.archery.tessa.homescreen.tasks.GetSensorReadingsOfShotTask;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.Viewport;
@@ -28,6 +29,8 @@ import com.jjoe64.graphview.series.OnDataPointTapListener;
 import com.jjoe64.graphview.series.PointsGraphSeries;
 import com.jjoe64.graphview.series.Series;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,7 +43,7 @@ import java.util.List;
  */
 public class SavedRecordingActivity extends AppCompatActivity
 {
-    private int shotId; //Id of the shot to show
+    private Shot shot; //The shot to show
 
     private GetSensorReadingsOfShotTask getReadingstask;
 
@@ -79,43 +82,26 @@ public class SavedRecordingActivity extends AppCompatActivity
 
 
     /***********************************************************************
-     When starting this activity, you should pass the shot id like this:
+     When starting this activity, you should pass the Shot object like this:
 
-     Intent i = new Intent(RecordingActivity.this, SavedRecordingActivity.class);
-     //Pass shot id to SavedRecordingActivity
-     i.putExtra("SHOT_ID", 94);
+     Intent i = new Intent(MainActivity.this, SavedRecordingActivity.class);
+
+     Shot testShot = getShotFromSomewhere();
+     i.putExtra("SHOT", testShot);
+
      startActivity(i);
      ************************************************************************/
 
-    /**
-     * Create a point series for the visualization line that represents the current playback point
-     *
-     * @param currentMeasurementNo  Where on x axis to place the points
-     * @return  Points that are evenly distributed on the y axis
-     */
-    private DataPoint[] createPntsforCurrentPntSeries(int currentMeasurementNo) {
-        DataPoint[] pnts = new DataPoint[PNTS_IN_CURRENT_PNT_MARKER_LINE];
-        for(int i = 0; i < PNTS_IN_CURRENT_PNT_MARKER_LINE; i++) {
-            pnts[i] = new DataPoint(
-                    currentMeasurementNo,
-                    ((MAX_VAL_Y + 200) / PNTS_IN_CURRENT_PNT_MARKER_LINE) * i); //Evenly divide on y axis
-        }
-
-        return pnts;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        shotId = getIntent().getExtras().getInt("SHOT_ID");
+        shot = (Shot) getIntent().getExtras().getSerializable("SHOT");
 
-        //Need to create a new series to display one point
-        //This is a hack to display a line on the graph. Different y values needed to be added
-        //Because the mark would disappear when the y value was not visible
-        currentDisplayedPnt = new PointsGraphSeries<>(createPntsforCurrentPntSeries(0));
+        /** Show info of the shot on the action bar **/
+        setHeaderString(shot);
 
         /** Get the measured data from the server **/
         measuredDataPoints = new LinkedList<>();
-        getReadingstask = new GetSensorReadingsOfShotTask(this, shotId, measuredDataPoints);
+        getReadingstask = new GetSensorReadingsOfShotTask(this, shot.getId(), measuredDataPoints);
         getReadingstask.execute();
 
         super.onCreate(savedInstanceState);
@@ -161,13 +147,28 @@ public class SavedRecordingActivity extends AppCompatActivity
             graphView.addSeries(mSeries[i]);
         }
 
+        //Need to create a new series to display one point
+        //This is a hack to display a line on the graph. Different y values needed to be added
+        //Because the mark would disappear when the y value was not visible
+        currentDisplayedPnt = new PointsGraphSeries<>(createPntsforCurrentPntSeries(0));
+
         currentDisplayedPnt.setCustomShape(new PointsGraphSeries.CustomShape() {
             @Override
             public void draw(Canvas canvas, Paint paint, float x, float y, DataPointInterface dataPoint) {
                 paint.setStrokeWidth(10);
                 paint.setColor(Color.BLACK);
                 paint.setAlpha(175);
-                canvas.drawLine(x, y - 3, x, y + 3, paint);
+                canvas.drawLine(x, y - 100, x, y + 100, paint);
+            }
+        });
+
+
+        /** Rescale the current point marker when zooming on the graph so that points distribute evenly **/
+        graphView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                currentDisplayedPnt.resetData(createPntsforCurrentPntSeries(currentPlaybackPoint));
+                return false;
             }
         });
 
@@ -239,7 +240,6 @@ public class SavedRecordingActivity extends AppCompatActivity
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {}
         });
-
     }
 
 
@@ -410,6 +410,36 @@ public class SavedRecordingActivity extends AppCompatActivity
         }
     }
 
+
+    private void setHeaderString(Shot shot) {
+        ActionBar actionBar = getSupportActionBar();
+        String header = "Showing shot " + shot.getId() + " from " + shot.getDate() + " : " +
+            shot.getTime() + ", Score: " + shot.getId();
+
+        actionBar.setTitle(header);
+    }
+
+    /**
+     * Create a point series for the visualization line that represents the current playback point
+     *
+     * @param currentMeasurementNo  Where on x axis to place the points
+     * @return  Points that are evenly distributed on the y axis
+     */
+    private DataPoint[] createPntsforCurrentPntSeries(int currentMeasurementNo) {
+
+        Viewport vp = graphView.getViewport();
+        int visiblePnts = (int) (vp.getMaxY(false) - vp.getMinY(false));
+
+        DataPoint[] pnts = new DataPoint[PNTS_IN_CURRENT_PNT_MARKER_LINE];
+        for(int i = 0; i < PNTS_IN_CURRENT_PNT_MARKER_LINE; i++) {
+            pnts[i] = new DataPoint(
+                    currentMeasurementNo,
+                    (vp.getMinY(false) + (visiblePnts
+                            / PNTS_IN_CURRENT_PNT_MARKER_LINE) * i)); //Evenly divide on y axis
+        }
+
+        return pnts;
+    }
 
     /**
      * Updater task for the recording playback
