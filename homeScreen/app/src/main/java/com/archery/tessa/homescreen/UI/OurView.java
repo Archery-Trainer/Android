@@ -26,7 +26,7 @@ public class OurView extends SurfaceView{ // implements Runnable{
     private SurfaceHolder holder;
     boolean isOK=false;
     private LinkedList<Bitmap> pics;
-
+    private LinkedList<Bitmap> originalPics;
 
     public OurView(Context context) {
         super(context);
@@ -45,38 +45,31 @@ public class OurView extends SurfaceView{ // implements Runnable{
         init();
     }
 
-    private final int[] colorPickSpotLeftTricep = new int[] {40,25};
-    private final int[] colorPickSpotLeftDelt = new int[] {35,21};
-    private final int[] colorPickSpotLeftTrap = new int[] {25,70};
-    private final int[] colorPickSpotRightTrap = new int[] {23,71};
-    private final int[] colorPickSpotRightDelt = new int[] {34,24};
-    private final int[] colorPickSpotRightTricep = new int[] {47,19};
-
     public void updateSurface(MeasuredDataSet sensorvalues){
         //Bitmap tmp=pics.get(0);
 
         changeColor(pics.get(1),
-                pics.get(1).getPixel(colorPickSpotLeftTrap[0], colorPickSpotLeftTrap[1]),
+                originalPics.get(1),
                 getMuscleColor(sensorvalues.getSensorData(0).getValue())); //getPixel((320 * 2), (165 * 2))
 
         changeColor(pics.get(2),
-                pics.get(2).getPixel(colorPickSpotRightTrap[0], colorPickSpotRightTrap[1]),
+                originalPics.get(2),
                 getMuscleColor(sensorvalues.getSensorData(1).getValue())); //getPixel((455 * 2), (158 * 2))
 
         changeColor(pics.get(3),
-                pics.get(3).getPixel(colorPickSpotLeftDelt[0], colorPickSpotLeftDelt[1]),
+                originalPics.get(3),
                 getMuscleColor(sensorvalues.getSensorData(2).getValue())); //getPixel((272 * 2), (150 * 2)
 
         changeColor(pics.get(4),
-                pics.get(4).getPixel(colorPickSpotRightDelt[0], colorPickSpotRightDelt[1]),
+                originalPics.get(4),
                 getMuscleColor(sensorvalues.getSensorData(3).getValue())); //getPixel((400 * 2), (146 * 2))
 
         changeColor(pics.get(5),
-                pics.get(5).getPixel(colorPickSpotLeftTricep[0], colorPickSpotLeftTricep[1]),
+                originalPics.get(5),
                 getMuscleColor(sensorvalues.getSensorData(4).getValue()));  //getPixel((227 * 2), (175 * 2))
 
         changeColor(pics.get(6),
-                pics.get(6).getPixel(colorPickSpotRightTricep[0], colorPickSpotRightTricep[1]),
+                originalPics.get(6),
                 getMuscleColor(sensorvalues.getSensorData(5).getValue())); //getPixel((360 * 2), (160 * 2))
         drawSurface();
 
@@ -151,6 +144,7 @@ public class OurView extends SurfaceView{ // implements Runnable{
         holder=getHolder();
 
         pics= new LinkedList<>();
+        originalPics = new LinkedList<>();
         isOK=true;
         System.out.println("init function");
 
@@ -177,6 +171,7 @@ public class OurView extends SurfaceView{ // implements Runnable{
     public void setdPicsForDrawing(Bitmap pic){
         System.out.println("adding pics");
         pics.add(pic);
+        originalPics.add(pic);
     }
     public int getNumberOfPics(){return pics.size();}
 
@@ -207,7 +202,7 @@ public class OurView extends SurfaceView{ // implements Runnable{
 
     public void drawSurface(){
         Canvas canvas=holder.lockCanvas();
-        System.out.println("run method");
+
         Matrix matrix = new Matrix();
         matrix.setRotate(0, pics.get(0).getWidth() / 2, pics.get(0).getHeight() / 2);
 
@@ -263,8 +258,19 @@ public class OurView extends SurfaceView{ // implements Runnable{
 //>>>>>>> cc8b04dd08db2f8c8d37dbd8acb903fcc0f4988c
 
 
+    private boolean okToDrawToPixel(Bitmap originalPic, int x, int y) {
 
-    boolean changeColor(Bitmap bitmap, int originalColor, String newColor)
+        int color = originalPic.getPixel(x, y);
+
+        if(color == 0) {
+            //Pixel is white, part of background
+            return false;
+        }
+
+        return true;
+    }
+
+    boolean changeColor(Bitmap bitmap, Bitmap originalPic, String newColor)
     {
         // bitmap must be mutable and 32 bits per pixel:
         if((bitmap.getConfig() != Bitmap.Config.ARGB_8888) || !bitmap.isMutable())
@@ -278,13 +284,14 @@ public class OurView extends SurfaceView{ // implements Runnable{
 
         for(int x = 0; x<bitmap.getWidth(); x++){
             for(int y = 0; y<bitmap.getHeight(); y++){
-                if(bitmap.getPixel(x, y) == originalColor){
+                if(okToDrawToPixel(originalPic, x, y)){
+
                     bitmap.setPixel(x, y, newcolor);
                     count++;
                 }
             }
         }
-        System.out.println(count);
+
         return true;
 
 
