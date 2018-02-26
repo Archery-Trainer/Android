@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
@@ -72,7 +73,15 @@ public class OurView extends SurfaceView{ // implements Runnable{
         changeColor(pics.get(6),
                 originalPics.get(6),
                 getMuscleColor(sensorvalues.getSensorData(5).getValue())); //getPixel((360 * 2), (160 * 2))
-        drawSurface();
+
+        drawSurface(new int[] {
+                sensorvalues.getSensorData(0).getValue() * 800 / 255,
+                sensorvalues.getSensorData(1).getValue() * 800 / 255,
+                sensorvalues.getSensorData(2).getValue() * 800 / 255,
+                sensorvalues.getSensorData(3).getValue() * 800 / 255,
+                sensorvalues.getSensorData(4).getValue() * 800 / 255,
+                sensorvalues.getSensorData(5).getValue() * 800 / 255
+        });
 
     }
     /** Returns mucle tension color based on sensor value**/
@@ -155,7 +164,7 @@ public class OurView extends SurfaceView{ // implements Runnable{
             public void surfaceCreated(SurfaceHolder surfaceHolder) {
                 System.out.println("surfaceCreated");
                 //myThread.start();
-                drawSurface();
+                drawSurface(new int[]{0,0,0,0,0,0});
             }
             @Override
             public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
@@ -201,7 +210,7 @@ public class OurView extends SurfaceView{ // implements Runnable{
 
 
 
-    public void drawSurface(){
+    public void drawSurface(int[] sensorValues){
         Canvas canvas=holder.lockCanvas();
 
         Matrix matrix = new Matrix();
@@ -217,12 +226,20 @@ public class OurView extends SurfaceView{ // implements Runnable{
         System.out.println("update picture");
         //System.out.println("num of pics" + pics.size());
         canvas.drawBitmap(pics.get(0), matrix, null);  // base image of archer
-        canvas.drawBitmap(pics.get(1), srcRectLeftTrap, dstRectLeftTrap, null);
-        canvas.drawBitmap(pics.get(2), srcRectRightTrap, dstRectRightTrap, null);
-        canvas.drawBitmap(pics.get(3), srcRectLeftDelt, dstRectLeftDelt, null);
-        canvas.drawBitmap(pics.get(4), srcRectRightDelt, dstRectRightDelt, null);
-        canvas.drawBitmap(pics.get(5), srcRectLeftTricep, dstRectLeftTricep, null);
-        canvas.drawBitmap(pics.get(6), srcRectRightTricep, dstRectRightTricep, null);
+
+        Paint p = new Paint();
+        p.setAlpha(sensorValues[0]);
+        canvas.drawBitmap(pics.get(1), srcRectLeftTrap, dstRectLeftTrap, p);
+        p.setAlpha(sensorValues[1]);
+        canvas.drawBitmap(pics.get(2), srcRectRightTrap, dstRectRightTrap, p);
+        p.setAlpha(sensorValues[2]);
+        canvas.drawBitmap(pics.get(3), srcRectLeftDelt, dstRectLeftDelt, p);
+        p.setAlpha(sensorValues[3]);
+        canvas.drawBitmap(pics.get(4), srcRectRightDelt, dstRectRightDelt, p);
+        p.setAlpha(sensorValues[4]);
+        canvas.drawBitmap(pics.get(5), srcRectLeftTricep, dstRectLeftTricep, p);
+        p.setAlpha(sensorValues[5]);
+        canvas.drawBitmap(pics.get(6), srcRectRightTricep, dstRectRightTricep, p);
 
         holder.unlockCanvasAndPost(canvas);
 
@@ -280,6 +297,7 @@ public class OurView extends SurfaceView{ // implements Runnable{
         int newcolor=parseColor(newColor);
         //System.out.println("rEd"+originalColor);
         int count=0;
+        newcolor = Color.RED;
 
         for(int x = 0; x<bitmap.getWidth(); x++){
             for(int y = 0; y<bitmap.getHeight(); y++){
