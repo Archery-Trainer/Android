@@ -10,9 +10,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.archery.tessa.homescreen.UI.TargetView;
 import com.archery.tessa.homescreen.models.Shot;
+import com.archery.tessa.homescreen.tasks.SetScoreForShotTask;
+import com.archery.tessa.homescreen.tasks.StopRecordingTask;
+
+import org.springframework.http.HttpStatus;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -28,9 +33,19 @@ public class SetHitsActivity extends AppCompatActivity implements View.OnTouchLi
     private Bitmap target;
     private TextView hitVal;
     private Button saveButton;
+    private int score;
+    private StopRecordingTask stopRecordingTask;
+
+    private void stopRecording() {
+        stopRecordingTask = new StopRecordingTask();
+        stopRecordingTask.execute(this);
+    }
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        stopRecording();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.hitselection_activity);
         System.out.println("new activity started");
@@ -70,8 +85,8 @@ public class SetHitsActivity extends AppCompatActivity implements View.OnTouchLi
             // check if touch is on target area
             if(tView.isOnPictureArea((int)touchX, (int)touchY) ){
                 //get the value of arrow hit location
-                int hitval=tView.getHitValue(motionEvent.getX(),motionEvent.getY());
-                hitVal.setText(String.valueOf(hitval));
+                score = tView.getHitValue(motionEvent.getX(),motionEvent.getY());
+                hitVal.setText(String.valueOf(score));
                 tView.setX(motionEvent.getX());
                 tView.setY(motionEvent.getY());
             }
@@ -94,8 +109,15 @@ public class SetHitsActivity extends AppCompatActivity implements View.OnTouchLi
     @Override
     public void onClick(View view) {
         System.out.println("onClick pressed");
-        //Date d = new Date();
-        //Shot mShot=new Shot(),)
+
+        int shotId = stopRecordingTask.getShotId();
+
+        if(shotId == -1)
+            Toast.makeText(this, R.string.saveShotError, Toast.LENGTH_SHORT).show();
+
+        SetScoreForShotTask setScoreTask = new SetScoreForShotTask(shotId, score, this);
+        setScoreTask.execute();
+
         finish();
     }
 }

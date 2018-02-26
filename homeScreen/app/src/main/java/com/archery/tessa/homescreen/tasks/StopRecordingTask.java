@@ -18,19 +18,30 @@ import org.springframework.web.client.RestTemplate;
  * Created by Timo on 29.1.2018.
  */
 
-public class StopRecordingTask extends AsyncTask<Context, Void, HttpStatus> {
+public class StopRecordingTask extends AsyncTask<Context, Void, Integer> {
 
     private RecordingRequest request;
+    private int shotId;
 
     public StopRecordingTask() {
         super();
+        shotId = -1;
     }
 
+    public int getShotId() {
+        return shotId;
+    }
+
+    /**
+     * Send a stop recording request to server. Sensor data of the shot is stored to database.
+     * @param params    none needed
+     * @return          Id of the created Shot object
+     */
     @Override
-    protected HttpStatus doInBackground(Context... params) {
+    protected Integer doInBackground(Context... params) {
         if(params.length != 1) {
             System.out.println("Pass a context to the task");
-            return null;
+            return -1;
         }
 
         try {
@@ -45,17 +56,20 @@ public class StopRecordingTask extends AsyncTask<Context, Void, HttpStatus> {
 
             //Send POST
             String url = params[0].getString(R.string.back_end_url) + "/stopRecording";
-            ResponseEntity<ObjectNode> res = restTemplate.postForEntity(url, null, ObjectNode.class);
+            ResponseEntity<Integer> res = restTemplate.postForEntity(url, null, Integer.class);
 
             if(res == null)
-                return HttpStatus.SERVICE_UNAVAILABLE;
+                return -1;
 
+            shotId = res.getBody().intValue();
 
-            return res.getStatusCode();
+            System.out.println("Created a shot with id " + shotId);
+
+            return shotId;
 
         } catch (Exception e) {
             Log.e("stopRecording", e.getMessage(), e);
-            return null;
+            return -1;
         }
     }
 }

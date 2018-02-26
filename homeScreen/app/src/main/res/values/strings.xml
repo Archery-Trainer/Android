@@ -52,6 +52,8 @@
     <string name="pauseRecordingLabel">Pause</string>
     <string name="playbackSpeed">Playback Speed</string>
 
+    <string name="saveShotError">Unable to store shot to database</string>
+    <string name="setScoreError">Unable to save score for this shot</string>
 
 
 </resources>
