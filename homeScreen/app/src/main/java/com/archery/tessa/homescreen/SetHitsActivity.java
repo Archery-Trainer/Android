@@ -84,6 +84,10 @@ public class SetHitsActivity extends AppCompatActivity implements View.OnTouchLi
                 tView.setY(motionEvent.getY());
             }
         }
+        if(motionEvent.getAction()==MotionEvent.ACTION_MOVE){
+            tView.setX(motionEvent.getX());
+            tView.setY(motionEvent.getY());
+        }
 
         return false;
 
