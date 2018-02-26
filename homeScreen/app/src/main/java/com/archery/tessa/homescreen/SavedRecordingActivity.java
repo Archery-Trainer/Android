@@ -112,6 +112,21 @@ public class SavedRecordingActivity extends AppCompatActivity
         /** Create the muscle map **/
         initArcherPic();
 
+        /** Some graph view settings **/
+        Viewport viewport = graphView.getViewport();
+        viewport.setXAxisBoundsManual(true);
+        viewport.setMinX(0);
+        viewport.setMaxX(MAX_VAL_X);
+        viewport.setYAxisBoundsManual(true);
+        viewport.setMinY(0);
+        viewport.setMaxY(MAX_VAL_Y);
+        viewport.setScrollable(true);
+        viewport.setScrollableY(true);
+        viewport.setScalable(true);
+        viewport.setScalableY(true);
+        viewport.setBackgroundColor(Color.LTGRAY);
+
+
         int muscleColors[] = GraphColors.colors;
 
         /** Add point series to graph **/
@@ -175,19 +190,6 @@ public class SavedRecordingActivity extends AppCompatActivity
             b.setChecked(true);
 
 
-        /** Some graph view settings **/
-        Viewport viewport = graphView.getViewport();
-        viewport.setXAxisBoundsManual(true);
-        viewport.setMinX(0);
-        viewport.setMaxX(MAX_VAL_X);
-        viewport.setYAxisBoundsManual(true);
-        viewport.setMinY(0);
-        viewport.setMaxY(MAX_VAL_Y);
-        viewport.setScrollable(true);
-        viewport.setScrollableY(true);
-        viewport.setScalable(true);
-        viewport.setScalableY(true);
-        viewport.setBackgroundColor(Color.LTGRAY);
 
 
         /** Set up the play/pause button **/
