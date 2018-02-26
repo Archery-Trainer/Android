@@ -31,8 +31,6 @@ import com.jjoe64.graphview.series.Series;
 
 import com.archery.tessa.homescreen.UI.OurView;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -71,6 +69,7 @@ public class SavedRecordingActivity extends AppCompatActivity
     private Bitmap archerPic;
 
     private CheckBox[] ckBoxes;
+    private boolean[] ckBoxesStatus = { true, true, true, true, true, true };
 
     private boolean playbackOn = false;
     private PlaybackTask playbackTask;
@@ -283,7 +282,7 @@ public class SavedRecordingActivity extends AppCompatActivity
 
         MeasuredDataSet dataPnt = measuredDataPoints.get(measNo);
         if (dataPnt != null)
-            surfaceView.updateSurface(dataPnt);
+            surfaceView.updateSurface(dataPnt, ckBoxesStatus);
 
     }
 
@@ -371,28 +370,65 @@ public class SavedRecordingActivity extends AppCompatActivity
         boolean checked=((CheckBox)view).isChecked();
         switch(view.getId()){
             case R.id.chkBox1:
-                if(checked){graphView.addSeries(mSeries[0]);}
-                else{graphView.removeSeries(mSeries[0]);}
+                if(checked){
+                    graphView.addSeries(mSeries[0]);
+                    ckBoxesStatus[0] = true;
+                }
+                else{
+                    graphView.removeSeries(mSeries[0]);
+                    ckBoxesStatus[0] = false;
+                }
                 break;
             case R.id.chkBox2:
-                if(checked){graphView.addSeries(mSeries[1]);}
-                else{graphView.removeSeries(mSeries[1]);}
+                if(checked){
+                    graphView.addSeries(mSeries[1]);
+                    ckBoxesStatus[1] = true;
+                }
+                else{
+                    graphView.removeSeries(mSeries[1]);
+                    ckBoxesStatus[1] = false;
+                }
                 break;
             case R.id.chkBox3:
-                if(checked){graphView.addSeries(mSeries[2]);}
-                else{graphView.removeSeries(mSeries[2]);}
+                if(checked){
+                    graphView.addSeries(mSeries[2]);
+                    ckBoxesStatus[2] = true;
+                }
+                else{
+                    graphView.removeSeries(mSeries[2]);
+                    ckBoxesStatus[2] = false;
+                }
                 break;
             case R.id.chkBox4:
-                if(checked){graphView.addSeries(mSeries[3]);}
-                else{graphView.removeSeries(mSeries[3]);}
+                if(checked){
+                    graphView.addSeries(mSeries[3]);
+                    ckBoxesStatus[3] = true;
+                }
+                else{
+                    graphView.removeSeries(mSeries[3]);
+                    ckBoxesStatus[3] = false;
+
+                }
                 break;
             case R.id.chkBox5:
-                if(checked){graphView.addSeries(mSeries[4]);}
-                else{graphView.removeSeries(mSeries[4]);}
+                if(checked){
+                    graphView.addSeries(mSeries[4]);
+                    ckBoxesStatus[4] = true;
+                }
+                else{
+                    graphView.removeSeries(mSeries[4]);
+                    ckBoxesStatus[4] = false;
+                }
                 break;
             case R.id.chkBox6:
-                if(checked){graphView.addSeries(mSeries[5]);}
-                else{graphView.removeSeries(mSeries[5]);}
+                if(checked){
+                    graphView.addSeries(mSeries[5]);
+                    ckBoxesStatus[5] = true;
+                }
+                else{
+                    graphView.removeSeries(mSeries[5]);
+                    ckBoxesStatus[5] = false;
+                }
                 break;
         }
     }

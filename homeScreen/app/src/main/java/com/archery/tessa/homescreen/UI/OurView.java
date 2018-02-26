@@ -46,32 +46,42 @@ public class OurView extends SurfaceView{ // implements Runnable{
         init();
     }
 
-    public void updateSurface(MeasuredDataSet sensorvalues){
+    public void updateSurface(MeasuredDataSet sensorvalues, boolean[] showMuscle){
         //Bitmap tmp=pics.get(0);
 
+        int muscleTension = 0;
 
+        muscleTension = (showMuscle[0]) ? sensorvalues.getSensorData(0).getValue() : 0;
         changeColor(pics.get(1),
-                originalPics.get(1),
-                getMuscleColor(sensorvalues.getSensorData(0).getValue())); //getPixel((320 * 2), (165 * 2))
+            originalPics.get(1),
+            getMuscleColor(muscleTension));
 
+        muscleTension = (showMuscle[1]) ? sensorvalues.getSensorData(1).getValue() : 0;
         changeColor(pics.get(2),
                 originalPics.get(2),
-                getMuscleColor(sensorvalues.getSensorData(1).getValue())); //getPixel((455 * 2), (158 * 2))
+                getMuscleColor(muscleTension));
 
+        muscleTension = (showMuscle[2]) ? sensorvalues.getSensorData(2).getValue() : 0;
         changeColor(pics.get(3),
                 originalPics.get(3),
-                getMuscleColor(sensorvalues.getSensorData(2).getValue())); //getPixel((272 * 2), (150 * 2)
+                getMuscleColor(muscleTension));
 
+        muscleTension = (showMuscle[3]) ? sensorvalues.getSensorData(3).getValue() : 0;
         changeColor(pics.get(4),
                 originalPics.get(4),
-                getMuscleColor(sensorvalues.getSensorData(3).getValue())); //getPixel((400 * 2), (146 * 2))
+                getMuscleColor(muscleTension));
 
+        muscleTension = (showMuscle[4]) ? sensorvalues.getSensorData(4).getValue() : 0;
         changeColor(pics.get(5),
                 originalPics.get(5),
-                getMuscleColor(sensorvalues.getSensorData(4).getValue()));  //getPixel((227 * 2), (175 * 2))
+                getMuscleColor(muscleTension));
 
+        muscleTension = (showMuscle[5]) ? sensorvalues.getSensorData(5).getValue() : 0;
         changeColor(pics.get(6),
                 originalPics.get(6),
+                getMuscleColor(muscleTension));
+
+        drawSurface();
                 getMuscleColor(sensorvalues.getSensorData(5).getValue())); //getPixel((360 * 2), (160 * 2))
 
         drawSurface(new int[] {
@@ -84,6 +94,7 @@ public class OurView extends SurfaceView{ // implements Runnable{
         });
 
     }
+
     /** Returns mucle tension color based on sensor value**/
     private String getMuscleColor(int sensor_value){
 

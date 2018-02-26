@@ -56,6 +56,7 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
     private Bitmap archerPic;
 
     private CheckBox[] ckBoxes;
+    private boolean[] ckBoxesStatus = { true, true, true, true, true, true };
 
     private static final String TAG = "RecordingActivity";
 
@@ -227,7 +228,7 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
                         }
 
                         //update colors on muscle tension surfaceview
-                        surfaceView.updateSurface(measData);
+                        surfaceView.updateSurface(measData, ckBoxesStatus);
 
                     }
                 });
@@ -306,34 +307,75 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
         });
     }
 
+    /**
+     * Add or remove the point series from the graph when checkbox state changes
+     *
+     * @param view  The affected checkbox
+     */
     public void onChkClicked(View view){
         boolean checked=((CheckBox)view).isChecked();
         switch(view.getId()){
             case R.id.chkBox1:
-                if(checked){graphView.addSeries(mSeries[0]);}
-                else{graphView.removeSeries(mSeries[0]);}
-                Toast.makeText(context,"Checkbox1 checked"+ckBoxes[0].isChecked(),Toast.LENGTH_SHORT).show();
+                if(checked){
+                    graphView.addSeries(mSeries[0]);
+                    ckBoxesStatus[0] = true;
+                }
+                else{
+                    graphView.removeSeries(mSeries[0]);
+                    ckBoxesStatus[0] = false;
+                }
                 break;
             case R.id.chkBox2:
-                if(checked){graphView.addSeries(mSeries[1]);}
-                else{graphView.removeSeries(mSeries[1]);}
+                if(checked){
+                    graphView.addSeries(mSeries[1]);
+                    ckBoxesStatus[1] = true;
+                }
+                else{
+                    graphView.removeSeries(mSeries[1]);
+                    ckBoxesStatus[1] = false;
+                }
                 break;
             case R.id.chkBox3:
-                if(checked){graphView.addSeries(mSeries[2]);}
-                else{graphView.removeSeries(mSeries[2]);}
+                if(checked){
+                    graphView.addSeries(mSeries[2]);
+                    ckBoxesStatus[2] = true;
+                }
+                else{
+                    graphView.removeSeries(mSeries[2]);
+                    ckBoxesStatus[2] = false;
+                }
                 break;
             case R.id.chkBox4:
-                if(checked){graphView.addSeries(mSeries[3]);}
-                else{graphView.removeSeries(mSeries[3]);}
-                    break;
+                if(checked){
+                    graphView.addSeries(mSeries[3]);
+                    ckBoxesStatus[3] = true;
+                }
+                else{
+                    graphView.removeSeries(mSeries[3]);
+                    ckBoxesStatus[3] = false;
+
+                }
+                break;
             case R.id.chkBox5:
-                if(checked){graphView.addSeries(mSeries[4]);}
-                else{graphView.removeSeries(mSeries[4]);}
-                    break;
+                if(checked){
+                    graphView.addSeries(mSeries[4]);
+                    ckBoxesStatus[4] = true;
+                }
+                else{
+                    graphView.removeSeries(mSeries[4]);
+                    ckBoxesStatus[4] = false;
+                }
+                break;
             case R.id.chkBox6:
-                if(checked){graphView.addSeries(mSeries[5]);}
-                else{graphView.removeSeries(mSeries[5]);}
-                    break;
+                if(checked){
+                    graphView.addSeries(mSeries[5]);
+                    ckBoxesStatus[5] = true;
+                }
+                else{
+                    graphView.removeSeries(mSeries[5]);
+                    ckBoxesStatus[5] = false;
+                }
+                break;
         }
     }
 
