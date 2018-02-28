@@ -3,6 +3,9 @@ package com.archery.tessa.homescreen;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -35,7 +38,7 @@ public class OptionsActivity extends AppCompatActivity{
             case R.id.profile_settings:
                 //user clicks settings then can create his/her profile
 
-                Intent intent = new Intent(RecordingActivity.this, ProfileActivity.class);
+                Intent intent = new Intent(this, ProfileActivity.class);
                 startActivity(intent);
                 return true;
 
@@ -49,10 +52,5 @@ public class OptionsActivity extends AppCompatActivity{
 
         }
     }
-}
-
-
-
-
 }
 

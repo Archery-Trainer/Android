@@ -9,6 +9,9 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -393,7 +396,6 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
         switch (item.getItemId()) {
             case R.id.profile_settings:
                 //user clicks settings then can create his/her profile
@@ -413,8 +415,3 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
         }
     }
 }
-
-
-
-
-}// end sessionactivity

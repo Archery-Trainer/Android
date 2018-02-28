@@ -12,4 +12,5 @@ public class ResultsActivity extends AppCompatActivity {
         setContentView(R.layout.results_activity);
 
 
-    }}
+    }
+}
