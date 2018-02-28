@@ -22,12 +22,15 @@ import static android.graphics.Color.parseColor;
  * Created by mkkvj on 1.2.2018.
  */
 
-public class OurView extends SurfaceView{ // implements Runnable{
-    private Thread myThread;
+public class OurView extends SurfaceView{
     private SurfaceHolder holder;
     boolean isOK=false;
     private LinkedList<Bitmap> pics;
     private LinkedList<Bitmap> originalPics;
+
+    private final int TENSION_COLOR = Color.parseColor("#410000");
+    private final int NUM_SENSORS = 6;
+    private final int MAX_SENSOR_VAL = 750;
 
     public OurView(Context context) {
         super(context);
@@ -46,122 +49,35 @@ public class OurView extends SurfaceView{ // implements Runnable{
         init();
     }
 
-    public void updateSurface(MeasuredDataSet sensorvalues, boolean[] showMuscle){
-        //Bitmap tmp=pics.get(0);
 
-        int muscleTension = 0;
-
-        muscleTension = (showMuscle[0]) ? sensorvalues.getSensorData(0).getValue() : 0;
-        changeColor(pics.get(1),
-            originalPics.get(1),
-            getMuscleColor(muscleTension));
-
-        muscleTension = (showMuscle[1]) ? sensorvalues.getSensorData(1).getValue() : 0;
-        changeColor(pics.get(2),
-                originalPics.get(2),
-                getMuscleColor(muscleTension));
-
-        muscleTension = (showMuscle[2]) ? sensorvalues.getSensorData(2).getValue() : 0;
-        changeColor(pics.get(3),
-                originalPics.get(3),
-                getMuscleColor(muscleTension));
-
-        muscleTension = (showMuscle[3]) ? sensorvalues.getSensorData(3).getValue() : 0;
-        changeColor(pics.get(4),
-                originalPics.get(4),
-                getMuscleColor(muscleTension));
-
-        muscleTension = (showMuscle[4]) ? sensorvalues.getSensorData(4).getValue() : 0;
-        changeColor(pics.get(5),
-                originalPics.get(5),
-                getMuscleColor(muscleTension));
-
-        muscleTension = (showMuscle[5]) ? sensorvalues.getSensorData(5).getValue() : 0;
-        changeColor(pics.get(6),
-                originalPics.get(6),
-                getMuscleColor(muscleTension));
-
-        drawSurface();
-                getMuscleColor(sensorvalues.getSensorData(5).getValue())); //getPixel((360 * 2), (160 * 2))
-
-        drawSurface(new int[] {
-                sensorvalues.getSensorData(0).getValue() * 800 / 255,
-                sensorvalues.getSensorData(1).getValue() * 800 / 255,
-                sensorvalues.getSensorData(2).getValue() * 800 / 255,
-                sensorvalues.getSensorData(3).getValue() * 800 / 255,
-                sensorvalues.getSensorData(4).getValue() * 800 / 255,
-                sensorvalues.getSensorData(5).getValue() * 800 / 255
-        });
-
+    private int standardizeSensorValue(int val) {
+        return Math.round(((float)val / MAX_SENSOR_VAL) * 255);
     }
 
-    /** Returns mucle tension color based on sensor value**/
-    private String getMuscleColor(int sensor_value){
 
-        /** Grayscale **/
-        /*
-        if(sensor_value<50){return "#FFFFFF";}
-        if(sensor_value<100){return "#EEEEEE";}
-        if(sensor_value<150){return "#DDDDDD";}
-        if(sensor_value<200){return "#CCCCCC";}
-        if(sensor_value<250){return "#BBBBBB";}
-        if(sensor_value<300){return "#AAAAAA";}
-        if(sensor_value<350){return "#999999";}
-        if(sensor_value<400){return "#888888";}
-        if(sensor_value<450){return "#777777";}
-        if(sensor_value<500){return "#666666";}
-        if(sensor_value<550){return "#555555";}
-        if(sensor_value<600){return "#444444";}
-        if(sensor_value<650){return "#333333";}
-        if(sensor_value<700){return "#222222";}
-        if(sensor_value<750){return "#111111";}
-        return "#000000";
-        */
+    /**
+     * Update the muscle map picture
+     * @param sensorvalues  A measurement of sensor values
+     * @param showMuscle    Array telling which sensor values to visualize
+     */
+    public void updateSurface(MeasuredDataSet sensorvalues, boolean[] showMuscle){
 
-        /** Red **/
+        int[] muscleTensions = new int[6];
 
-        if(sensor_value<50){return "#FFFFFF";}
-        if(sensor_value<100){return "#F5EEEE";}
-        if(sensor_value<150){return "#EBDDDD";}
-        if(sensor_value<200){return "#E1CCCC";}
-        if(sensor_value<250){return "#D7BBBB";}
-        if(sensor_value<300){return "#CDAAAA";}
-        if(sensor_value<350){return "#C39999";}
-        if(sensor_value<400){return "#B98888";}
-        if(sensor_value<450){return "#AF7777";}
-        if(sensor_value<500){return "#A56666";}
-        if(sensor_value<550){return "#9B5555";}
-        if(sensor_value<600){return "#8C4444";}
-        if(sensor_value<650){return "#7D3333";}
-        if(sensor_value<700){return "#692222";}
-        if(sensor_value<750){return "#551111";}
-        return "#410000";
+        for(int i = 0; i < NUM_SENSORS; i++) {
+            int tension = 0;
+            if(showMuscle[i])
+                tension = standardizeSensorValue(sensorvalues.getSensorData(i).getValue());
 
+            muscleTensions[i] = tension;
+        }
 
-        /** Blue **/
-        /*
-        if(sensor_value<50){return "#FFFFFF";}
-        if(sensor_value<100){return "#EEEEF5";}
-        if(sensor_value<150){return "#DDDDEB";}
-        if(sensor_value<200){return "#CCCCE1";}
-        if(sensor_value<250){return "#BBBBD7";}
-        if(sensor_value<300){return "#AAAACD";}
-        if(sensor_value<350){return "#9999C3";}
-        if(sensor_value<400){return "#8888B9";}
-        if(sensor_value<450){return "#7777AF";}
-        if(sensor_value<500){return "#6666A5";}
-        if(sensor_value<550){return "#55559B";}
-        if(sensor_value<600){return "#44448C";}
-        if(sensor_value<650){return "#33337D";}
-        if(sensor_value<700){return "#222269";}
-        if(sensor_value<750){return "#111155";}
-        return "#000041";
-        */
+        drawSurface(muscleTensions);
+
     }
 
     public void init(){
 
-        //myThread=new Thread(this);
         holder=getHolder();
 
         pics= new LinkedList<>();
@@ -174,7 +90,10 @@ public class OurView extends SurfaceView{ // implements Runnable{
             @Override
             public void surfaceCreated(SurfaceHolder surfaceHolder) {
                 System.out.println("surfaceCreated");
-                //myThread.start();
+
+                for(int i = 1; i <= 6; i++) {
+                    setInitialColor(pics.get(i));
+                }
                 drawSurface(new int[]{0,0,0,0,0,0});
             }
             @Override
@@ -227,65 +146,35 @@ public class OurView extends SurfaceView{ // implements Runnable{
         Matrix matrix = new Matrix();
         matrix.setRotate(0, pics.get(0).getWidth() / 2, pics.get(0).getHeight() / 2);
 
-        //@TODO: canvas can be null
         if (canvas == null) {
             System.out.println("canvas null");
             return;
         }
-        //System.out.println("num of pics" + pics.size());
-        //canvas.drawBitmap(pics.get(0), matrix, null);  // base image of archer
-        System.out.println("update picture");
-        //System.out.println("num of pics" + pics.size());
+
         canvas.drawBitmap(pics.get(0), matrix, null);  // base image of archer
 
         Paint p = new Paint();
         p.setAlpha(sensorValues[0]);
         canvas.drawBitmap(pics.get(1), srcRectLeftTrap, dstRectLeftTrap, p);
+
         p.setAlpha(sensorValues[1]);
         canvas.drawBitmap(pics.get(2), srcRectRightTrap, dstRectRightTrap, p);
+
         p.setAlpha(sensorValues[2]);
         canvas.drawBitmap(pics.get(3), srcRectLeftDelt, dstRectLeftDelt, p);
+
         p.setAlpha(sensorValues[3]);
         canvas.drawBitmap(pics.get(4), srcRectRightDelt, dstRectRightDelt, p);
+
         p.setAlpha(sensorValues[4]);
         canvas.drawBitmap(pics.get(5), srcRectLeftTricep, dstRectLeftTricep, p);
+
         p.setAlpha(sensorValues[5]);
         canvas.drawBitmap(pics.get(6), srcRectRightTricep, dstRectRightTricep, p);
 
         holder.unlockCanvasAndPost(canvas);
 
     }
-//=======
-//    @Override
-//    public void run() {
-//        while(isOK==true){
-//
-//            if(!holder.getSurface().isValid()){
-//                continue;
-//            }
-//            Canvas canvas=holder.lockCanvas();
-//
-//            if(canvas == null)
-//                return;
-//
-//            Matrix matrix = new Matrix();
-//            matrix.setRotate(0,pics.get(0).getWidth()/2,pics.get(0).getHeight()/2);
-//            //canvas.drawBitmap(pics.get(0),matrix,null);
-//            //matrix.setRotate(0,pics.get(1).getWidth()/2,pics.get(1).getHeight()/2);
-//            //Paint paint = new Paint();
-//            //paint.setColor(Color.RED);
-//
-//            System.out.println("ismutable "+ pics.get(0).isMutable());
-//            Bitmap tmp =pics.get(0);
-//            // changing muscle colors to base values
-//            changeColor(tmp, "#FFAEC9","#00FFFB");
-//            changeColor(tmp, "#FFC90E","#00FFFB");
-//            changeColor(tmp, "#52D132","#00FFFB");
-//
-//            canvas.drawBitmap(tmp,matrix,null);
-//            holder.unlockCanvasAndPost(canvas);
-//>>>>>>> cc8b04dd08db2f8c8d37dbd8acb903fcc0f4988c
-
 
     private boolean okToDrawToPixel(Bitmap originalPic, int x, int y) {
 
@@ -299,30 +188,27 @@ public class OurView extends SurfaceView{ // implements Runnable{
         return true;
     }
 
-    boolean changeColor(Bitmap bitmap, Bitmap originalPic, String newColor)
+    /**
+     * Color the picture with the muscle tension color
+     * @param bitmap    Picture to color
+     * @return  true if successful, false if not
+     */
+    boolean setInitialColor(Bitmap bitmap)
     {
         // bitmap must be mutable and 32 bits per pixel:
         if((bitmap.getConfig() != Bitmap.Config.ARGB_8888) || !bitmap.isMutable())
             return false;
-        //int orgcolor=parseColor(originalColor);
-        int newcolor=parseColor(newColor);
-        //System.out.println("rEd"+originalColor);
-        int count=0;
-        newcolor = Color.RED;
 
         for(int x = 0; x<bitmap.getWidth(); x++){
             for(int y = 0; y<bitmap.getHeight(); y++){
-                if(okToDrawToPixel(originalPic, x, y)){
+                if(okToDrawToPixel(bitmap, x, y)){
 
-                    bitmap.setPixel(x, y, newcolor);
-                    count++;
+                    bitmap.setPixel(x, y, TENSION_COLOR);
                 }
             }
         }
 
         return true;
 
-
     }
-
 }
