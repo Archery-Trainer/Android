@@ -45,15 +45,15 @@ public class SetScoreForShotTask extends AsyncTask<Void, Void, HttpStatus>{
 
             HttpEntity<Integer[]> entity = new HttpEntity<>(shotIdandScore);
 
-            ResponseEntity<ObjectNode> res = restTemplate.postForEntity(url, entity, ObjectNode.class);
-
-
-            HttpStatus status = res.getStatusCode();
+            ResponseEntity<HttpStatus> res = restTemplate.postForEntity(url, entity, HttpStatus.class);
+            
+            HttpStatus status = res.getBody();
 
             return status;
 
         } catch (Exception e) {
-            System.out.println("Unable to set score for shot");
+            System.out.println(R.string.setScoreError);
+            e.printStackTrace();
             return null;
         }
 

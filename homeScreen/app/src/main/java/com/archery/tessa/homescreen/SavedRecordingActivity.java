@@ -436,8 +436,8 @@ public class SavedRecordingActivity extends AppCompatActivity
 
     private void setHeaderString(Shot shot) {
         ActionBar actionBar = getSupportActionBar();
-        String header = "Showing shot " + shot.getId() + " from " + shot.getDate() + " : " +
-            shot.getTime() + ", Score: " + shot.getId();
+        String header = "Showing shot from " + shot.getDate() + " : " +
+            shot.getTime() + ", Score: " + shot.getScore();
 
         actionBar.setTitle(header);
     }
