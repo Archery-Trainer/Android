@@ -124,19 +124,33 @@ public class OurView extends SurfaceView{
     private final Rect srcRectLeftTricep = new Rect(0,0,(82*2),(19*2));
     private final Rect srcRectRightTricep = new Rect(0,0,(95*2), (39*2));
 
+    //Left and top coordinates of the muscle pics on the archer pic
+    private final int[] posLeftTrap = {294*2, 107*2};
+    private final int[] posRightTrap = {341*2, 107*2};
+    private final int[] posLeftDelt = {234*2, 134*2};
+    private final int[] posRightDelt = {375*2, 129*2};
+    private final int[] posLeftTricep = {179*2, 167*2};
+    private final int[] posRightTricep = {416*2, 144*2};
+
+
     //Rectangles where to place the muscle pics
-    private final Rect dstRectLeftTrap =
-            new Rect((292*2),(105*2),(292*2) + srcRectLeftTrap.right,(105*2) + srcRectLeftTrap.bottom);
-    private final Rect dstRectRightTrap =
-            new Rect((338*2),(107*2),(338*2) + srcRectRightTrap.right,(107*2) + srcRectRightTrap.bottom);
-    private final Rect dstRectRightDelt =
-            new Rect((372*2),(127*2),(372*2) + srcRectRightDelt.right ,(127*2) + srcRectRightDelt.bottom);
-    private final Rect dstRectLeftDelt =
-            new Rect((231*2),(131*2),(231*2) + srcRectLeftDelt.right,(131*2) + srcRectLeftDelt.bottom);
-    private final Rect dstRectLeftTricep =
-            new Rect((177*2),(166*2),(177*2)+ srcRectLeftTricep.right,(166*2) + srcRectLeftTricep.bottom);
-    private final Rect dstRectRightTricep =
-            new Rect((414*2),(142*2),(414*2) + srcRectRightTricep.right,(142*2) + srcRectRightTricep.bottom);
+    private final Rect dstRectLeftTrap = new Rect(posLeftTrap[0], posLeftTrap[1],
+                    posLeftTrap[0] + srcRectLeftTrap.right,posLeftTrap[1] + srcRectLeftTrap.bottom);
+
+    private final Rect dstRectRightTrap = new Rect(posRightTrap[0], posRightTrap[1],
+                    posRightTrap[0] + srcRectRightTrap.right,posRightTrap[1] + srcRectRightTrap.bottom);
+
+    private final Rect dstRectLeftDelt = new Rect(posLeftDelt[0], posLeftDelt[1],
+                    posLeftDelt[0] + srcRectLeftDelt.right,posLeftDelt[1] + srcRectLeftDelt.bottom);
+
+    private final Rect dstRectRightDelt = new Rect(posRightDelt[0], posRightDelt[1],
+            posRightDelt[0] + srcRectRightDelt.right ,posRightDelt[1] + srcRectRightDelt.bottom);
+
+    private final Rect dstRectLeftTricep = new Rect(posLeftTricep[0], posLeftTricep[1],
+            posLeftTricep[0] + srcRectLeftTricep.right,posLeftTricep[1] + srcRectLeftTricep.bottom);
+
+    private final Rect dstRectRightTricep = new Rect(posRightTricep[0], posRightTricep[1],
+            posRightTricep[0] + srcRectRightTricep.right,posRightTricep[1] + srcRectRightTricep.bottom);
 
 
 
