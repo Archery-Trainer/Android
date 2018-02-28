@@ -79,10 +79,13 @@ public class Shot implements Serializable{
     }
 
 
+    /**
+     * @return Representation of the shot that is shown in the list of recorded shots
+     */
     @Override
     public String toString() {
-        return "Shot " + id + ", date: " + date + ", time: " + time
-                + ", score: " + score + ", athleteId: " + athleteNo;
+        return "Date: " + date + ", Time: " + time
+                + ", Score: " + score;
     }
 }
 

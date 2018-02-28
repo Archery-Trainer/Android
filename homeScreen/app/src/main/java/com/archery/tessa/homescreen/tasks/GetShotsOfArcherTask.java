@@ -20,11 +20,13 @@ public class GetShotsOfArcherTask extends AsyncTask<Void, Void, List<Shot>> {
 
     private Context context;
     private String email;
+    private OnTaskCompleted showInUiCallback;
 
-    public GetShotsOfArcherTask(Context context, String email) {
+    public GetShotsOfArcherTask(Context context, String email, OnTaskCompleted showInUiCallback) {
         super();
         this.context = context;
         this.email = email;
+        this.showInUiCallback = showInUiCallback;
     }
 
     @Override
@@ -42,10 +44,7 @@ public class GetShotsOfArcherTask extends AsyncTask<Void, Void, List<Shot>> {
         //Send POST
         String url = context.getString(R.string.back_end_url) + "/getShotsOfArcher";
 
-
-        //@TODO: The date format ("Jan 1, 1970")cannot be converted to Date object. Should store those as long
         ResponseEntity<Shot[]> res = restTemplate.postForEntity(url, entity, Shot[].class);
-
 
         if(res == null) {
             System.out.println("Unable to fetch shots");
@@ -71,11 +70,7 @@ public class GetShotsOfArcherTask extends AsyncTask<Void, Void, List<Shot>> {
             return;
         }
 
-        //Show shots in UI...
-
-        for(Shot s : shots)
-            System.out.println(s.toString());
-
+        showInUiCallback.onTaskCompleted(shots);
     }
 
 }

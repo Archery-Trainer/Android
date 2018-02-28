@@ -2,20 +2,14 @@ package com.archery.tessa.homescreen;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 
-import com.archery.tessa.homescreen.models.Shot;
-
-import java.sql.Date;
-import java.sql.Time;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +32,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, ResultsActivity.class);
+
+                //@TODO: Get real email of the current archer
+                intent.putExtra("ARCHER_EMAIL", "test@test.com");
+
                 startActivity(intent);
             }
         });
@@ -53,17 +51,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        /** Example usage of SavedRecordingActivity **/
         Button quitButton = (Button) findViewById(R.id.button3);
         quitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, SavedRecordingActivity.class);
-
-                //Get shot from a list of shots gotten with GetShotsOfArcherTask and shown in the UI
-                Shot s = new Shot(94, new Date(0), new Time(0), 3, 4);
-                i.putExtra("SHOT", s);
-                startActivity(i);
+                moveTaskToBack(true);
+                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(1);
             }
         });
     }
