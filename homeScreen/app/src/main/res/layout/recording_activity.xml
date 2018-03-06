@@ -7,32 +7,18 @@
     android:background="@color/colorWhiteBackground">
 
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-
-    </android.support.design.widget.AppBarLayout>
-
     <Switch
         android:id="@+id/switch1"
         android:layout_width="wrap_content"
-        android:layout_height="22dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:text="Recording"
-        app:layout_constraintStart_toEndOf="@+id/relativeLayout"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />
 
+    <!--
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="wrap_content"
@@ -238,6 +224,7 @@
 
     </RelativeLayout>
 
+
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
@@ -250,6 +237,7 @@
         app:layout_constraintHorizontal_bias="0.017"
         app:layout_constraintStart_toEndOf="@+id/switch1"
         tools:ignore="MissingConstraints" />
+-->
 
     <com.archery.tessa.homescreen.UI.OurView
         android:id="@+id/archerSurfaceView"
@@ -267,15 +255,15 @@
 
     <com.jjoe64.graphview.GraphView
         android:id="@+id/graph"
-        android:layout_width="400dip"
-        android:layout_height="191dp"
+        android:layout_width="430dp"
+        android:layout_height="275dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/switch1" />
 
     <CheckBox
         android:id="@+id/chkBox1"

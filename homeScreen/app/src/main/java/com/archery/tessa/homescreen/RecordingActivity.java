@@ -43,9 +43,9 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
 
     MqttClient mqttClient;
 
-    private TextView[] textViews;
+    //private TextView[] textViews;
 
-    private TextView[] maxTextViews;
+    //private TextView[] maxTextViews;
 
     private GraphView graphView;
 
@@ -100,7 +100,8 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
             graphView.addSeries(mSeries[i]);
         }
 
-        /** defining textboxes for sensor data **/
+
+        /** defining textboxes for sensor data
         textViews = new TextView[]{
                 findViewById(R.id.sensorval1),
                 findViewById(R.id.sensorval2),
@@ -109,7 +110,7 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
                 findViewById(R.id.sensorval5),
                 findViewById(R.id.sensorval6)
         };
-        /** defining textboxes for sensor data max values**/
+        /** defining textboxes for sensor data max values
         maxTextViews = new TextView[] {
                 findViewById(R.id.sensormaxval1),
                 findViewById(R.id.sensormaxval2),
@@ -118,6 +119,7 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
                 findViewById(R.id.sensormaxval5),
                 findViewById(R.id.sensormaxval6)
         };
+         */
 
 
         /** Checkboxes for graphs**/
@@ -207,7 +209,7 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
                 };
 
 
-                textViews[0].post(new Runnable() {
+                ckBoxes[0].post(new Runnable() {
 
                     //Update ui elements when receiving message
                     @Override
@@ -215,9 +217,14 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
                         count++;
 
                         for(int i = 0; i < NUM_SENSORS; i++) {
-
-                            //Update text views
                             int val = sensorVals[i];
+
+                            //Update graph for this sensor
+                            mSeries[i].appendData(new DataPoint(count, val), true, MAX_DATA_POINTS);
+
+                            /*
+                            //Update text views
+
                             textViews[i].setText(Integer.toString(val));
 
                             int maxVal = maxVals[i];
@@ -225,9 +232,7 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
                                 maxTextViews[i].setText(Integer.toString(val));
                                 maxVals[i] = val;
                             }
-
-                            //Update graph for this sensor
-                            mSeries[i].appendData(new DataPoint(count, val), true, MAX_DATA_POINTS);
+                            */
                         }
 
                         //update colors on muscle tension surfaceview
