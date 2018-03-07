@@ -266,6 +266,9 @@ public class SavedRecordingActivity extends AppCompatActivity
      */
     private void showMeasurementPoint(int measNo) {
 
+        if(measNo >= measuredDataPoints.size())
+            return;
+
         //Allow repaints only if they are >200 msec apart to avoid muscle map flickering
         long now = System.currentTimeMillis();
 
