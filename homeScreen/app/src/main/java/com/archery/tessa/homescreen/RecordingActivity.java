@@ -156,6 +156,14 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
         gson = new Gson();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        System.out.println("Creating MQTT-client");
+        mqttClient = new MqttClient(this, getApplication());
+    }
+
     /**
      * Initialize the muscle map image
      *
