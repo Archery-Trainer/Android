@@ -2,19 +2,14 @@ package com.archery.tessa.homescreen;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 
-import com.archery.tessa.homescreen.models.Shot;
-
-import java.sql.Date;
-import java.sql.Time;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,11 +27,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button settings = (Button) findViewById(R.id.settings);
-        settings.setOnClickListener(new View.OnClickListener() {
+        Button archives = (Button) findViewById(R.id.archives);
+        archives.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, OptionsActivity.class);
+                Intent intent = new Intent(MainActivity.this, ResultsActivity.class);
+
+                //@TODO: Get real email of the current archer
+                intent.putExtra("ARCHER_EMAIL", "test@test.com");
+
                 startActivity(intent);
             }
         });
@@ -52,17 +51,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        /** Example usage of SavedRecordingActivity **/
         Button quitButton = (Button) findViewById(R.id.button3);
         quitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, SavedRecordingActivity.class);
-
-                //Get shot from a list of shots gotten with GetShotsOfArcherTask and shown in the UI
-                Shot s = new Shot(94, new Date(0), new Time(0), 3, 4);
-                i.putExtra("SHOT", s);
-                startActivity(i);
+                moveTaskToBack(true);
+                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(1);
             }
         });
     }
@@ -70,22 +65,36 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        MenuInflater menuInflater = getMenuInflater();
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        switch (item.getItemId()) {
+            case R.id.profile_settings:
+                //user clicks settings then can create his/her profile
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(intent);
+                return true;
+
+            case R.id.home:
+                //user can access to the homepage
+                onBackPressed();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+
         }
-
-        return super.onOptionsItemSelected(item);
     }
 }
+
+

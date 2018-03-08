@@ -1,6 +1,5 @@
 package com.archery.tessa.homescreen.tasks;
 
-import com.archery.tessa.homescreen.SessionActivity;
 import com.archery.tessa.homescreen.models.Archer;
 import com.archery.tessa.homescreen.R;
 
@@ -52,7 +51,6 @@ public class CreateArcherTask extends AsyncTask<Context, Void, Archer> {
             MappingJackson2HttpMessageConverter msgConverter = new MappingJackson2HttpMessageConverter();
             restTemplate.getMessageConverters().add(msgConverter);
 
-            //Create test archer and a HTTP entity from it
             Gson gson = new Gson();
             HttpEntity<Archer> entity = new HttpEntity<Archer>(archer);
 

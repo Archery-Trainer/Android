@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#ffa500</color>
     <color name="colorAccent">#ffa500</color>
     <color name="colorBackground">#ffdb99</color>
+    <color name="colorWhiteBackground">#ffffff</color>
 
 
     <!-- Also check file GraphColors.java -->

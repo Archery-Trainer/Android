@@ -19,8 +19,6 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".SessionActivity" android:label="Start">
-        </activity>
         <activity android:name=".OptionsActivity" android:label="Options">
         </activity>
         <activity android:name=".ResultsActivity" android:label="Results">
