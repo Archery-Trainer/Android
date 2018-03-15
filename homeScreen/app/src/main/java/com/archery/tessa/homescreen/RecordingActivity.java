@@ -17,14 +17,12 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amazonaws.services.iot.client.AWSIotException;
 import com.archery.tessa.homescreen.UI.OurView;
 import com.archery.tessa.homescreen.models.MeasuredDataSet;
 import com.archery.tessa.homescreen.models.RecordingRequest;
 import com.archery.tessa.homescreen.tasks.StartRecordingTask;
-import com.archery.tessa.homescreen.tasks.StopRecordingTask;
 import com.google.gson.Gson;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.Viewport;
@@ -43,9 +41,9 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
 
     MqttClient mqttClient;
 
-    //private TextView[] textViews;
+    private TextView[] textViews;
 
-    //private TextView[] maxTextViews;
+    private TextView[] maxTextViews;
 
     private GraphView graphView;
 
@@ -100,26 +98,24 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
             graphView.addSeries(mSeries[i]);
         }
 
-
-        /** defining textboxes for sensor data
-        textViews = new TextView[]{
-                findViewById(R.id.sensorval1),
-                findViewById(R.id.sensorval2),
-                findViewById(R.id.sensorval3),
-                findViewById(R.id.sensorval4),
-                findViewById(R.id.sensorval5),
-                findViewById(R.id.sensorval6)
-        };
-        /** defining textboxes for sensor data max values
-        maxTextViews = new TextView[] {
-                findViewById(R.id.sensormaxval1),
-                findViewById(R.id.sensormaxval2),
-                findViewById(R.id.sensormaxval3),
-                findViewById(R.id.sensormaxval4),
-                findViewById(R.id.sensormaxval5),
-                findViewById(R.id.sensormaxval6)
-        };
-         */
+//        /** defining textboxes for sensor data **/
+//        textViews = new TextView[]{
+//                findViewById(R.id.sensorval1),
+//                findViewById(R.id.sensorval2),
+//                findViewById(R.id.sensorval3),
+//                findViewById(R.id.sensorval4),
+//                findViewById(R.id.sensorval5),
+//                findViewById(R.id.sensorval6)
+//        };
+        /** defining textboxes for sensor data max values**/
+//        maxTextViews = new TextView[] {
+//                findViewById(R.id.sensormaxval1),
+//                findViewById(R.id.sensormaxval2),
+//                findViewById(R.id.sensormaxval3),
+//                findViewById(R.id.sensormaxval4),
+//                findViewById(R.id.sensormaxval5),
+//                findViewById(R.id.sensormaxval6)
+//        };
 
 
         /** Checkboxes for graphs**/
@@ -156,14 +152,6 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
         gson = new Gson();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        System.out.println("Creating MQTT-client");
-        mqttClient = new MqttClient(this, getApplication());
-    }
-
     /**
      * Initialize the muscle map image
      *
@@ -175,21 +163,30 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
         options.inMutable=true;
         surfaceView = (OurView)findViewById(R.id.archerSurfaceView);
 
-        //pics.add(BitmapFactory.decodeResource(getResources(),R.drawable.archer_ind_right_2_2_18v3,options));
-        archerPic = BitmapFactory.decodeResource(getResources(),R.drawable.archer_ind_right_2_2_18v3,options);
-        //System.out.println("checking"+archerPic.isMutable());
+        System.out.println("surfaceview "+surfaceView.getX());
+        surfaceView.setZOrderOnTop(true);
 
+        System.out.println(surfaceView.getBackground());
+        //pics.add(BitmapFactory.decodeResource(getResources(),R.drawable.archer_ind_right_2_2_18v3,options));
+        archerPic = BitmapFactory.decodeResource(getResources(),R.drawable.archer_left_scaled,options);
+        //System.out.println("checking"+archerPic.isMutable());
+        System.out.println("ArcherPic width: "+archerPic.getWidth()+" Height: "+archerPic.getHeight());
         surfaceView.setdPicsForDrawing(archerPic);
+
         graphView = (GraphView) findViewById(R.id.graph);
 
-        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.archer_left_trapez_crop_292_105,options));
-        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.archer_right_trapez_crop_338_107,options));
+        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.left_trapezoid,options));
+        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.right_trapezoid,options));
+        //surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.archer_right_trapez_crop_338_107,options));
 
-        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.archer_left_delt_crop_231_131,options));
-        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.archer_right_delt_crop_372_172,options));
+        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.left_deltoid,options));
+        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.right_deltoid,options));
 
-        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.archer_left_triceps_crop_178_166,options));
-        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.archer_right_triceps_crop_414_142,options));
+        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.left_triceps,options));
+        surfaceView.setdPicsForDrawing(BitmapFactory.decodeResource(getResources(),R.drawable.right_triceps,options));
+
+
+
     }
 
 
@@ -225,22 +222,19 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
                         count++;
 
                         for(int i = 0; i < NUM_SENSORS; i++) {
-                            int val = sensorVals[i];
+
+                            //Update text views
+                           int val = sensorVals[i];
+//                            textViews[i].setText(Integer.toString(val));
+//
+//                            int maxVal = maxVals[i];
+//                            if(val > maxVal) {
+//                                maxTextViews[i].setText(Integer.toString(val));
+//                                maxVals[i] = val;
+//                            }
 
                             //Update graph for this sensor
                             mSeries[i].appendData(new DataPoint(count, val), true, MAX_DATA_POINTS);
-
-                            /*
-                            //Update text views
-
-                            textViews[i].setText(Integer.toString(val));
-
-                            int maxVal = maxVals[i];
-                            if(val > maxVal) {
-                                maxTextViews[i].setText(Integer.toString(val));
-                                maxVals[i] = val;
-                            }
-                            */
                         }
 
                         //update colors on muscle tension surfaceview
@@ -401,6 +395,7 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
+
 
 
 

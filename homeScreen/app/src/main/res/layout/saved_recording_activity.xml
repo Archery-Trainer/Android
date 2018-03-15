@@ -9,66 +9,63 @@
 
     <com.archery.tessa.homescreen.UI.OurView
         android:id="@+id/archerSurfaceView"
-        android:layout_width="525dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_width="300dp"
+        android:layout_height="192dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/graph"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/graph" />
 
     <com.jjoe64.graphview.GraphView
         android:id="@+id/graph"
-        android:layout_width="400dip"
-        android:layout_height="314dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/chkBox1"
+        app:layout_constraintEnd_toStartOf="@+id/archerSurfaceView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <CheckBox
         android:id="@+id/chkBox1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:buttonTint="@color/colorSensor1"
         android:onClick="onChkClicked"
         android:text="@string/Sensor1Muscle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/graph" />
+        app:layout_constraintBottom_toTopOf="@+id/chkBox2"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <CheckBox
         android:id="@+id/chkBox2"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:buttonTint="@color/colorSensor2"
         android:onClick="onChkClicked"
         android:text="@string/Sensor2Muscle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chkBox1" />
+        app:layout_constraintBottom_toTopOf="@+id/chkBox3"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <CheckBox
         android:id="@+id/chkBox3"
         android:layout_width="wrap_content"
         android:layout_height="31dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:buttonTint="@color/colorSensor3"
         android:onClick="onChkClicked"
         android:text="@string/Sensor3Muscle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chkBox2" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <CheckBox
         android:id="@+id/chkBox4"
@@ -107,12 +104,12 @@
         android:id="@+id/buttonPlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="84dp"
         android:text="@string/playRecordingLabel"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/chkBox4"
-        app:layout_constraintStart_toEndOf="@+id/chkBox6"
-        app:layout_constraintTop_toBottomOf="@id/graph" />
+        app:layout_constraintStart_toEndOf="@+id/chkBox6" />
 
     <TextView
         android:id="@+id/playbackSpeedLabel"

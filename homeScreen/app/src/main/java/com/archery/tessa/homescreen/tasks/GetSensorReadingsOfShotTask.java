@@ -58,6 +58,7 @@ public class GetSensorReadingsOfShotTask extends AsyncTask<Void, Void, List<Meas
 
         for(MeasuredDataSet s : res.getBody()) {
             targetSet.add(s);
+            System.out.println(Long.toString(s.getTimestamp()));
         }
 
         System.out.println("Ready");
