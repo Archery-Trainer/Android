@@ -58,6 +58,7 @@ public class GetArcherTask extends AsyncTask<Void, Void, Archer> {
     protected void onPostExecute(Archer a) {
         if(a == null){
             System.out.println("Unable to fetch archer");
+
             return;
         }
 

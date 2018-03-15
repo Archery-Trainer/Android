@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
@@ -14,9 +15,6 @@ import android.view.SurfaceView;
 import com.archery.tessa.homescreen.models.MeasuredDataSet;
 
 import java.util.LinkedList;
-import java.util.List;
-
-import static android.graphics.Color.parseColor;
 
 /**
  * Created by mkkvj on 1.2.2018.
@@ -27,10 +25,18 @@ public class OurView extends SurfaceView{
     boolean isOK=false;
     private LinkedList<Bitmap> pics;
     private LinkedList<Bitmap> originalPics;
+    private LinkedList<Rect> musclePicAreas;
 
     private final int TENSION_COLOR = Color.parseColor("#410000");
     private final int NUM_SENSORS = 6;
     private final int MAX_SENSOR_VAL = 750;
+
+    private final int LEFT_TRAPEZOID=0;
+    private final int RIGHT_TRAPEZOID=1;
+    private final int LEFT_DELTOID=2;
+    private final int RIGHT_DELTOID=3;
+    private final int LEFT_TRICEPS=4;
+    private final int RIGHT_TRICEPS=5;
 
     public OurView(Context context) {
         super(context);
@@ -55,6 +61,7 @@ public class OurView extends SurfaceView{
     }
 
 
+
     /**
      * Update the muscle map picture
      * @param sensorvalues  A measurement of sensor values
@@ -62,7 +69,7 @@ public class OurView extends SurfaceView{
      */
     public void updateSurface(MeasuredDataSet sensorvalues, boolean[] showMuscle){
 
-        int[] muscleTensions = new int[6];
+        int[] muscleTensions = new int[NUM_SENSORS];
 
         for(int i = 0; i < NUM_SENSORS; i++) {
             int tension = 0;
@@ -79,7 +86,9 @@ public class OurView extends SurfaceView{
     public void init(){
 
         holder=getHolder();
-
+        //set the holder to transparent so that view's background color shows around archer bitmap
+        holder.setFormat(PixelFormat.TRANSPARENT);
+        musclePicAreas=new LinkedList<>();
         pics= new LinkedList<>();
         originalPics = new LinkedList<>();
         isOK=true;
@@ -91,8 +100,10 @@ public class OurView extends SurfaceView{
             public void surfaceCreated(SurfaceHolder surfaceHolder) {
                 System.out.println("surfaceCreated");
 
-                for(int i = 1; i <= 6; i++) {
+                for(int i = 1; i <= NUM_SENSORS; i++) {
                     setInitialColor(pics.get(i));
+                    musclePicAreas.add(getPicDimension(pics.get(i)));
+                    System.out.println("Adding muscle picture area: "+musclePicAreas.getLast().toShortString());
                 }
                 drawSurface(new int[]{0,0,0,0,0,0});
             }
@@ -113,7 +124,6 @@ public class OurView extends SurfaceView{
         pics.add(pic);
         originalPics.add(pic);
     }
-    public int getNumberOfPics(){return pics.size();}
 
 
     //Rectangles around the small muscle pics
@@ -152,10 +162,21 @@ public class OurView extends SurfaceView{
     private final Rect dstRectRightTricep = new Rect(posRightTricep[0], posRightTricep[1],
             posRightTricep[0] + srcRectRightTricep.right,posRightTricep[1] + srcRectRightTricep.bottom);
 
+    /** reads image muscle imagefiles and **/
 
+    public void getMuscleCropAreas(int number_of_muscles){
+        for(int i=1;i<number_of_muscles;i++){
+            // get muscle bitmap's top left and bottom right coordinate points
+            musclePicAreas.add(getPicDimension(pics.get(i)));
+        }
+
+
+    }
 
     public void drawSurface(int[] sensorValues){
+
         Canvas canvas=holder.lockCanvas();
+
 
         Matrix matrix = new Matrix();
         matrix.setRotate(0, pics.get(0).getWidth() / 2, pics.get(0).getHeight() / 2);
@@ -166,25 +187,48 @@ public class OurView extends SurfaceView{
         }
 
         canvas.drawBitmap(pics.get(0), matrix, null);  // base image of archer
-
+//        System.out.println("Canvas height "+canvas.getHeight());
+//        System.out.println("Picture height "+pics.get(0).getHeight());
+//        System.out.println("Canvas width "+canvas.getWidth());
+//        System.out.println("Picture width "+pics.get(0).getWidth());
+//        System.out.println("Density "+canvas.getDensity());
         Paint p = new Paint();
         p.setAlpha(sensorValues[0]);
-        canvas.drawBitmap(pics.get(1), srcRectLeftTrap, dstRectLeftTrap, p);
-        System.out.println("Width = "+pics.get(0).getWidth());
-        p.setAlpha(sensorValues[1]);
-        canvas.drawBitmap(pics.get(2), srcRectRightTrap, dstRectRightTrap, p);
+//        Rect test= getPicDimension(pics.get(1));
+//        Paint tt=new Paint();
+//        tt.setColor(Color.BLUE);
+//        Rect tRect=new Rect(0,0,59,171);
 
+        canvas.drawBitmap(pics.get(1), musclePicAreas.get(LEFT_TRAPEZOID),musclePicAreas.get(LEFT_TRAPEZOID),p);
+
+//        //canvas.drawRect(test,tt);
+//        //canvas.drawRect(musclePicAreas.get(LEFT_TRAPEZOID),tt);
+//        System.out.println("archer size: "+pics.get(0).getWidth());
+//        System.out.println("pic size: "+pics.get(1).getWidth());
+//        System.out.println("Rect1: "+musclePicAreas.get(LEFT_TRAPEZOID));
+//
+//        System.out.println("manual Rect1_y: "+srcRectLeftTrap.centerY()+" vs. auto Rect1_y: "+test.centerY());
+//
+//        System.out.println("manual width: "+srcRectLeftTrap.width()+" vs. auto width: "+test.width());
+//        System.out.println("manual height: "+srcRectLeftTrap.height()+" vs. auto height: "+test.height());
+//        System.out.println("Rect: "+test.toShortString());
+//
+//        System.out.println("Width = "+pics.get(1).getWidth());
+        p.setAlpha(sensorValues[1]);
+
+
+        canvas.drawBitmap(pics.get(2), musclePicAreas.get(RIGHT_TRAPEZOID),musclePicAreas.get(RIGHT_TRAPEZOID),p);
         p.setAlpha(sensorValues[2]);
-        canvas.drawBitmap(pics.get(3), srcRectLeftDelt, dstRectLeftDelt, p);
+        canvas.drawBitmap(pics.get(3), musclePicAreas.get(LEFT_DELTOID), musclePicAreas.get(LEFT_DELTOID), p);
 
         p.setAlpha(sensorValues[3]);
-        canvas.drawBitmap(pics.get(4), srcRectRightDelt, dstRectRightDelt, p);
+        canvas.drawBitmap(pics.get(4), musclePicAreas.get(RIGHT_DELTOID), musclePicAreas.get(RIGHT_DELTOID), p);
 
         p.setAlpha(sensorValues[4]);
-        canvas.drawBitmap(pics.get(5), srcRectLeftTricep, dstRectLeftTricep, p);
+        canvas.drawBitmap(pics.get(5), musclePicAreas.get(LEFT_TRICEPS), musclePicAreas.get(LEFT_TRICEPS), p);
 
         p.setAlpha(sensorValues[5]);
-        canvas.drawBitmap(pics.get(6), srcRectRightTricep, dstRectRightTricep, p);
+        canvas.drawBitmap(pics.get(6), musclePicAreas.get(RIGHT_TRICEPS), musclePicAreas.get(RIGHT_TRICEPS), p);
 
         holder.unlockCanvasAndPost(canvas);
 
@@ -224,5 +268,33 @@ public class OurView extends SurfaceView{
 
         return true;
 
+    }
+    public Rect getPicDimension(Bitmap bitmap){
+
+        int x_upper_left=bitmap.getWidth();
+
+        int y_upper_left=bitmap.getHeight();
+        int x_lower_right=0;
+        int y_lower_right=0;
+        System.out.println("initial top x:"+x_upper_left+" top y:"+y_upper_left);
+
+        for(int y=0; y<bitmap.getHeight();y++){
+            for(int x=0;x<bitmap.getWidth();x++){
+                if(okToDrawToPixel(bitmap,x,y)){
+                    if(x<x_upper_left){
+                        x_upper_left=x;
+                        if(x==138){
+                            System.out.println("löytyi");
+                        }
+                    }
+                    if(y<y_upper_left){y_upper_left=y;}
+                    if(x>x_lower_right){x_lower_right=x;}
+                    if(y>y_lower_right){
+                        y_lower_right=y;}
+                }
+            }
+        }
+        Rect res=new Rect(x_upper_left,y_upper_left,x_lower_right,y_lower_right);
+        return res;
     }
 }

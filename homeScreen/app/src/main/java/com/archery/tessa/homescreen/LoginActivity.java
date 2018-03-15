@@ -3,6 +3,7 @@ package com.archery.tessa.homescreen;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -26,7 +27,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
 
+import com.archery.tessa.homescreen.models.RecordingRequest;
+import com.archery.tessa.homescreen.tasks.GetArcherTask;
+import com.archery.tessa.homescreen.tasks.StartRecordingTask;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -36,6 +42,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
     private static final int REQUEST_READ_CONTACTS = 0;
+    private Context mContext;
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -60,7 +67,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         setContentView(R.layout.activity_login);
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
-
+        mContext=this;
 
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
@@ -271,6 +278,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             try {
                 // Simulate network access.
                 Thread.sleep(2000);
+                //RecordingRequest req = new RecordingRequest("test@test.com", new Date().getTime());
+
+                GetArcherTask task = new GetArcherTask(mContext, this.mEmail);
+                task.execute();
             } catch (InterruptedException e) {
                 return false;
             }
