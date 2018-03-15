@@ -52,22 +52,19 @@ public class SetHitsActivity extends AppCompatActivity implements View.OnTouchLi
 
         tView=findViewById(R.id.targetView);
         tView.setOnTouchListener(this);
+        tView.setZOrderOnTop(true);
         hitVal=(TextView)findViewById(R.id.hitValue);
         saveButton=(Button)findViewById(R.id.saveButton);
 
-        target = BitmapFactory.decodeResource(getResources(),R.drawable.own_442px_80_cm_archery_target);
-
-        arrow = BitmapFactory.decodeResource(getResources(),R.drawable.arrow);
+        target = BitmapFactory.decodeResource(getResources(),R.drawable.archery_target_300px_80cm);
+        System.out.println("h: "+target.getHeight());
         //test values
 
         Shot newShot=new Shot(new Date(System.currentTimeMillis()),new Time(System.currentTimeMillis()),Integer.parseInt(hitVal.getText().toString()),6);
         saveButton.setOnClickListener(this);
 
-        if(tView==null){System.out.println("targetview is null");}
-        if(arrow==null){System.out.println("arrow is null");}
-
         tView.setTargetImage(target);
-        tView.setHitImage(arrow);
+        //tView.setHitImage(arrow);
 
 
     }
@@ -78,8 +75,6 @@ public class SetHitsActivity extends AppCompatActivity implements View.OnTouchLi
 
 
         if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
-
-
             float touchX = motionEvent.getX();
             float touchY = motionEvent.getY();
             // check if touch is on target area
@@ -118,10 +113,8 @@ public class SetHitsActivity extends AppCompatActivity implements View.OnTouchLi
 
         if(shotId == -1)
             Toast.makeText(this, R.string.saveShotError, Toast.LENGTH_SHORT).show();
-
         SetScoreForShotTask setScoreTask = new SetScoreForShotTask(shotId, score, this);
         setScoreTask.execute();
-
         finish();
     }
 }

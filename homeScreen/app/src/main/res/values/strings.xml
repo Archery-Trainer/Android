@@ -38,14 +38,12 @@
     <string name="Sensor6Muscle">Right Triceps</string>
 
 
-    <string name="saveButton">Save Hit</string>
-
     <string name="ShowMuscleData">Show muscle data</string>
     <string name="Help">Help</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email completions."
     </string>
-    <string name="save_hit">Save Hit</string>
-    <string name="hitValue">Hit Value</string>
+    <string name="save_hit">Save Score</string>
+    <string name="hitValue">Hit Score</string>
 
 
     <string name="playRecordingLabel">Play</string>
@@ -57,6 +55,8 @@
     <string name="getShotsError">No recordings found</string>
 
     <string name="chooseRecording">Choose a recording to view</string>
+    <string name="Score">0</string>
+    <string name="score">Score</string>
 
 
 </resources>
