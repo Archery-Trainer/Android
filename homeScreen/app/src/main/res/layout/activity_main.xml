@@ -8,68 +8,72 @@
     tools:context="com.archery.tessa.homescreen.MainActivity">
 
 
-    <android.support.design.widget.AppBarLayout
+    <android.widget.LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp">
+
+        <Button
+            android:id="@+id/start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="Start" />
 
 
+        <Space
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
 
-    </android.support.design.widget.AppBarLayout>
+        <Button
+            android:id="@+id/archives"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="@string/archives"/>
 
-    <Button
-        android:id="@+id/archives"
-        android:layout_width="90dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
-        android:background="@android:color/transparent"
-        android:text="@string/archives"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <Space
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
 
-    <Button
-        android:id="@+id/start"
-        android:layout_width="90dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="176dp"
-        android:background="@android:color/transparent"
-        android:text="Start"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="@string/Help" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="90dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="176dp"
-        android:background="@android:color/transparent"
-        android:text="@string/Help"
-        app:layout_constraintBottom_toTopOf="@+id/button3"
-        app:layout_constraintEnd_toEndOf="@+id/button3" />
+        <Space
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:background="@android:color/transparent"
-        android:text="quit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="@string/logout" />
+
+        <Space
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="quit" />
 
 
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="116dp"
-        android:background="@android:color/transparent"
-        android:text="@string/logout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    </android.widget.LinearLayout>
+
 
 </android.support.constraint.ConstraintLayout>

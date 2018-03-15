@@ -266,6 +266,9 @@ public class SavedRecordingActivity extends AppCompatActivity
      */
     private void showMeasurementPoint(int measNo) {
 
+        if(measNo >= measuredDataPoints.size())
+            return;
+
         //Allow repaints only if they are >200 msec apart to avoid muscle map flickering
         long now = System.currentTimeMillis();
 
@@ -307,10 +310,7 @@ public class SavedRecordingActivity extends AppCompatActivity
                 //Start thread that updates UI
                 handler.post(new Runnable(){
                     public void run() {
-                        System.out.println("run called, " + measuredDataPoints.size());
-                        for(MeasuredDataSet set : measuredDataPoints) {
-                            appendMeasurement(set);
-                        }
+                        setMeasurements(measuredDataPoints);
                     }
                 });
 
@@ -321,41 +321,43 @@ public class SavedRecordingActivity extends AppCompatActivity
 
 
     /**
-     * Append one measurement to the point series that is displayed in the graph
+     * Set measurements to the point series that is displayed in the graph
      *
-     * @param measData  the data set to append
+     * @param measDataSets  the data set to append
      */
-    private void appendMeasurement(final MeasuredDataSet measData) {
+    private void setMeasurements(final List<MeasuredDataSet> measDataSets) {
 
         new Thread(new Runnable() {
 
             public void run() {
 
-                final int sensorVals[] = {
-                        measData.getSensorData(0).getValue(),
-                        measData.getSensorData(1).getValue(),
-                        measData.getSensorData(2).getValue(),
-                        measData.getSensorData(3).getValue(),
-                        measData.getSensorData(4).getValue(),
-                        measData.getSensorData(5).getValue()
-                };
+                for(MeasuredDataSet measData : measDataSets) {
+                    final int sensorVals[] = {
+                            measData.getSensorData(0).getValue(),
+                            measData.getSensorData(1).getValue(),
+                            measData.getSensorData(2).getValue(),
+                            measData.getSensorData(3).getValue(),
+                            measData.getSensorData(4).getValue(),
+                            measData.getSensorData(5).getValue()
+                    };
 
 
-                graphView.post(new Runnable() {
+                    graphView.post(new Runnable() {
 
-                    @Override
-                    public void run() {
-                        count++;
+                        @Override
+                        public void run() {
+                            count++;
 
-                        for(int i = 0; i < NUM_SENSORS; i++) {
-                            int val = sensorVals[i];
+                            for (int i = 0; i < NUM_SENSORS; i++) {
+                                int val = sensorVals[i];
 
-                            //Update graph for this sensor
-                            mSeries[i].appendData(new DataPoint(count, val), false, MAX_DATA_POINTS);
+                                //Update graph for this sensor
+                                mSeries[i].appendData(new DataPoint(count, val), false, MAX_DATA_POINTS);
+                            }
+
                         }
-
-                    }
-                });
+                    });
+                }
             }
         }).start();
     }
