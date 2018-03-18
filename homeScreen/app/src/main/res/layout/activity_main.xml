@@ -21,7 +21,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:text="Start" />
+            android:text="Start"
+            android:textSize="40dp"
+            />
 
 
         <Space
@@ -34,43 +36,54 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:text="@string/archives"/>
+            android:text="@string/archives"
+            android:textSize="40dp"
+            />
 
         <Space
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
+            android:layout_width="wrap_content"
+            />
 
         <Button
             android:id="@+id/button2"
             android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:text="@string/Help" />
+            android:text="@string/Help"
+            android:textSize="40dp"
+            />
 
         <Space
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
+            android:layout_width="wrap_content"
+            />
 
         <Button
             android:id="@+id/button4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:text="@string/logout" />
+            android:text="@string/logout"
+            android:textSize="40dp"
+            />
 
         <Space
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
+            android:layout_width="wrap_content"
+            />
 
         <Button
             android:id="@+id/button3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:text="quit" />
+            android:text="quit"
+            android:textSize="40dp"
+            />
 
 
     </android.widget.LinearLayout>
