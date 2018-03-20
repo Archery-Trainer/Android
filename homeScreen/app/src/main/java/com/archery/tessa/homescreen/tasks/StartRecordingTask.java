@@ -19,15 +19,28 @@ import org.springframework.web.client.RestTemplate;
  * Created by Timo on 29.1.2018.
  */
 
+/**
+ * Task that requests the server to start requesting the MQTT-messages
+ */
 public class StartRecordingTask extends AsyncTask<Context, Void, HttpStatus> {
 
     private RecordingRequest request;
 
+    /**
+     * Construct the task
+     *
+     * @param _request  The request that will be sent
+     */
     public StartRecordingTask(RecordingRequest _request) {
         super();
         request = _request;
     }
 
+    /**
+     * Send the request to the server
+     * @param params
+     * @return  The received status
+     */
     @Override
     protected HttpStatus doInBackground(Context... params) {
         if(params.length != 1) {

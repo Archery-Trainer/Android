@@ -15,13 +15,22 @@ import org.springframework.web.client.RestTemplate;
 import java.util.LinkedList;
 import java.util.List;
 
-
+/**
+ * Task that fetches the shots that belong to a single archer
+ */
 public class GetShotsOfArcherTask extends AsyncTask<Void, Void, List<Shot>> {
 
     private Context context;
     private String email;
     private OnTaskCompleted showInUiCallback;
 
+    /**
+     * Construct task
+     *
+     * @param context   Context reference to the parent activity
+     * @param email     Email of the archer whose shots to get
+     * @param showInUiCallback  Function that will be called when the shots are received
+     */
     public GetShotsOfArcherTask(Context context, String email, OnTaskCompleted showInUiCallback) {
         super();
         this.context = context;
@@ -29,6 +38,11 @@ public class GetShotsOfArcherTask extends AsyncTask<Void, Void, List<Shot>> {
         this.showInUiCallback = showInUiCallback;
     }
 
+    /**
+     * Send the request to the server
+     * @param voids
+     * @return  List of the archer's shots
+     */
     @Override
     protected List<Shot> doInBackground(Void... voids) {
 
@@ -63,6 +77,10 @@ public class GetShotsOfArcherTask extends AsyncTask<Void, Void, List<Shot>> {
     }
 
 
+    /**
+     * Call the showInUiCallback after receiving a response
+     * @param shots
+     */
     @Override
     protected void onPostExecute(List<Shot> shots) {
         if(shots == null || shots.isEmpty()) {

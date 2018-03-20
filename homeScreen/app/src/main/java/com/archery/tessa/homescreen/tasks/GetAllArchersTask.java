@@ -17,15 +17,27 @@ import java.util.List;
  * Created by Timo on 6.2.2018.
  */
 
+/**
+ * Task that retrieves all the registered archers from the database
+ */
 public class GetAllArchersTask extends AsyncTask<Void, Void, List<Archer>> {
 
     private Context context;
 
+    /**
+     * Construct the task
+     * @param context       Context reference of the parent activity
+     */
     public GetAllArchersTask(Context context) {
         super();
         this.context = context;
     }
 
+    /**
+     * Send the getAllArchers request to the server
+     * @param params
+     * @return  List of the saved Archer objects
+     */
     @Override
     protected List<Archer> doInBackground(Void... params) {
         List<Archer> archers = new LinkedList<>();
@@ -53,6 +65,10 @@ public class GetAllArchersTask extends AsyncTask<Void, Void, List<Archer>> {
         return archers;
     }
 
+    /**
+     * Print out the received archers
+     * @param archers
+     */
     @Override
     protected void onPostExecute(List<Archer> archers) {
         if(archers == null || archers.isEmpty()){

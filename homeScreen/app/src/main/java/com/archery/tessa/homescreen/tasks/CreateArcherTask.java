@@ -17,6 +17,9 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 
 
+/**
+ * Task that saves an archer into the database
+ */
 public class CreateArcherTask extends AsyncTask<Context, Void, Archer> {
 
     private Archer archer;

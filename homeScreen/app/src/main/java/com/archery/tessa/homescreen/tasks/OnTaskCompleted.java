@@ -6,5 +6,9 @@ package com.archery.tessa.homescreen.tasks;
  * To be used to make AsyncTasks update Activities' UI
  */
 public interface OnTaskCompleted {
+    /**
+     * Do something with the result of an AsyncTask
+     * @param o Type of the result
+     */
     void onTaskCompleted(Object o);
 }

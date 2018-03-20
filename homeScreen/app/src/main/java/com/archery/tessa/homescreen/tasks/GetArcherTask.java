@@ -19,17 +19,31 @@ package com.archery.tessa.homescreen.tasks;
  * Created by Timo on 6.2.2018.
  */
 
+/**
+ * Task that gets a single archer object
+ */
 public class GetArcherTask extends AsyncTask<Void, Void, Archer> {
 
     private Context context;
     private String email;
 
+    /**
+     * Construct task
+     *
+     * @param context   Context of the parent activity
+     * @param email     Email of the archer to get
+     */
     public GetArcherTask(Context context, String email) {
         super();
         this.context = context;
         this.email = email;
     }
 
+    /**
+     * Send the request to the server
+     * @param params
+     * @return  The received archer object
+     */
     @Override
     protected Archer doInBackground(Void... params) {
 
@@ -54,6 +68,10 @@ public class GetArcherTask extends AsyncTask<Void, Void, Archer> {
         return a;
     }
 
+    /**
+     * Print out the received archer
+     * @param a
+     */
     @Override
     protected void onPostExecute(Archer a) {
         if(a == null){

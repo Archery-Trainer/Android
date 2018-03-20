@@ -15,19 +15,25 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 
 /**
- * Created by Timo on 29.1.2018.
+ * Task that requests the server to stop recording
  */
-
 public class StopRecordingTask extends AsyncTask<Context, Void, Integer> {
 
     private RecordingRequest request;
     private int shotId;
 
+    /**
+     * Construct the task
+     */
     public StopRecordingTask() {
         super();
         shotId = -1;
     }
 
+    /**
+     * Get the index of the shot that the server created
+     * @return  The id of the shot
+     */
     public int getShotId() {
         return shotId;
     }

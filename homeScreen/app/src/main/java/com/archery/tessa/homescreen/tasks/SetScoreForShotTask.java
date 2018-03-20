@@ -16,18 +16,34 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * Task that sets a score for a shot
+ */
 public class SetScoreForShotTask extends AsyncTask<Void, Void, HttpStatus>{
     private int shotId;
     private int score;
     private Context context;
 
 
+    /**
+     * Construct task
+     *
+     * @param shotId    Id of the shot to modify
+     * @param score     Score of the shot
+     * @param context   Context reference to the parent activity
+     */
     public SetScoreForShotTask(int shotId, int score, Context context) {
         this.shotId = shotId;
         this.score = score;
         this.context = context;
     }
 
+    /**
+     * Send the request to the server
+     *
+     * @param params
+     * @return  Http status of the response
+     */
     @Override
     protected HttpStatus doInBackground(Void... params) {
 
@@ -59,6 +75,10 @@ public class SetScoreForShotTask extends AsyncTask<Void, Void, HttpStatus>{
 
     }
 
+    /**
+     * Show error message to the user if the request failed
+     * @param status    The response
+     */
     @Override
     protected void onPostExecute(HttpStatus status) {
         if(status != HttpStatus.OK)
