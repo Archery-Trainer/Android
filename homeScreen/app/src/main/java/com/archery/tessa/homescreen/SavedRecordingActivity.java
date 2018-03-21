@@ -93,6 +93,11 @@ public class SavedRecordingActivity extends AppCompatActivity
      startActivity(i);
      ************************************************************************/
 
+    /**
+     * Initialize the activity
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         shot = (Shot) getIntent().getExtras().getSerializable("SHOT");
@@ -436,6 +441,10 @@ public class SavedRecordingActivity extends AppCompatActivity
     }
 
 
+    /**
+     * Show info of the displayed shot in the action bar
+     * @param shot  The current shot
+     */
     private void setHeaderString(Shot shot) {
         ActionBar actionBar = getSupportActionBar();
         String header = "Showing shot from " + shot.getDate() + " : " +

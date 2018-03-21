@@ -1,5 +1,9 @@
 package com.archery.tessa.homescreen.models;
 
+
+/**
+ * Request that is sent to the server when the user wants it to start recording the MQTT-channel
+ */
 public class RecordingRequest {
     private String archerEmail;
     private long timestamp;

@@ -7,14 +7,9 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
-import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
-import com.archery.tessa.homescreen.models.HitLocation;
-
-import java.util.LinkedList;
 
 import static java.lang.Math.sqrt;
 

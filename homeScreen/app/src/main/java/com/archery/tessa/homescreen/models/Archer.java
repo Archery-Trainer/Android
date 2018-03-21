@@ -2,6 +2,9 @@ package com.archery.tessa.homescreen.models;
 
 import java.io.Serializable;
 
+/**
+ * Representation of an archer registered in the database
+ */
 public class Archer implements Serializable {
 
     private String  email = "";

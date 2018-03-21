@@ -70,6 +70,10 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
     private final int MAX_DATA_POINTS = 50;
 
 
+    /**
+     * Initialize the recording view
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -190,7 +194,10 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
     }
 
 
-
+    /**
+     * Callback that visualizes a received MQTT-message in the view
+     * @param message   The received message
+     */
     @Override
     public void call(final String message) {
 
@@ -266,7 +273,6 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
     /**
      * Create a click listener for the recording switch
      *
-     * @TODO: Seems that clicking the switch blocks the thread and freezes the app when server is offline
      */
     private void setRecordingSwitch() {
         Switch recordingSwitch = (Switch) findViewById(R.id.switch1);
@@ -288,6 +294,7 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
                     task.execute(context);
 
  /*//Don't care if recording works
+                    // @TODO: Seems that clicking the switch blocks the thread and freezes the app when server is offline
 
                     HttpStatus response = HttpStatus.BAD_REQUEST;
                     try {
@@ -388,6 +395,13 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
                 break;
         }
     }
+
+    /**
+     * Initialize the menu button
+     *
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -397,8 +411,11 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
     }
 
 
-
-
+    /**
+     * Handler for clicks to the options and home buttons
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

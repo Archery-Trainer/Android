@@ -1,34 +1,36 @@
 package com.archery.tessa.homescreen.models;
 
-import java.util.Date;
 import java.util.List;
 
 /**
- * Created by mkkvj on 25.1.2018.
+ * A set of sensor measurements
  */
-
 public class MeasuredDataSet {
     private long timestamp;
-    private int counter;
     private List<SensorData> sensors;
 
-
+    /**
+     * @return The sensor objects that belong to this dataset
+     */
     public List<SensorData> getSensors(){return this.sensors;}
+
     public long getTimestamp(){return this.timestamp;}
 
-    public int getCounter() {
-        return counter;
-    }
-
     public void setTimestamp(int timestamp){this.timestamp=timestamp;}
+
+
     public void setSensors(List<SensorData> sensors){this.sensors=sensors;}
 
 
+    /**
+     * Get the sensor data of a single sensor in this set
+     * @param indx  Index of the sensor whose data to get
+     * @return  The sensor data
+     */
     public SensorData getSensorData(int indx) {
         if(indx < sensors.size())
             return this.sensors.get(indx);
         else
-            //@TODO Change sensordatas id to int
             return new SensorData(indx, 0);
     }
 

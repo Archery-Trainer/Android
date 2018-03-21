@@ -23,6 +23,10 @@ public class ResultsActivity extends AppCompatActivity implements OnTaskComplete
     private ListView recordingList;
     private List<Shot> shots;
 
+    /**
+     * Send the shots received from the server to the list view
+     * @param o Type of the result
+     */
     @Override
     public void onTaskCompleted(Object o) {
         shots = (List<Shot>) o;
@@ -39,6 +43,10 @@ public class ResultsActivity extends AppCompatActivity implements OnTaskComplete
     }
 
 
+    /**
+     * Start viewing a recording
+     * @param shotIx    Index of the shot to view
+     */
     private void startSavedRecordingActivity(int shotIx) {
         Shot selectedShot = (Shot)recordingList.getItemAtPosition(shotIx);
 
@@ -54,6 +62,10 @@ public class ResultsActivity extends AppCompatActivity implements OnTaskComplete
     }
 
 
+    /**
+     * Initialize the shot list by fetching shots from the server
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

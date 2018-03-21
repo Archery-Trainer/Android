@@ -3,13 +3,13 @@ package com.archery.tessa.homescreen.models;
 import android.view.ViewDebug;
 
 /**
+ * A single measurement from a sensor
+ *
  * Created by mkkvj on 25.1.2018.
  */
-
 public class SensorData {
     private int sensorId;
     private int value;
-
 
     public SensorData() {}
 

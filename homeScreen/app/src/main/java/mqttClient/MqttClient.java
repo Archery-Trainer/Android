@@ -134,6 +134,11 @@ public class MqttClient {
 
 	}
 
+	/**
+	 * Unsubscribe and disconnect the client
+	 *
+	 * @throws AWSIotException
+	 */
 	public void disconnect() throws AWSIotException {
 		if(awsIotClient == null)
 			return;

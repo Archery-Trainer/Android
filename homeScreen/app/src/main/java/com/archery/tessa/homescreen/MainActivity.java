@@ -13,6 +13,11 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
+    /**
+     * Create the main menu
+     *
+     * @param savedInstanceState Data from previous run
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +67,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Inflate the menu
+     * @param menu  menu to inflate
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -71,7 +81,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * Handle click events to options an home buttons
+     * @param item  The selected item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

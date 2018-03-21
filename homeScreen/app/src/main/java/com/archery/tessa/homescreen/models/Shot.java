@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
 
+/**
+ * Representation of a single shot of a bow
+ */
 public class Shot implements Serializable{
     private int id;
     private Date date;
@@ -11,7 +14,9 @@ public class Shot implements Serializable{
     private int score;
     private int athleteNo;
 
-    //Empty constructor required by message converters
+    /**
+     * Empty constructor required by message converters
+     */
     public Shot() {}
 
     public Shot(int _id, Date _date, Time _time, int _score, int _athleteNo) {
