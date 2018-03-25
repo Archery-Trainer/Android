@@ -7,7 +7,7 @@
     android:background="@color/colorWhiteBackground">
 
 
-    <com.archery.tessa.homescreen.UI.OurView
+    <com.archery.tessa.homescreen.UI.MuscleView
         android:id="@+id/archerSurfaceView"
         android:layout_width="300dp"
         android:layout_height="192dp"

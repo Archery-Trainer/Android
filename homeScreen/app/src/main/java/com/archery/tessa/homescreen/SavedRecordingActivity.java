@@ -29,7 +29,7 @@ import com.jjoe64.graphview.series.OnDataPointTapListener;
 import com.jjoe64.graphview.series.PointsGraphSeries;
 import com.jjoe64.graphview.series.Series;
 
-import com.archery.tessa.homescreen.UI.OurView;
+import com.archery.tessa.homescreen.UI.MuscleView;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -65,7 +65,7 @@ public class SavedRecordingActivity extends AppCompatActivity
     private long lastUpdateTime = 0;
 
     private List<MeasuredDataSet> measuredDataPoints;
-    private OurView surfaceView;
+    private MuscleView surfaceView;
     private Bitmap archerPic;
 
     private CheckBox[] ckBoxes;
@@ -483,7 +483,7 @@ public class SavedRecordingActivity extends AppCompatActivity
 
         BitmapFactory.Options options=new BitmapFactory.Options();
         options.inMutable=true;
-        surfaceView = (OurView)findViewById(R.id.archerSurfaceView);
+        surfaceView = (MuscleView)findViewById(R.id.archerSurfaceView);
         surfaceView.setZOrderOnTop(true);
         //pics.add(BitmapFactory.decodeResource(getResources(),R.drawable.archer_ind_right_2_2_18v3,options));
         archerPic = BitmapFactory.decodeResource(getResources(),R.drawable.archer_left_scaled,options);

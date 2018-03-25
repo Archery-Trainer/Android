@@ -19,7 +19,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.amazonaws.services.iot.client.AWSIotException;
-import com.archery.tessa.homescreen.UI.OurView;
+import com.archery.tessa.homescreen.UI.MuscleView;
 import com.archery.tessa.homescreen.models.MeasuredDataSet;
 import com.archery.tessa.homescreen.models.RecordingRequest;
 import com.archery.tessa.homescreen.tasks.StartRecordingTask;
@@ -53,7 +53,7 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
 
     private List<MeasuredDataSet> measuredDataPoints;
     private Gson gson;
-    private OurView surfaceView;
+    private MuscleView surfaceView;
     private Bitmap archerPic;
 
     private CheckBox[] ckBoxes;
@@ -165,7 +165,7 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
 
         BitmapFactory.Options options=new BitmapFactory.Options();
         options.inMutable=true;
-        surfaceView = (OurView)findViewById(R.id.archerSurfaceView);
+        surfaceView = (MuscleView)findViewById(R.id.archerSurfaceView);
 
         System.out.println("surfaceview "+surfaceView.getX());
         surfaceView.setZOrderOnTop(true);

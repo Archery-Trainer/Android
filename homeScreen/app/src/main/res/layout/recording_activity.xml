@@ -34,7 +34,7 @@
         app:layout_constraintStart_toEndOf="@+id/switch1"
         tools:ignore="MissingConstraints" />
 
-    <com.archery.tessa.homescreen.UI.OurView
+    <com.archery.tessa.homescreen.UI.MuscleView
         android:id="@+id/archerSurfaceView"
         android:layout_width="300dp"
         android:layout_height="192dp"
