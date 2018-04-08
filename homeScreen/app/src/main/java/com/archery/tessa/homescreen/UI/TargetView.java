@@ -14,7 +14,7 @@ import android.view.SurfaceView;
 import static java.lang.Math.sqrt;
 
 /**
- * Created by mkkvj on 18.2.2018.
+ *  Creates canvas for graphics and handles drawing and updates to archery target graphics.
  */
 
 public class TargetView extends SurfaceView implements Runnable {
