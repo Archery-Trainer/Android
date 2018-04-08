@@ -67,7 +67,7 @@ public class RecordingActivity extends AppCompatActivity implements OnMessageCal
 
     private final int NUM_SENSORS = 6;
     private final int LINE_WIDTH = 4;
-    private final int MAX_DATA_POINTS = 50;
+    private final int MAX_DATA_POINTS = 100;
 
 
     /**
