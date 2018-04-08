@@ -20,7 +20,7 @@ import java.util.LinkedList;
  * Created by mkkvj on 1.2.2018.
  */
 
-public class OurView extends SurfaceView{
+public class MuscleView extends SurfaceView{
     private SurfaceHolder holder;
     boolean isOK=false;
     private LinkedList<Bitmap> pics;
@@ -38,19 +38,19 @@ public class OurView extends SurfaceView{
     private final int LEFT_TRICEPS=4;
     private final int RIGHT_TRICEPS=5;
 
-    public OurView(Context context) {
+    public MuscleView(Context context) {
         super(context);
         init();
     }
 
-    public OurView(Context context, AttributeSet attrs) {
+    public MuscleView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
 
 
-    public OurView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public MuscleView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
