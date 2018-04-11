@@ -17,7 +17,8 @@ import com.archery.tessa.homescreen.models.MeasuredDataSet;
 import java.util.LinkedList;
 
 /**
- * Created by mkkvj on 1.2.2018.
+ * MuscleView creates canvas for archer and muscle images. Provides methods to update muscle images
+ * and their color.
  */
 
 public class MuscleView extends SurfaceView{
@@ -63,7 +64,7 @@ public class MuscleView extends SurfaceView{
 
 
     /**
-     * Update the muscle map picture
+     * Update the muscle map pictures
      * @param sensorvalues  A measurement of sensor values
      * @param showMuscle    Array telling which sensor values to visualize
      */
@@ -83,6 +84,9 @@ public class MuscleView extends SurfaceView{
 
     }
 
+    /**
+     * Initiates anc call draving functions.
+     */
     public void init(){
 
         holder=getHolder();
@@ -119,6 +123,11 @@ public class MuscleView extends SurfaceView{
             }
         });
     }
+
+    /**
+     * Adds images to list, which are later drawn on canvas
+     * @param pic Bitmap image
+     */
     public void setdPicsForDrawing(Bitmap pic){
         System.out.println("adding pics");
         pics.add(pic);
@@ -126,53 +135,10 @@ public class MuscleView extends SurfaceView{
     }
 
 
-//    //Rectangles around the small muscle pics
-//    private final Rect srcRectLeftTrap = new Rect(0,0,(50*2), (141*2));
-//    private final Rect srcRectRightTrap = new Rect(0,0,(46*2), (143*2));
-//    private final Rect srcRectLeftDelt = new Rect(0,0,(71*2),(43*2));
-//    private final Rect srcRectRightDelt = new Rect(0,0,(69*2), (49*2));
-//    private final Rect srcRectLeftTricep = new Rect(0,0,(82*2),(19*2));
-//    private final Rect srcRectRightTricep = new Rect(0,0,(95*2), (39*2));
-//
-//    //Left and top coordinates of the muscle pics on the archer pic
-//    private final int[] posLeftTrap = {294*2, 107*2};
-//    private final int[] posRightTrap = {341*2, 107*2};
-//    private final int[] posLeftDelt = {234*2, 134*2};
-//    private final int[] posRightDelt = {375*2, 129*2};
-//    private final int[] posLeftTricep = {179*2, 167*2};
-//    private final int[] posRightTricep = {416*2, 144*2};
-
-
-//    //Rectangles where to place the muscle pics
-//    private final Rect dstRectLeftTrap = new Rect(posLeftTrap[0], posLeftTrap[1],
-//                    posLeftTrap[0] + srcRectLeftTrap.right,posLeftTrap[1] + srcRectLeftTrap.bottom);
-//
-//    private final Rect dstRectRightTrap = new Rect(posRightTrap[0], posRightTrap[1],
-//                    posRightTrap[0] + srcRectRightTrap.right,posRightTrap[1] + srcRectRightTrap.bottom);
-//
-//    private final Rect dstRectLeftDelt = new Rect(posLeftDelt[0], posLeftDelt[1],
-//                    posLeftDelt[0] + srcRectLeftDelt.right,posLeftDelt[1] + srcRectLeftDelt.bottom);
-//
-//    private final Rect dstRectRightDelt = new Rect(posRightDelt[0], posRightDelt[1],
-//            posRightDelt[0] + srcRectRightDelt.right ,posRightDelt[1] + srcRectRightDelt.bottom);
-//
-//    private final Rect dstRectLeftTricep = new Rect(posLeftTricep[0], posLeftTricep[1],
-//            posLeftTricep[0] + srcRectLeftTricep.right,posLeftTricep[1] + srcRectLeftTricep.bottom);
-//
-//    private final Rect dstRectRightTricep = new Rect(posRightTricep[0], posRightTricep[1],
-//            posRightTricep[0] + srcRectRightTricep.right,posRightTricep[1] + srcRectRightTricep.bottom);
-
-    /** reads image muscle imagefiles and **/
-
-    public void getMuscleCropAreas(int number_of_muscles){
-        for(int i=1;i<number_of_muscles;i++){
-            // get muscle bitmap's top left and bottom right coordinate points
-            musclePicAreas.add(getPicDimension(pics.get(i)));
-        }
-
-
-    }
-
+    /**
+     * Creates drawing canvas and draws Archer picture and each muscle.
+     * @param sensorValues
+     */
     public void drawSurface(int[] sensorValues){
 
         Canvas canvas=holder.lockCanvas();
@@ -226,8 +192,8 @@ public class MuscleView extends SurfaceView{
     }
 
     /**
-     * Color the picture with the muscle tension color
-     * @param bitmap    Picture to color
+     * Change Color on the picture with the muscle tension color.
+     * @param bitmap    Picture of Muscle
      * @return  true if successful, false if not
      */
     boolean setInitialColor(Bitmap bitmap)
@@ -248,6 +214,13 @@ public class MuscleView extends SurfaceView{
         return true;
 
     }
+
+    /**
+     * Returns picture's upper left and bottom right coordinate points.
+     *
+     * @param bitmap Image
+     * @return Rect upper left and bottom right coordinates as Rect-object
+     */
     public Rect getPicDimension(Bitmap bitmap){
 
         int x_upper_left=bitmap.getWidth();
