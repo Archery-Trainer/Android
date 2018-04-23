@@ -1,0 +1,5 @@
+com.archery.tessa.homescreen
+com.archery.tessa.homescreen.UI
+com.archery.tessa.homescreen.models
+com.archery.tessa.homescreen.tasks
+mqttClient

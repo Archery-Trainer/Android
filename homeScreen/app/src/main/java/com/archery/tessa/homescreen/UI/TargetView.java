@@ -14,7 +14,9 @@ import android.view.SurfaceView;
 import static java.lang.Math.sqrt;
 
 /**
- *  Creates canvas for graphics and handles drawing and updates to archery target graphics.
+ *  Creates canvas for drawing archery target and reads user selected score by placing
+ *  image of arrow to hit location. Updates to archery target and image of selected
+ *  arrow it location.
  */
 
 public class TargetView extends SurfaceView implements Runnable {
@@ -45,6 +47,10 @@ public class TargetView extends SurfaceView implements Runnable {
         super(context, attrs, defStyleAttr);
         init();
     }
+
+    /**
+     *  Creates drawing canvas and draws target and arrow images.
+     */
     @Override
     public void run() {
         while(isOK==true) {
@@ -69,9 +75,19 @@ public class TargetView extends SurfaceView implements Runnable {
 
         }
     }
+
+    /**
+     * Adds image of target to be drawn.
+     * @param target bitmap image of target
+     */
     public void setTargetImage(Bitmap target){this.mTarget=target;}
 
-    /**returns hit value of x and y value on target. Possible values are 5...10 **/
+    /**
+     * Returns hit value of x and y value on target. Possible values are 5...10
+     * @param x coordinate of hit location
+     * @param y coordinate of hit location
+     * @return returns score based on hit location
+     */
     public int getHitValue(float x, float y) {
 
         int number=5;
@@ -83,7 +99,13 @@ public class TargetView extends SurfaceView implements Runnable {
         System.out.println("Arrow hits to "+(number+5));
         return number+5;
     }
-    /** returs true if x and y hit location are on target area. Otherwise returns false if arrow missed the target.**/
+
+    /**
+     * Returs true if x and y hit location are on target area. Otherwise returns false if arrow missed the target.
+     * @param x coordinate of hit location
+     * @param y coordinate of hit location
+     * @return returns true if touch location is on target or false if outside of target area.
+     */
     public boolean isOnPictureArea(int x, int y) {
         /** r1>=Sqrt((x1-x2)^2+(y1-y2)^2)+r2, where r1=radius of whole target area, r2=radius of arrow,
          x1,y1 are center coordinate of target area, x2,y2 are coordinates of arrow's center **/
@@ -101,6 +123,7 @@ public class TargetView extends SurfaceView implements Runnable {
     // gets radiuses of target areas on arcery target. Possible indexes are 0...5,
     // 0 index means target area of 5 and index 5 means bulleye on archery target
     public float getTargerRadiuses(int index){return this.targetRadiuses[index];}
+
 
     public void init(){
         myThread=new Thread(this);
